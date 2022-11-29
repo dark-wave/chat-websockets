@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/pages/login_page.dart';
+import 'package:mobile_chat_app/src/pages/register_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const ChatApp());
 
-class MyApp extends StatelessWidget {
+class ChatApp extends StatelessWidget {
+  const ChatApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
-      ),
+      title: 'Chat App',
+      initialRoute: 'login',
+      routes: {
+        'login'     : (BuildContext context) => const LoginPage(),
+        'register'  : (BuildContext context) => const RegisterPage()
+      }
     );
   }
 }
