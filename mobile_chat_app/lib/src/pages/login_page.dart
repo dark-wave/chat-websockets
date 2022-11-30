@@ -51,6 +51,10 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: () => print('Login with Apple'), 
                   child: const Text('Login with Apple')
+                ),
+                InkWell(
+                  child: const Text('Registrate aquí'),
+                  onTap: () => Navigator.of(context).pushReplacementNamed('register'),
                 )
               ],
             ),
