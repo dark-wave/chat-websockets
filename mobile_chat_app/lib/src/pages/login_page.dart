@@ -24,12 +24,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Expanded(child: Image.asset('assets/images/logo_chat_app.jpg')),
                 TextFormField(
                   controller: _userNameController,
                   decoration: const InputDecoration(
@@ -55,10 +57,11 @@ class _LoginPageState extends State<LoginPage> {
                 InkWell(
                   child: const Text('Registrate aquí'),
                   onTap: () => Navigator.of(context).pushReplacementNamed('register'),
-                )
+                ),
+                const SizedBox(height: 50)
               ],
             ),
-          )
+          ),
         ),
       ),
     );

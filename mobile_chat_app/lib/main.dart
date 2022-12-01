@@ -21,6 +21,18 @@ class ChatApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Chat App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.light().copyWith(
+          inputDecorationTheme: InputDecorationTheme(
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white)
+            ),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue)
+            ),
+            hintStyle: TextStyle(color: Colors.white.withAlpha(80)),
+          )
+        ),
         initialRoute: 'login',
         routes: {
           'login'     : (BuildContext context) => const LoginPage(),
