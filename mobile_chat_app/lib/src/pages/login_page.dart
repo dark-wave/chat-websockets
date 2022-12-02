@@ -45,20 +45,32 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const InputDecoration(
                     hintText: 'Password'
                   ),
-                ), 
-                ElevatedButton(
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.login),
+                  onPressed: () => print('Login with form'), 
+                  label: const Text('Login')
+                ),
+                const SizedBox(height: 30), 
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.login),
                   onPressed: () => print('Login with Google'), 
-                  child: const Text('Login with Google')
+                  label: const Text('Login with Google')
                 ),
-                ElevatedButton(
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.login),
                   onPressed: () => print('Login with Apple'), 
-                  child: const Text('Login with Apple')
+                  label: const Text('Login with Apple')
                 ),
-                InkWell(
-                  child: const Text('Registrate aquí'),
-                  onTap: () => Navigator.of(context).pushReplacementNamed('register'),
+                const SizedBox(height: 10),
+                Positioned(
+                  bottom: 10,
+                  child: InkWell(
+                    child: const Text('Aun no tienes cuenta? Registrate aquí'),
+                    onTap: () => Navigator.of(context).pushReplacementNamed('register'),
+                  ),
                 ),
-                const SizedBox(height: 50)
               ],
             ),
           ),

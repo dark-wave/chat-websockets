@@ -23,6 +23,7 @@ class ChatApp extends StatelessWidget {
         title: 'Chat App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
+          primaryColor: Colors.purpleAccent,
           inputDecorationTheme: InputDecorationTheme(
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white)
@@ -31,6 +32,16 @@ class ChatApp extends StatelessWidget {
               borderSide: BorderSide(color: Colors.blue)
             ),
             hintStyle: TextStyle(color: Colors.white.withAlpha(80)),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurpleAccent,
+              shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+              textStyle: const TextStyle(
+                color: Colors.white70,
+                fontSize: 20.0
+              )
+            )
           )
         ),
         initialRoute: 'login',
