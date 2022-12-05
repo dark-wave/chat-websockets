@@ -24,14 +24,8 @@ class ChatApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
           primaryColor: Colors.purpleAccent,
-          inputDecorationTheme: InputDecorationTheme(
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white)
-            ),
-            border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue)
-            ),
-            hintStyle: TextStyle(color: Colors.white.withAlpha(80)),
+          inputDecorationTheme: const InputDecorationTheme(
+            hintStyle: TextStyle(color: Colors.black),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(

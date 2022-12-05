@@ -31,45 +31,26 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(child: Image.asset('assets/images/logo_chat_app.jpg')),
+                Expanded(child: Image.asset('assets/images/logo_chat_app_transparente.png')),
                 TextFormField(
                   controller: _userNameController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Username'
                   ),
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   decoration: const InputDecoration(
                     hintText: 'Password'
                   ),
                 ),
+                const SizedBox(height: 20),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.login),
                   onPressed: () => print('Login with form'), 
                   label: const Text('Login')
-                ),
-                const SizedBox(height: 30), 
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.login),
-                  onPressed: () => print('Login with Google'), 
-                  label: const Text('Login with Google')
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.login),
-                  onPressed: () => print('Login with Apple'), 
-                  label: const Text('Login with Apple')
-                ),
-                const SizedBox(height: 10),
-                Positioned(
-                  bottom: 10,
-                  child: InkWell(
-                    child: const Text('Aun no tienes cuenta? Registrate aquí'),
-                    onTap: () => Navigator.of(context).pushReplacementNamed('register'),
-                  ),
                 ),
               ],
             ),
