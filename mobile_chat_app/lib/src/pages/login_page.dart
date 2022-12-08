@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -47,11 +47,34 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.login),
-                  onPressed: () => print('Login with form'), 
-                  label: const Text('Login')
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.login),
+                        onPressed: () => print('Login with form'), 
+                        label: const Text('Login')
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Aún no tienes cuenta? Regístrate '),
+                    InkWell(
+                      child: const Text(
+                        'aquí',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline
+                        )  
+                      ),
+                      onTap: () => Navigator.pushReplacementNamed(context, 'register'),
+                    )
+                  ],
+                )
               ],
             ),
           ),

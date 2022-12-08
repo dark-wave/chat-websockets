@@ -20,9 +20,26 @@ class _RegisterPageState extends State<RegisterPage> {
           physics: const BouncingScrollPhysics(),
           child: SizedBox(
             height: size.height * 0.9,
-            child: const Center(
-              child: Text('Página de registro'),
-            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Ya tienes cuenta? Ve a la '),
+                    InkWell(
+                      child: const Text(
+                        'página de login',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline
+                        )
+                      ),
+                      onTap: () => Navigator.pushReplacementNamed(context, 'login'),
+                    )
+                  ],
+                )
+              ],
+            )
           ),
         )
       ),

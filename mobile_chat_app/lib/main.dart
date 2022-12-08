@@ -33,8 +33,9 @@ class ChatApp extends StatelessWidget {
               shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
               textStyle: const TextStyle(
                 color: Colors.white70,
-                fontSize: 20.0
-              )
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold
+              ),
             )
           )
         ),
