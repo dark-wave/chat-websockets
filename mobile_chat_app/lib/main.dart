@@ -23,7 +23,17 @@ class ChatApp extends StatelessWidget {
         title: 'Chat App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
-          primaryColor: Colors.purpleAccent,
+          primaryColor: Colors.deepPurpleAccent,
+          appBarTheme: const AppBarTheme(
+            elevation: 0.0,
+            backgroundColor: Colors.deepPurpleAccent,
+            centerTitle: true,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold
+            )
+          ),
           inputDecorationTheme: const InputDecorationTheme(
             hintStyle: TextStyle(color: Colors.black),
           ),
