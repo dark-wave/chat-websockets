@@ -12,8 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MessageDto {
-	private String uidSender;
-	private String uidReceiver;
+	private String uuidSender;
+	private String uuidReceiver;
 	private String message;
 	private Date creationDate;
 	private Boolean read;
