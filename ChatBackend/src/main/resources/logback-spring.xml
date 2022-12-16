@@ -3,14 +3,14 @@
 	<property name="LOGS_ROUTE" value="C:/logsAplicaciones/ChatBackend"/>
 	
 	<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS_ROUTE}/spring-boot-logger.log</file>
+        <file>${LOGS_ROUTE}/chat-api.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+            <Pattern>%d %p %C [%t] %m%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS_ROUTE}/archived/userApi-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${LOGS_ROUTE}/archived/chat-api-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
