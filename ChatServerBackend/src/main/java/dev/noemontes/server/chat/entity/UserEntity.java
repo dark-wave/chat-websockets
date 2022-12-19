@@ -1,6 +1,7 @@
 package dev.noemontes.server.chat.entity;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +45,7 @@ public class UserEntity {
 	
 	@PrePersist
 	public void prePersist() {
+		uuid = UUID.randomUUID().toString();
 		createdAt = new Date();
 	}
 }

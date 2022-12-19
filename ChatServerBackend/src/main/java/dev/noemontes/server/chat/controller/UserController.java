@@ -1,5 +1,7 @@
 package dev.noemontes.server.chat.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +31,16 @@ public class UserController {
 		UserDto userDtoServiceResponse = userService.saveUser(userDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userDtoServiceResponse);
+	}
+	
+	@GetMapping("/list")
+	public ResponseEntity<?> listUsers(){
+		List<UserDto> listUserDb = userService.listUsers();
+		
+		if(listUserDb.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}else {
+			return ResponseEntity.ok(listUserDb);
+		}
 	}
 }
