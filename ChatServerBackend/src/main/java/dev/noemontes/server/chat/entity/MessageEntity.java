@@ -1,13 +1,14 @@
 package dev.noemontes.server.chat.entity;
 
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,36 +17,30 @@ import javax.persistence.TemporalType;
 import lombok.Data;
 
 @Entity
-@Table(name = "users")
+@Table(name = "messages")
 @Data
-public class UserEntity {
+public class MessageEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="uuid")
-	private String uuid;
+	@OneToOne
+	@JoinColumn(name="userSenderId")
+	private UserEntity userSender;
 	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="last_name")
-	private String lastName;
-	
-	@Column(name="email", unique = true)
-	private String email;
-	
-	@Column(name="password")
-	private String password;
+	@OneToOne
+	@JoinColumn(name="userReceviverId")
+	private UserEntity userReceiver;
 	
 	@Column(name="created_at")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+	private Date createAt;
 	
-	
+	@Column(name = "message")
+	private String message;
+
 	@PrePersist
 	private void prePersist() {
-		uuid = UUID.randomUUID().toString();
-		createdAt = new Date();
+		createAt = new Date();
 	}
 }

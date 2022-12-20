@@ -1,7 +1,7 @@
 package dev.noemontes.server.chat.service.impl;
 
 import java.util.List;
-import java.util.Spliterators;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -37,5 +37,18 @@ public class UserServiceImpl implements UserService{
 		List<UserEntity> listDbUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
 		
 		return userConverter.convertEntityListToDtoList(listDbUsers);
+	}
+
+	@Override
+	public UserDto getUserById(Long id) {
+		Optional<UserEntity> opUser = userRepository.findById(id);
+		UserDto userDto = null;
+		
+		if(opUser.isPresent()) {
+			userDto = userConverter.convertEntityToDto(opUser.get());
+			return userDto;
+		}else {
+			return null;
+		}
 	}
 }
