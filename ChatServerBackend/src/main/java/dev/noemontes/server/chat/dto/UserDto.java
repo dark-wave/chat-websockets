@@ -1,5 +1,7 @@
 package dev.noemontes.server.chat.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,5 @@ public class UserDto {
 	private String email;
 	private String password;
 	private Boolean online;
+	private List<MessageDto> lista;
 }
