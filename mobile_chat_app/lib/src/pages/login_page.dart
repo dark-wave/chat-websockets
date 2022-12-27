@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/widgets/custom_input.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,19 +33,16 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(child: Image.asset('assets/images/logo_chat_app_transparente.png')),
-                TextFormField(
-                  controller: _userNameController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    hintText: 'Username'
-                  ),
+                CustomInput(
+                  icon: Icons.email, 
+                  hintText: 'Email', 
+                  textController: _userNameController
                 ),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Password'
-                  ),
+                CustomInput(
+                  icon: Icons.password, 
+                  hintText: 'Password', 
+                  textController: _passwordController,
+                  isPassword: true,
                 ),
                 const SizedBox(height: 20),
                 Row(

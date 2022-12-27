@@ -39,6 +39,7 @@ class CustomInput extends StatelessWidget {
         autocorrect: false,
         keyboardType: keyboardType,
         obscureText: isPassword,
+        textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
           focusedBorder: InputBorder.none,
