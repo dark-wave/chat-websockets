@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:mobile_chat_app/src/environment/environment.dart';
 
 class NetworkStatus{
 
@@ -16,7 +17,6 @@ class NetworkStatus{
     ConnectivityResult result = await _networkConnectivity.checkConnectivity();
     _checkStatus(result);
     _networkConnectivity.onConnectivityChanged.listen((result) {
-      print(result);
       _checkStatus(result);
     });
   }
@@ -24,7 +24,7 @@ class NetworkStatus{
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
-      final result = await InternetAddress.lookup('https://noemontes.dev');
+      final result = await InternetAddress.lookup('${Environment.apiUrl}/test');
       isOnline = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {
       isOnline = false;
