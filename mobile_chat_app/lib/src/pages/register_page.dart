@@ -35,10 +35,15 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor:  const Color(0xffF2F2F2),
       appBar: const CustomAppBar(titulo: 'Register'),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
+      resizeToAvoidBottomInset: true,
+      body: GestureDetector(
+        onTap: (){
+          print('Has pulsao la pantalla');
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -65,17 +70,26 @@ class _RegisterPageState extends State<RegisterPage> {
                     textController: _passwordController,
                     isPassword: true,
                   ),
+                  Expanded(child: Container()),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.save),
                       onPressed: () async {
                         final response = await userService.register(
-                        _nameController.text,
-                        _lastNameController.text, 
-                        _emailController.text, 
-                        _passwordController.text
+                          _nameController.text,
+                          _lastNameController.text, 
+                          _emailController.text, 
+                          _passwordController.text
                         );
+
+                        //Limpiamos los controladores
+                        setState(() {
+                          _nameController.clear();
+                          _lastNameController.clear();
+                          _emailController.clear();
+                          _passwordController.clear();
+                        });
                       },
                       label: const Text('Register')
                     ),
@@ -99,8 +113,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-          ),
-        )
+          )
+        ),
       ),
     );
   }
