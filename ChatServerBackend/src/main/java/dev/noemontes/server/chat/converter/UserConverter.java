@@ -1,11 +1,19 @@
 package dev.noemontes.server.chat.converter;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.stereotype.Component;
 
 import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.encrypt.EncryptData;
 import dev.noemontes.server.chat.entity.UserEntity;
 
 @Component
@@ -23,11 +31,11 @@ public class UserConverter {
 	}
 	
 	
-	public UserEntity convertDtoToEntity(UserDto userDto) {
+	public UserEntity convertDtoToEntity(UserDto userDto) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
 		UserEntity userEntity = new UserEntity();
 		
 		userEntity.setUuid(userDto.getUuid());
-		userEntity.setName(userDto.getName());
+		userEntity.setName(EncryptData.encryptData(userDto.getName()));
 		userEntity.setLastName(userDto.getLastName());
 		userEntity.setEmail(userDto.getEmail());
 		userEntity.setPassword(userDto.getPassword());

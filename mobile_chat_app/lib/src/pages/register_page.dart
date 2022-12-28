@@ -35,11 +35,10 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor:  const Color(0xffF2F2F2),
       appBar: const CustomAppBar(titulo: 'Register'),
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: (){
-          print('Has pulsao la pantalla');
-          FocusScope.of(context).unfocus();
+          FocusScope.of(context).requestFocus(FocusNode()); 
         },
         child: SafeArea(
           child: Padding(
@@ -73,25 +72,31 @@ class _RegisterPageState extends State<RegisterPage> {
                   Expanded(child: Container()),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.save),
-                      onPressed: () async {
-                        final response = await userService.register(
-                          _nameController.text,
-                          _lastNameController.text, 
-                          _emailController.text, 
-                          _passwordController.text
-                        );
-
-                        //Limpiamos los controladores
-                        setState(() {
-                          _nameController.clear();
-                          _lastNameController.clear();
-                          _emailController.clear();
-                          _passwordController.clear();
-                        });
-                      },
-                      label: const Text('Register')
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            icon: const Icon(Icons.save),
+                            onPressed: () async {
+                              final response = await userService.register(
+                                _nameController.text,
+                                _lastNameController.text, 
+                                _emailController.text, 
+                                _passwordController.text
+                              );
+                          
+                              //Limpiamos los controladores
+                              setState(() {
+                                _nameController.clear();
+                                _lastNameController.clear();
+                                _emailController.clear();
+                                _passwordController.clear();
+                              });
+                            },
+                            label: const Text('Register')
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Row(

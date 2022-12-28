@@ -1,9 +1,16 @@
 package dev.noemontes.server.chat.service.impl;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +32,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		UserEntity userEntity = userConverter.convertDtoToEntity(userDto);
+		UserEntity userEntity;
+		try {
+			userEntity = userConverter.convertDtoToEntity(userDto);
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
+				| BadPaddingException | InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 		UserEntity userEntityDbResponse = userRepository.save(userEntity);
 		

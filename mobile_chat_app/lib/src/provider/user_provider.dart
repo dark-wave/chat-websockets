@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/utils/crypto_utils.dart';
 
 class UserProvider extends ChangeNotifier{
   static List<User> _userList = [];
@@ -16,7 +17,7 @@ class UserProvider extends ChangeNotifier{
     final client = http.Client();
 
     final registerData = {
-      'name': name,
+      'name': CrytoUtils.encryptString(name),
       'lastName': lastName,
       'email': email,
       'password': password
