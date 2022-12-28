@@ -16,19 +16,19 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptData {
 	private static final String SECRET_KEY = "z/wqRxDgH8oed5j4YmKPfA==";
 	private static final String SECRET_IV = "8CMRnCAfKIl7izIjtI8j9Q==";
-	private static final String AES_ALGORITHM = "AES/CBC/PKCS5Padding";
+	private static final String AES_ALGORITHM = "AES";
 	
 	
 	public static String encryptData(String data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException{
 		Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
-	    cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(SECRET_KEY), generateIv());
+	    cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(SECRET_KEY));
 	    byte[] encryptedData = cipher.doFinal(data.getBytes());
 	    return Base64.getEncoder().encodeToString(encryptedData);
 	}
 	
 	public static String decryptData(String encryptData) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException{
 		Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
-	    cipher.init(Cipher.DECRYPT_MODE, getSecretKey(SECRET_KEY), generateIv());
+	    cipher.init(Cipher.DECRYPT_MODE, getSecretKey(SECRET_KEY));
 	    byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(encryptData));
 	    return new String(decryptedData);
 	}
@@ -44,23 +44,4 @@ public class EncryptData {
 		
 	    return new IvParameterSpec(iv);
 	}
-	
-	/*
-	private static SecretKey getKeyFromPassword() throws NoSuchAlgorithmException, InvalidKeySpecException {
-		final String password = "abc123";
-		final String salt = "12345";
-		
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
-		SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
-		
-		return secret;
-	}
-	
-	private static IvParameterSpec generateIv() {
-		byte[] iv = new byte[16];
-	    new SecureRandom().nextBytes(iv);
-	    return new IvParameterSpec(iv);
-	}
-	*/
 }
