@@ -17,11 +17,13 @@ class UserProvider extends ChangeNotifier{
     final client = http.Client();
 
     final registerData = {
-      'name': CrytoUtils.encryptString(name),
+      'name': name,
       'lastName': lastName,
       'email': email,
       'password': password
     };
+
+    print(CrytoUtils.encryptString(jsonEncode(registerData)));
 
     final serviceResponse = await client.post(
       Uri.parse(Environment.apiUrl + Environment.registerEndPoint),

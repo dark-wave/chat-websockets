@@ -35,7 +35,7 @@ public class UserConverter {
 		UserEntity userEntity = new UserEntity();
 		
 		userEntity.setUuid(userDto.getUuid());
-		userEntity.setName(EncryptData.encryptData(userDto.getName()));
+		userEntity.setName(userDto.getName());
 		userEntity.setLastName(userDto.getLastName());
 		userEntity.setEmail(userDto.getEmail());
 		userEntity.setPassword(userDto.getPassword());

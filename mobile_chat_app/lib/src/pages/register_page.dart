@@ -19,6 +19,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    _nameController.text = 'Noé';
+    _lastNameController.text = 'Montes';
+    _emailController.text = 'noe.montes@gmail.com';
+    _passwordController.text = '12345';
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _lastNameController.dispose();
