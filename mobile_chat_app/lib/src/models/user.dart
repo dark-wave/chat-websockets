@@ -9,29 +9,29 @@ class User {
       required this.name,
       required this.email,
       required this.password,
-      required this.uid,
+      required this.uuid,
       required this.online,
     });
 
     String name;
     String email;
     String password;
-    String uid;
+    String uuid;
     bool online;
 
     factory User.fromJson(Map<String, dynamic> json) => User(
       name: json["name"],
       email: json["email"],
       password: json["password"],
-      uid: json["uid"],
-      online: json["online"],
+      uuid: json["uuid"],
+      online: json["online"] ?? false,
     );
 
     Map<String, dynamic> toJson() => {
       "name": name,
       "email": email,
       "password": password,
-      "uid": uid,
+      "uuid": uuid,
       "online": online,
     };
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
-import 'package:mobile_chat_app/src/utils/crypto_utils.dart';
 
 class UserProvider extends ChangeNotifier{
   static List<User> _userList = [];
@@ -23,8 +22,6 @@ class UserProvider extends ChangeNotifier{
       'password': password
     };
 
-    print(CrytoUtils.encryptString(jsonEncode(registerData)));
-
     final serviceResponse = await client.post(
       Uri.parse(Environment.apiUrl + Environment.registerEndPoint),
       body: jsonEncode(registerData),
@@ -35,5 +32,24 @@ class UserProvider extends ChangeNotifier{
     );
 
     return serviceResponse;
+  }
+
+  Future getUserList() async{
+    final client = http.Client();
+
+    final clientRespose = await client.get(
+      Uri.parse(Environment.apiUrl + Environment.userListEndPoint),
+      headers: { 
+        'Content-Type':'application/json',
+        'Accept': 'application/json'
+      }
+    );
+
+    if(clientRespose.statusCode == 200){
+      List<dynamic> jsonReponse = json.decode(utf8.decode(clientRespose.bodyBytes));
+      _userList = jsonReponse.map((user) => User.fromJson(user)).toList();
+
+      notifyListeners();
+    }
   }
 }

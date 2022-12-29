@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.login),
-                        onPressed: () => print('Login with form'), 
+                        onPressed: () => Navigator.of(context).pushReplacementNamed('contacts'), 
                         label: const Text('Login')
                       ),
                     ),
