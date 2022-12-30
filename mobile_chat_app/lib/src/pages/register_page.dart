@@ -21,11 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-
-    _nameController.text = 'Noé';
-    _lastNameController.text = 'Montes';
-    _emailController.text = 'noe.montes@gmail.com';
-    _passwordController.text = '12345';
   }
 
   @override

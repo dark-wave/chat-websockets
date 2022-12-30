@@ -3,9 +3,6 @@ import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class ContactsPage extends StatefulWidget {
-  static const List<String> _usuariosList = ['Noé','Belén','Alba','Teresa','David',
-    'Rubén', 'Jesús', 'Guilermo', 'Alfonso', 'Nacho', 'Silvia'];
-
   const ContactsPage({Key? key}) : super(key: key);
 
   @override
@@ -38,10 +35,10 @@ class _ContactsPageState extends State<ContactsPage> {
                 itemCount: userList.length,
                 separatorBuilder: (context, i) => const Divider(), 
                 itemBuilder: (context, i) =>  ListTile(
-                  title: Text(ContactsPage._usuariosList[i]),
+                  title: Text(userList[i].name),
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue[100],
-                    child: Text(ContactsPage._usuariosList[i].substring(0,2)),
+                    child: Text(userList[i].name.substring(0,2)),
                   ),
                   trailing: Container(
                     width: 10,
@@ -50,11 +47,21 @@ class _ContactsPageState extends State<ContactsPage> {
                       borderRadius: BorderRadius.circular(100),
                       color: Colors.red
                     ),
-                  )
+                  ),
+                  onTap: () => Navigator.pushNamed(context, 'chat', arguments: userList[i].name),
                 ),
               );              
             }else{
-              return const Center(child: Text('No hay usuarios registrados!!'));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                    Text('Cargando usuarios!!')
+                  ],
+                ),
+              );
             }
           },
         )
