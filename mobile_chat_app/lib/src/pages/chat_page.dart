@@ -8,25 +8,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<String> _messageList = [
-    'Hola este es el mensaje 1',
-    'Hola este es el mensaje 2'
-    'Hola este es el mensaje 3'
-    'Hola este es el mensaje 4'
-    'Hola este es el mensaje 5'
-    'Hola este es el mensaje 6'
-    'Hola este es el mensaje 7'
-    'Hola este es el mensaje 8'
-    'Hola este es el mensaje 9'
-    'Hola este es el mensaje 10'
-    'Hola este es el mensaje 11'
-    'Hola este es el mensaje 12'
-    'Hola este es el mensaje 13'
-    'Hola este es el mensaje 14'
-    'Hola este es el mensaje 15'
-    'Hola este es el mensaje 16'
-    'Hola este es el mensaje 17'
-  ];
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  final List<String> _messageList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +37,75 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Flexible(
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: _messageList.length,
-              itemBuilder: (context, i) => Text(_messageList[i]),
+              itemBuilder: (context, i) => 
+              Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(
+                  right: 5,
+                  bottom: 5,
+                  left: 50
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D9EF6),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Text(_messageList[i], style: const TextStyle(color: Colors.white))
+              ),
               reverse: true,
             ),
+          ),
+          const Divider(height: 1),
+          SafeArea(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      controller: _textController,
+                      decoration: const InputDecoration.collapsed(
+                        hintText: 'Escribe tu mensaje'
+                      ),
+                      focusNode: _focusNode,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: IconTheme(
+                      data: IconThemeData(color: Colors.blue[400]),
+                      child: IconButton(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        icon: const Icon(Icons.send),
+                        onPressed: () => _envioMensaje(_textController.text.trim()), 
+                      ),
+                    )
+                  )
+                ],
+              )
+            )
           )
         ],
       )
     );
+  }
+
+  void _envioMensaje(String mensaje){
+    if(mensaje.trim().isEmpty) return;
+
+    _textController.clear();
+    _focusNode.requestFocus();
+
+    setState(() {
+      _messageList.add(mensaje);
+    });
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 }
