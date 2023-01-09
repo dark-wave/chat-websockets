@@ -35,7 +35,7 @@ public class UserEntity {
 	private String lastName;
 	
 	@Column(name="email", unique = true)
-	private String email;
+	private String email; 
 	
 	@Column(name="password")
 	private String password;
