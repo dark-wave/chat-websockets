@@ -22,6 +22,15 @@ class _ContactsPageState extends State<ContactsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contactos'),
+        actions:[
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+            ),
+          )
+        ],
       ),
       body: SafeArea(
         child: Consumer<UserProvider>(
