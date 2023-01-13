@@ -1,43 +1,29 @@
 package dev.noemontes.server.chat;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@EnableWebSocket
-public class ChatServerConfig implements WebSocketConfigurer {
+@EnableWebSocketMessageBroker
+@EnableScheduling
+public class ChatServerConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(webSocketHandler(), "/websocket");
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+		//registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
+		
+		registry.addEndpoint("/ws");
+		registry.addEndpoint("/ws").withSockJS();
 	}
 
-	@Bean
-	public WebSocketHandler webSocketHandler() {
-		return new ServerWebSocketHandler();
+	@Override
+	public void configureMessageBroker(MessageBrokerRegistry registry) {
+		registry.setApplicationDestinationPrefixes("/app");
+		registry.enableSimpleBroker("/chatroom", "/user");
+		registry.setUserDestinationPrefix("/user");
 	}
-
-	/*
-	 * Comentado para pruebas
-	 * 
-	 * @Autowired
-	 * 
-	 * @Qualifier("ReactiveWebSocketHandler") private WebSocketHandler
-	 * webSocketHandler;
-	 * 
-	 * @Bean public HandlerMapping webSocketHandlerMapping() { Map<String,
-	 * WebSocketHandler> map = new HashMap<>(); map.put("/event-emitter",
-	 * webSocketHandler);
-	 * 
-	 * SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
-	 * handlerMapping.setOrder(1); handlerMapping.setUrlMap(map); return
-	 * handlerMapping; }
-	 * 
-	 * @Bean public WebSocketHandlerAdapter handlerAdapter() { return new
-	 * WebSocketHandlerAdapter(); }
-	 */
 }
