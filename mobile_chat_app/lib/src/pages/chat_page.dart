@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/environment/environment.dart';
+import 'package:mobile_chat_app/src/models/message.dart';
+import 'package:mobile_chat_app/src/provider/socket_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -11,7 +16,20 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  final List<String> _messageList = [];
+  late SocketProvider socketProvider;
+
+  final List<Message> _messageList = [];
+
+  final _channel = WebSocketChannel.connect(
+    Uri.parse(Environment.socketUrl + Environment.sendMessageEndPoint)
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    socketProvider = Provider.of<SocketProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
                   color: const Color(0xff4D9EF6),
                   borderRadius: BorderRadius.circular(20)
                 ),
-                child: Text(_messageList[i], style: const TextStyle(color: Colors.white))
+                child: Text(_messageList[i].message, style: const TextStyle(color: Colors.white))
               ),
               reverse: true,
             ),
@@ -79,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         icon: const Icon(Icons.send),
-                        onPressed: () => _envioMensaje(_textController.text.trim()), 
+                        onPressed: () => _sendMessage(_textController.text.trim()), 
                       ),
                     )
                   )
@@ -92,20 +110,30 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _envioMensaje(String mensaje){
-    if(mensaje.trim().isEmpty) return;
+  void _sendMessage(String message){
+    if(message.isEmpty) return;
 
     _textController.clear();
     _focusNode.requestFocus();
 
+    final newMessage = Message(
+      uidSender: 'uid_sender', 
+      uidReceiver: 'uid_receiver', 
+      message: message
+    );
+
+    _channel.sink.add(newMessage);
+
     setState(() {
-      _messageList.add(mensaje);
+      _messageList.insert(0, newMessage);  
     });
   }
 
   @override
   void dispose() {
     _textController.dispose();
+    _channel.sink.close();
+    
     super.dispose();
   }
 }

@@ -4,22 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class MessageDto {
-	/* Campos finales comentados para las pruebas
-		private String uuidSender;
-		private String uuidReceiver;
-		private String message;
-		private Date creationDate;
-		private Boolean read;
-	*/
-	
-	private String senderName;
-    private String receiverName;
-    private String message;
-    private String date;
+	private String uuidSender;
+	private String uuidReceiver;
+	private String message;
 }

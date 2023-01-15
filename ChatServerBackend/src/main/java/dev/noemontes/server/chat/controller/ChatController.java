@@ -24,14 +24,13 @@ public class ChatController {
 	@MessageMapping("/message")
 	@SendTo("/chatroom/public")
 	public MessageDto receiveMessage(@Payload MessageDto message) {
-		System.out.println();
+		System.out.println("Mensaje recibido: " + message);
 		return message;
 	}
 	
 	@MessageMapping("/private-message")
 	public MessageDto recMessage(@Payload MessageDto message) {
-		simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
-		System.out.println(message.toString());
+		//simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
 		return message;
 	}
 }
