@@ -22,7 +22,10 @@ class _ChatPageState extends State<ChatPage> {
 
   final _channel = WebSocketChannel.connect(
     Uri.parse(Environment.socketUrl + Environment.sendMessageEndPoint)
+    //Uri.parse('wss://echo.websocket.events')
   );
+
+  //final WebSocketChannel _channel = IOWebSocketChannel.connect("ws://echo.websocket.org");
 
   @override
   void initState() {
@@ -54,7 +57,13 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Flexible(
-            child: ListView.builder(
+            child: StreamBuilder(
+              stream: _channel.stream,
+              builder: (context, snapshot) {
+                return Text(snapshot.hasData ? '${snapshot.data}' : '');
+              },
+            ),
+            /*child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: _messageList.length,
               itemBuilder: (context, i) => 
@@ -72,7 +81,7 @@ class _ChatPageState extends State<ChatPage> {
                 child: Text(_messageList[i].message, style: const TextStyle(color: Colors.white))
               ),
               reverse: true,
-            ),
+            ),*/
           ),
           const Divider(height: 1),
           SafeArea(
@@ -97,7 +106,7 @@ class _ChatPageState extends State<ChatPage> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         icon: const Icon(Icons.send),
-                        onPressed: () => _sendMessage(_textController.text.trim()), 
+                        onPressed: () => _sendMessageTemporal(_textController.text.trim()), 
                       ),
                     )
                   )
@@ -108,6 +117,12 @@ class _ChatPageState extends State<ChatPage> {
         ],
       )
     );
+  }
+
+  void _sendMessageTemporal(String message){
+    if(message.isEmpty) return;
+
+    _channel.sink.add(message);
   }
 
   void _sendMessage(String message){
