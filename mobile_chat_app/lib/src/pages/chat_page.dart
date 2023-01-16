@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/models/message.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -19,11 +18,6 @@ class _ChatPageState extends State<ChatPage> {
   late SocketProvider socketProvider;
 
   final List<Message> _messageList = [];
-
-  final _channel = WebSocketChannel.connect(
-    Uri.parse(Environment.socketUrl + Environment.sendMessageEndPoint)
-    //Uri.parse('wss://echo.websocket.events')
-  );
 
   //final WebSocketChannel _channel = IOWebSocketChannel.connect("ws://echo.websocket.org");
 
@@ -57,13 +51,7 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Flexible(
-            child: StreamBuilder(
-              stream: _channel.stream,
-              builder: (context, snapshot) {
-                return Text(snapshot.hasData ? '${snapshot.data}' : '');
-              },
-            ),
-            /*child: ListView.builder(
+            child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: _messageList.length,
               itemBuilder: (context, i) => 
@@ -81,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
                 child: Text(_messageList[i].message, style: const TextStyle(color: Colors.white))
               ),
               reverse: true,
-            ),*/
+            ),
           ),
           const Divider(height: 1),
           SafeArea(
@@ -106,7 +94,7 @@ class _ChatPageState extends State<ChatPage> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         icon: const Icon(Icons.send),
-                        onPressed: () => _sendMessageTemporal(_textController.text.trim()), 
+                        onPressed: () => _sendMessage(_textController.text.trim()), 
                       ),
                     )
                   )
@@ -117,12 +105,6 @@ class _ChatPageState extends State<ChatPage> {
         ],
       )
     );
-  }
-
-  void _sendMessageTemporal(String message){
-    if(message.isEmpty) return;
-
-    _channel.sink.add(message);
   }
 
   void _sendMessage(String message){
@@ -137,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
       message: message
     );
 
-    _channel.sink.add(newMessage);
+    socketProvider.emit('message', message);
 
     setState(() {
       _messageList.insert(0, newMessage);  
@@ -147,8 +129,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     _textController.dispose();
-    _channel.sink.close();
-    
+
     super.dispose();
   }
 }

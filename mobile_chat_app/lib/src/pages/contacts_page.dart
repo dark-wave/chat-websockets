@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,12 @@ class _ContactsPageState extends State<ContactsPage> {
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               icon: const Icon(Icons.logout),
-              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+              onPressed: () async{
+                SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+                socket.disconect();
+
+                Navigator.pushReplacementNamed(context, 'login');
+              },
             ),
           )
         ],

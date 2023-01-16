@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -50,7 +52,12 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.login),
-                        onPressed: () => Navigator.of(context).pushReplacementNamed('contacts'), 
+                        onPressed: () async{
+                          SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+                          socket.connect();
+
+                          Navigator.of(context).pushReplacementNamed('contacts');
+                        }, 
                         label: const Text('Login')
                       ),
                     ),
