@@ -27,6 +27,9 @@ class SocketProvider with ChangeNotifier{
       notifyListeners();
     });
 
+    _socket.onConnectTimeout((data) => print(data));
+    _socket.onConnectError((data) => print(data));
+
     _socket.on('disconnect', (_) {
       print('Servidor desconectado');
       notifyListeners();

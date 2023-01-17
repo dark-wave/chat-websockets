@@ -21,8 +21,8 @@ public class ChatController {
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
 	
-	@MessageMapping("/message")
-	@SendTo("/chatroom/public")
+	@MessageMapping("/chat")
+	@SendTo("/topic/messages")
 	public MessageDto receiveMessage(@Payload MessageDto message) {
 		System.out.println("Mensaje recibido: " + message);
 		return message;
