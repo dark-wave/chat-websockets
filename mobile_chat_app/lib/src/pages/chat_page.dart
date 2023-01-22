@@ -113,16 +113,10 @@ class _ChatPageState extends State<ChatPage> {
     _textController.clear();
     _focusNode.requestFocus();
 
-    final newMessage = Message(
-      uidSender: 'uid_sender', 
-      uidReceiver: 'uid_receiver', 
-      message: message
-    );
-
-    socketProvider.emit('message', message);
+    socketProvider.sendMessage(message);
 
     setState(() {
-      _messageList.insert(0, newMessage);  
+      //_messageList.insert(0, newMessage);  
     });
   }
 

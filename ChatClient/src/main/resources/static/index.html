@@ -1,0 +1,64 @@
+<htnml>
+	<head>
+		<title>Cliente websocket</title>
+		<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	    <script src="/webjars/jquery/jquery.min.js"></script>
+	    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+	    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	    <script src="/app.js"></script>
+	</head>
+	<body>
+		<noscript>
+			<h2 style="color: #ff0000">
+				No tienes javascript activado. Es necesario para trabajar con la funcionalida de websocket.
+				Por favor activelo en su navegador y recargue la página
+			</h2>
+		</noscript>
+		<h1>Websocket client</h1>
+		
+		<div id="main-content" class="container">
+		    <div class="row">
+		        <div class="col-md-6">
+		            <form class="form-inline">
+		                <div class="form-group">
+		                    <label for="connect">Conexion websocket:</label>
+		                    <button id="connect" class="btn btn-default" type="submit">Conectar</button>
+		                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Desconectar</button>
+		                    <button id="clearMessages" class="btn btn-default" type="submit">Limpiar mensajes</button>
+		                </div>
+		            </form>
+		        </div>
+		    </div>
+		    <br/>	
+		    <form>
+		    	<table>
+		    	<tr>
+		    		<td><label for="inputName">Nombre:</label></td>
+		    		<td><input id="inputName" class="form-control" type="text" placeholder="Nombre" disabled="disabled"/></td>
+		    	</tr>
+		    	<tr>
+		    		<td><label for="inputMsg">Contenido mensaje:</label></td>
+		    		<td><input id="inputMsg" class="form-control" type="text" placeholder="Introduce aqui tu mensaje" disabled="disabled"/></td>
+		    	</tr>
+		    	<tr>
+		    		<td colspan="2"><button id="btnSend" type="submit" class="btn btn-primary mb-2" disabled="disabled">Enviar</button></td>
+		    	</tr>
+		    </table>
+		    </form>
+		    <br/>
+		    <div class="row">
+		        <div class="col-md-12">
+		            <table id="messageList" class="table table-striped">
+		                <thead>
+		                <tr>
+		                    <th>Mensajes del chat</th>
+		                </tr>	
+		                </thead>
+		                <tbody id="messages">
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>
+		</div>
+	</body>
+</htnml>

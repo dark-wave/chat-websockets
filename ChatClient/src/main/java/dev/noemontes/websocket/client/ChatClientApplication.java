@@ -1,12 +1,13 @@
-package dev.noemontes.server.chat;
+package dev.noemontes.websocket.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChatServerBackendApplication {
+public class ChatClientApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChatServerBackendApplication.class, args);
+		SpringApplication.run(ChatClientApplication.class, args);
 	}
+
 }

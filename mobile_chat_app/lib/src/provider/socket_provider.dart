@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:mobile_chat_app/src/models/message.dart';
+import 'package:stomp_dart_client/stomp.dart';
+import 'package:stomp_dart_client/stomp_config.dart';
+import 'package:stomp_dart_client/stomp_frame.dart';
 
 enum ServerStatus{
   online,
@@ -9,35 +14,45 @@ enum ServerStatus{
 }
 
 class SocketProvider with ChangeNotifier{
-  late IO.Socket _socket;
 
-  IO.Socket get socket => _socket;
-  Function get emit => _socket.emit;
+  late StompClient  _stompClient;
 
-  //Conexión para la comunicación con sockets
-  void connect() async{
-    _socket = IO.io(Environment.socketUrl, {
-      'transports': ['websocket'],
-      'autoConnect': true,
-      'forceNew': true
-    });
+  StompClient get stompClient => _stompClient;
 
-    _socket.on('connect', (_) {
-      print('Servidor contectado');
-      notifyListeners();
-    });
+  void connectStomp(){
+    _stompClient = StompClient(
+      config: StompConfig(
+        url: Environment.socketUrl,
+        onConnect: _onConnect,
+        onWebSocketError: (dynamic error) => print(error),
+        onStompError: (StompFrame frame) => print(frame.body)
+      )
+    );
 
-    _socket.onConnectTimeout((data) => print(data));
-    _socket.onConnectError((data) => print(data));
-
-    _socket.on('disconnect', (_) {
-      print('Servidor desconectado');
-      notifyListeners();
-    });
+    _stompClient.activate();
   }
 
-  // Desconexion de la comunicación por sockets
-  void disconect(){
-    _socket.disconnect();
+  void sendMessage(String message){
+    Message messageBody = Message(
+      uidSender: 'flutter_sender', 
+      uidReceiver: 'flutter_receiver', 
+      message: message
+    );
+
+    _stompClient.send(
+      destination: '/sendMessage',
+      body: json.encode(messageBody.toJson())
+    );
+  }
+
+  void disconnectStomp(){
+    _stompClient.deactivate();
+  }
+
+  void _onConnect(StompFrame frame){
+    _stompClient.subscribe(
+      destination: '/topic/message', 
+      callback: (frame) => print('Mensaje')
+    );
   }
 }

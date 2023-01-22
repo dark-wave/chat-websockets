@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         icon: const Icon(Icons.login),
                         onPressed: () async{
                           SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                          socket.connect();
+                          socket.connectStomp();
 
                           Navigator.of(context).pushReplacementNamed('contacts');
                         }, 

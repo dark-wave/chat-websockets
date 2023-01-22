@@ -30,7 +30,7 @@ class _ContactsPageState extends State<ContactsPage> {
               icon: const Icon(Icons.logout),
               onPressed: () async{
                 SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                socket.disconect();
+                socket.disconnectStomp();
 
                 Navigator.pushReplacementNamed(context, 'login');
               },
