@@ -30,6 +30,8 @@ public class ChatController {
 	@MessageMapping("/sendMessage")
 	public void receiveMessage(@Payload MessageDto message) {
 		System.out.println("Receive message: " + message);
+		
+		messagingTemplate.convertAndSend("/topic/message", message);
 	}
 	
 	@SendTo("/topic/message")

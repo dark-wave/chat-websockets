@@ -16,16 +16,21 @@ enum ServerStatus{
 class SocketProvider with ChangeNotifier{
 
   late StompClient  _stompClient;
+  List<Message> _messageList = [];
 
   StompClient get stompClient => _stompClient;
 
+  List<Message> get messageList => _messageList;
+
   void connectStomp(){
     _stompClient = StompClient(
-      config: StompConfig(
+      config: StompConfig.SockJS(
         url: Environment.socketUrl,
         onConnect: _onConnect,
         onWebSocketError: (dynamic error) => print(error),
-        onStompError: (StompFrame frame) => print(frame.body)
+        onStompError: (StompFrame frame){
+          print(frame.body);
+        }
       )
     );
 
@@ -40,7 +45,7 @@ class SocketProvider with ChangeNotifier{
     );
 
     _stompClient.send(
-      destination: '/sendMessage',
+      destination: '/app/sendMessage',
       body: json.encode(messageBody.toJson())
     );
   }
@@ -52,7 +57,13 @@ class SocketProvider with ChangeNotifier{
   void _onConnect(StompFrame frame){
     _stompClient.subscribe(
       destination: '/topic/message', 
-      callback: (frame) => print('Mensaje')
+      callback: (frame){
+        Message _message = Message.fromJson(json.decode(frame.body!));
+
+        _messageList.add(_message);
+
+        notifyListeners();
+      }
     );
   }
 }
