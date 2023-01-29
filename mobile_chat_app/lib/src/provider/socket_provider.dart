@@ -14,7 +14,6 @@ enum ServerStatus{
 }
 
 class SocketProvider with ChangeNotifier{
-
   late StompClient  _stompClient;
   List<Message> _messageList = [];
 

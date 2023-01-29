@@ -1,5 +1,7 @@
 package dev.noemontes.server.chat.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +18,15 @@ import dev.noemontes.server.chat.dto.MessageDto;
 @RestController
 public class ChatController {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(ChatController.class);
+	
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
 	
 	@PostMapping("/send")
 	public ResponseEntity<?> sendMessage(@RequestBody MessageDto message){
-		System.out.println("Mensaje en postmapping: " + message);
+		LOG.info("PostMapping send: " + message);
+		
 		messagingTemplate.convertAndSend("/topic/message", message);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -29,15 +34,13 @@ public class ChatController {
 	
 	@MessageMapping("/sendMessage")
 	public void receiveMessage(@Payload MessageDto message) {
-		System.out.println("Receive message: " + message);
-		
+		LOG.info("Mensaje recibido: " + message);
 		messagingTemplate.convertAndSend("/topic/message", message);
 	}
 	
 	@SendTo("/topic/message")
 	public MessageDto broadcastMessage(@Payload MessageDto message) {
-		System.out.println("Broadcast message: " + message);
-		
+		LOG.info("BroadCast message: " + message);
 		return message;
 	}
 }

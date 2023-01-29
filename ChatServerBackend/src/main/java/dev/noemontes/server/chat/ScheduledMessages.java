@@ -15,7 +15,7 @@ public class ScheduledMessages {
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
 	
-	@Scheduled(fixedDelay = 2000)
+	@Scheduled(fixedDelay = 5000)
 	public void sendMessage() {
 		MessageDto message = new MessageDto();
 		message.setUidSender("spring_sender");
