@@ -9,7 +9,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-@EnableScheduling
 public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer{
 
 	@Override
