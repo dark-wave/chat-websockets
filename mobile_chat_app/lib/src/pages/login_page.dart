@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/connectivity_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Consumer<ConnectivityProvider>(
+                  builder: (context, connectivityProvider, child){
+                    return Text(connectivityProvider.connectivityResult.toString());
+                  }),
                 Expanded(child: Image.asset('assets/images/logo_chat_app_transparente.png')),
                 CustomInput(
                   icon: Icons.email, 

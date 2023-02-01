@@ -3,6 +3,7 @@ import 'package:mobile_chat_app/src/pages/chat_page.dart';
 import 'package:mobile_chat_app/src/pages/contacts_page.dart';
 import 'package:mobile_chat_app/src/pages/login_page.dart';
 import 'package:mobile_chat_app/src/pages/register_page.dart';
+import 'package:mobile_chat_app/src/provider/connectivity_provider.dart';
 import 'package:mobile_chat_app/src/provider/message_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
@@ -19,7 +20,8 @@ class ChatApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
-        ChangeNotifierProvider(create: (_) => SocketProvider())
+        ChangeNotifierProvider(create: (_) => SocketProvider()),
+        ChangeNotifierProvider(create: (_) => ConnectivityProvider())
       ],
       child: MaterialApp(
         title: 'Chat App',
