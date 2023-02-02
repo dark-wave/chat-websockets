@@ -20,8 +20,8 @@ class ChatApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
-        ChangeNotifierProvider(create: (_) => SocketProvider()),
-        ChangeNotifierProvider(create: (_) => ConnectivityProvider())
+        ChangeNotifierProvider(create: (_) => SocketProvider())
+        //ChangeNotifierProvider(create: (_) => ConnectivityProvider())
       ],
       child: MaterialApp(
         title: 'Chat App',

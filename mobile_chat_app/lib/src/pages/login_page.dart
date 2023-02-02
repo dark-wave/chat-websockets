@@ -36,10 +36,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Consumer<ConnectivityProvider>(
-                  builder: (context, connectivityProvider, child){
-                    return Text(connectivityProvider.connectivityResult.toString());
-                  }),
                 Expanded(child: Image.asset('assets/images/logo_chat_app_transparente.png')),
                 CustomInput(
                   icon: Icons.email, 

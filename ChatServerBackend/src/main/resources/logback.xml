@@ -10,7 +10,7 @@
         </layout>
 	</appender>
 	
-	<appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="InfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS_ROUTE}/chat-api-server.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -20,16 +20,13 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGS_ROUTE}/archived/chat-api-server-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
     
     <logger name="dev.noemontes.chat" level="info" additivity="false">
-    	<appender-ref ref="Console"/>
-    	<!-- <appender-ref ref="RollingFile" /> -->
+    	<appender-ref ref="InfoLog"/>
     </logger>
-    
 </configuration>

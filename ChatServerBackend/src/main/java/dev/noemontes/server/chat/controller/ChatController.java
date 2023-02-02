@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -33,9 +34,13 @@ public class ChatController {
 	
 	
 	@MessageMapping("/sendMessage")
-	public void receiveMessage(@Payload MessageDto message) {
-		LOG.info("Mensaje recibido: " + message);
+	public void receiveMessage(@Payload MessageDto message, @Header("simpSessionId") String sessionId) {
+		System.out.println("Mensaje recibido: " + message);
+		System.out.println("Identificador de sesion: " + sessionId);
+		
 		messagingTemplate.convertAndSend("/topic/message", message);
+		
+		//TODO: Asignamos el mensaje a un usuario específico
 	}
 	
 	@SendTo("/topic/message")
