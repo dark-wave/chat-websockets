@@ -26,6 +26,9 @@ class SocketProvider with ChangeNotifier{
       config: StompConfig.SockJS(
         url: Environment.socketUrl,
         onConnect: _onConnect,
+        webSocketConnectHeaders: {
+          'session-id': '12344444'
+        },
         onWebSocketError: (dynamic error) => print(error),
         onStompError: (StompFrame frame){
           print(frame.body);
@@ -36,16 +39,10 @@ class SocketProvider with ChangeNotifier{
     _stompClient.activate();
   }
 
-  void sendMessage(String message){
-    Message messageBody = Message(
-      uidSender: 'flutter_sender', 
-      uidReceiver: 'flutter_receiver', 
-      message: message
-    );
-
+  void sendMessage(Message message){
     _stompClient.send(
       destination: '/app/sendMessage',
-      body: json.encode(messageBody.toJson())
+      body: json.encode(message.toJson())
     );
   }
 

@@ -63,7 +63,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       color: Colors.red
                     ),
                   ),
-                  onTap: () => Navigator.pushNamed(context, 'chat', arguments: userList[i].name),
+                  onTap: () => Navigator.pushNamed(context, 'chat', arguments: userList[i]),
                 ),
               );              
             }else{

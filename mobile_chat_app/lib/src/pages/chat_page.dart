@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mobile_chat_app/src/models/message.dart';
+import 'package:mobile_chat_app/src/models/user.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +29,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final name = ModalRoute.of(context)?.settings.arguments as String?;
+    User? user = ModalRoute.of(context)!.settings.arguments as User?;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,10 +40,10 @@ class _ChatPageState extends State<ChatPage> {
             CircleAvatar(
               backgroundColor: Colors.blue[100],
               maxRadius: 14,
-              child: Text(name!.substring(0,2), style: const TextStyle(fontSize: 12)),
+              child: Text(user!.name.substring(0,2), style: const TextStyle(fontSize: 12)),
             ),
             const SizedBox(height: 3),
-            Text(name, style: const TextStyle(color: Colors.black87, fontSize: 12)),
+            Text(user.name, style: const TextStyle(color: Colors.black87, fontSize: 12)),
           ],
         ),
       ),
@@ -115,7 +117,7 @@ class _ChatPageState extends State<ChatPage> {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         icon: const Icon(Icons.send),
-                        onPressed: () => _sendMessage(_textController.text.trim()), 
+                        onPressed: () => _sendMessage(user, _textController.text.trim()), 
                       ),
                     )
                   )
@@ -128,8 +130,14 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _sendMessage(String message){
-    if(message.isEmpty) return;
+  void _sendMessage(User user, String messageStr){
+    if(messageStr.isEmpty) return;
+
+    Message message = Message(
+      uidSender: 'UuidSender', 
+      uidReceiver: user.uuid, 
+      message: messageStr
+    );
 
     _textController.clear();
     _focusNode.requestFocus();
