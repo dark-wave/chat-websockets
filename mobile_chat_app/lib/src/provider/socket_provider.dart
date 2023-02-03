@@ -26,9 +26,6 @@ class SocketProvider with ChangeNotifier{
       config: StompConfig.SockJS(
         url: Environment.socketUrl,
         onConnect: _onConnect,
-        webSocketConnectHeaders: {
-          'session-id': '12344444'
-        },
         onWebSocketError: (dynamic error) => print(error),
         onStompError: (StompFrame frame){
           print(frame.body);
@@ -39,9 +36,22 @@ class SocketProvider with ChangeNotifier{
     _stompClient.activate();
   }
 
+   void subscribeQueue(String userUuid){
+    _stompClient.subscribe(
+      destination: 'topic/message/$userUuid', 
+      callback: (frame){
+        Message _message = Message.fromJson(json.decode(frame.body!));
+
+        _messageList.add(_message);
+
+        notifyListeners();
+      }
+    );
+  }
+
   void sendMessage(Message message){
     _stompClient.send(
-      destination: '/app/sendMessage',
+      destination: '/app/sendMessage/${message.uidReceiver}',
       body: json.encode(message.toJson())
     );
   }
@@ -51,15 +61,6 @@ class SocketProvider with ChangeNotifier{
   }
 
   void _onConnect(StompFrame frame){
-    _stompClient.subscribe(
-      destination: '/topic/message', 
-      callback: (frame){
-        Message _message = Message.fromJson(json.decode(frame.body!));
-
-        _messageList.add(_message);
-
-        notifyListeners();
-      }
-    );
+    print('Nos hemos conectado');
   }
 }

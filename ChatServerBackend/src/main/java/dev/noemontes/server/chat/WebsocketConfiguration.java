@@ -1,6 +1,5 @@
 package dev.noemontes.server.chat;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +27,7 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer{
 		registry.addEndpoint("/ws-message").setAllowedOrigins("*").withSockJS().setInterceptors(new HandshakeInterceptor() {
 			@Override
 			public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+				System.out.println("Procesando atributos de la peticion");
 				return true;
 			}
 			

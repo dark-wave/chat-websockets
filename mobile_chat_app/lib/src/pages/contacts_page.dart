@@ -63,7 +63,12 @@ class _ContactsPageState extends State<ContactsPage> {
                       color: Colors.red
                     ),
                   ),
-                  onTap: () => Navigator.pushNamed(context, 'chat', arguments: userList[i]),
+                  onTap: () { 
+                    SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+                    socket.subscribeQueue(userList[i].uuid);
+                    
+                    Navigator.pushNamed(context, 'chat', arguments: userList[i]);
+                  }
                 ),
               );              
             }else{
