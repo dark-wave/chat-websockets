@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,9 +57,14 @@ class _LoginPageState extends State<LoginPage> {
                         icon: const Icon(Icons.login),
                         onPressed: () async{
                           SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+                          
+                          await loginProvider.login(_userNameController.text, _passwordController.text);
                           socket.connectStomp();
-
-                          Navigator.of(context).pushReplacementNamed('contacts');
+                          
+                          /*Las modificaciones sobre la interfaz se deben realizar en el hilo principal
+                            no en llamadas asíncronas. Para ejecutar la navegación a la nueva página
+                            en el hilo principal usamos Future.microtask*/
+                          Future.microtask(() => Navigator.of(context).pushReplacementNamed('contacts'));
                         }, 
                         label: const Text('Login')
                       ),

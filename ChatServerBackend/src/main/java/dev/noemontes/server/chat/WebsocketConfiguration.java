@@ -27,7 +27,6 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer{
 		registry.addEndpoint("/ws-message").setAllowedOrigins("*").withSockJS().setInterceptors(new HandshakeInterceptor() {
 			@Override
 			public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-				System.out.println("Procesando atributos de la peticion");
 				return true;
 			}
 			

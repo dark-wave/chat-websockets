@@ -35,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userService = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       backgroundColor:  const Color(0xffF2F2F2),
@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: ElevatedButton.icon(
                             icon: const Icon(Icons.save),
                             onPressed: () async {
-                              final response = await userService.register(
+                              final response = await userProvider.register(
                                 _nameController.text,
                                 _lastNameController.text, 
                                 _emailController.text, 

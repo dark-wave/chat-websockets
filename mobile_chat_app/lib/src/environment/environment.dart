@@ -11,6 +11,7 @@ class Environment{
 
   static const String registerEndPoint = '/user/create';
   static const String userListEndPoint = '/user/list';
+  static const String loginEndPoint    = '/login';
 
   static const String sendMessageEndPoint = '/message';
 }

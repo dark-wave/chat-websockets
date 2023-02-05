@@ -27,31 +27,21 @@ public class ChatController {
 	
 	@PostMapping("/send")
 	public ResponseEntity<?> sendMessage(@RequestBody MessageDto message){
-		LOG.info("PostMapping send: " + message);
-		
 		messagingTemplate.convertAndSend("/topic/message", message);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
 	@MessageMapping("/sendMessage/{useruuid}")
-	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageDto message) {
-		System.out.println("Mensaje recibido: " + message);
-		System.out.println("Identificador de sesion: " + sessionId);
-		System.out.println("User uuid: " + useruuid);
-		
-		messagingTemplate.convertAndSend("/topic/message/" + useruuid, message);
-	}
-	
 	@SendTo("/topic/message")
-	public MessageDto broadcastMessage(@Payload MessageDto message) {
-		LOG.info("BroadCast message: " + message);
+	public MessageDto receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageDto message) {
+		System.out.println("Usuario: " + useruuid);
+		
 		return message;
 	}
 	
-	@SendTo("/topic/message/{useruuid}")
-	public MessageDto customUserMessage(@Payload MessageDto message, @DestinationVariable("useruuid") String useruuid) {
-		System.out.println("Envio del mensaje al usuario: " + useruuid);
+	@SendTo("/topic/broadcast")
+	public MessageDto broadcastMessage(@Payload MessageDto message) {
 		return message;
 	}
 }
