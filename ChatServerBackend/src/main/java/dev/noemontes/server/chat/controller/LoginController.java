@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.noemontes.server.chat.dto.LoginDto;
-import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.dto.LoginRequestDto;
+import dev.noemontes.server.chat.dto.UserLoginResponseDto;
 import dev.noemontes.server.chat.service.LoginService;
 
 @RestController
@@ -18,19 +18,12 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	
-	
 	@PostMapping
-	public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
-		UserDto loginUser = new UserDto();
-		loginUser.setEmail(loginDto.getEmail());
-		loginUser.setPassword(loginDto.getPassword());
+	public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginDto){
+		UserLoginResponseDto logedUser = loginService.login(loginDto);
 		
-		UserDto logedUser = loginService.login(loginUser);
-		
-		if(logedUser!=null) {
-			logedUser.setOnline(true);
-			
-			return ResponseEntity.ok(logedUser);
+		if(logedUser!=null) {	
+			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();
 		}

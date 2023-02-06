@@ -1,25 +1,19 @@
 package dev.noemontes.server.chat.converter;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
+import org.apache.catalina.Contained;
 import org.springframework.stereotype.Component;
 
-import dev.noemontes.server.chat.dto.UserDto;
-import dev.noemontes.server.chat.encrypt.EncryptData;
+import dev.noemontes.server.chat.dto.UserLoginResponseDto;
+import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 
 @Component
 public class UserConverter {
-	public UserDto convertEntityToDto(UserEntity userEntity) {
-		UserDto userDto = new UserDto();
+	public UserRegisterDto convertEntityToDto(UserEntity userEntity) {
+		UserRegisterDto userDto = new UserRegisterDto();
 		
 		userDto.setUuid(userEntity.getUuid());
 		userDto.setName(userEntity.getName());
@@ -27,11 +21,12 @@ public class UserConverter {
 		userDto.setEmail(userEntity.getEmail());
 		userDto.setPassword(userEntity.getPassword());
 		
+		
 		return userDto;
 	}
 	
 	
-	public UserEntity convertDtoToEntity(UserDto userDto) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+	public UserEntity convertDtoToEntity(UserRegisterDto userDto) {
 		UserEntity userEntity = new UserEntity();
 		
 		userEntity.setUuid(userDto.getUuid());
@@ -43,11 +38,37 @@ public class UserConverter {
 		return userEntity;
 	}
 	
-	public List<UserDto> convertEntityListToDtoList(List<UserEntity> userEntityList){
-		List<UserDto> userDtoList = new ArrayList<UserDto>();
+	public UserLoginResponseDto convertUserEntityToUserLoginResponse(UserEntity logedUserFromDb) {
+		UserLoginResponseDto loginResponseDto = new UserLoginResponseDto();
+		
+		loginResponseDto.setUuid(logedUserFromDb.getUuid());
+		loginResponseDto.setName(logedUserFromDb.getName());
+		loginResponseDto.setLastName(logedUserFromDb.getLastName());
+		loginResponseDto.setEmail(logedUserFromDb.getEmail());
+		
+		if(logedUserFromDb.getContacts().size() > 0) {
+			loginResponseDto.setContacts(new ArrayList<UserLoginResponseDto>());
+			
+			for(UserEntity contact : logedUserFromDb.getContacts()) {
+				UserLoginResponseDto contactDto = new UserLoginResponseDto();
+				
+				contactDto.setUuid(contact.getUuid());
+				contactDto.setName(contact.getName());
+				contactDto.setLastName(contact.getLastName());
+				contactDto.setEmail(contact.getEmail());
+				
+				loginResponseDto.getContacts().add(contactDto);
+			}
+		}
+		
+		return loginResponseDto;
+	}
+	
+	public List<UserRegisterDto> convertEntityListToDtoList(List<UserEntity> userEntityList){
+		List<UserRegisterDto> userDtoList = new ArrayList<UserRegisterDto>();
 		
 		for (UserEntity userEntity : userEntityList) {
-			UserDto userDto = new UserDto();
+			UserRegisterDto userDto = new UserRegisterDto();
 			userDto.setUuid(userEntity.getUuid());
 			userDto.setName(userEntity.getName());
 			userDto.setLastName(userEntity.getLastName());

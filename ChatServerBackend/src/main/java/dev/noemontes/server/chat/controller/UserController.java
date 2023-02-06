@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.service.UserService;
 
 @RestController
@@ -23,15 +23,15 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> saveUser(@RequestBody UserDto userDto){
-		UserDto userDtoServiceResponse = userService.saveUser(userDto);
+	public ResponseEntity<?> saveUser(@RequestBody UserRegisterDto userDto){
+		UserRegisterDto userDtoServiceResponse = userService.saveUser(userDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userDtoServiceResponse);
 	}
 	
 	@GetMapping("/list")
 	public ResponseEntity<?> listUsers(){
-		List<UserDto> listUserDb = userService.listUsers();
+		List<UserRegisterDto> listUserDb = userService.listUsers();
 		
 		if(listUserDb.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -42,7 +42,7 @@ public class UserController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable Long id){
-		UserDto user = userService.getUserById(id);
+		UserRegisterDto user = userService.getUserById(id);
 		
 		if(user!=null) {
 			return ResponseEntity.ok(user);

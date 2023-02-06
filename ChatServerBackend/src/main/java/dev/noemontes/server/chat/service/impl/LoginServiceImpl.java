@@ -1,19 +1,14 @@
 package dev.noemontes.server.chat.service.impl;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.noemontes.server.chat.converter.UserConverter;
-import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.dto.LoginRequestDto;
+import dev.noemontes.server.chat.dto.UserLoginResponseDto;
+import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.repository.UserRepository;
 import dev.noemontes.server.chat.service.LoginService;
@@ -28,22 +23,12 @@ public class LoginServiceImpl implements LoginService{
 	private UserConverter userConverter;
 	
 	@Override
-	public UserDto login(UserDto userDto) {
-		UserEntity userEntity;
-		
-		try {
-			userEntity = userConverter.convertDtoToEntity(userDto);
-		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
-				| BadPaddingException | InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-			
-			return null;
-		}
-		List<UserEntity> userListFromDb = userRepository.findByEmailAndPassword(userEntity.getEmail(), userEntity.getPassword());
+	public UserLoginResponseDto login(LoginRequestDto userDto) {
+		List<UserEntity> userListFromDb = userRepository.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
 		
 		if(!userListFromDb.isEmpty() && userListFromDb.size()==1) {
 			UserEntity uniqueUserFromDb = userListFromDb.get(0);
-			return userConverter.convertEntityToDto(uniqueUserFromDb);
+			return userConverter.convertUserEntityToUserLoginResponse(uniqueUserFromDb);
 		}else {
 			//TODO: Usuario no encontrado o usuario duplicado
 			return null;

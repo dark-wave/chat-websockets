@@ -1,7 +1,8 @@
 package dev.noemontes.server.chat.service;
 
-import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.dto.LoginRequestDto;
+import dev.noemontes.server.chat.dto.UserLoginResponseDto;
 
 public interface LoginService {
-	public UserDto login(UserDto userDto);
+	public UserLoginResponseDto login(LoginRequestDto loginRequest);
 }

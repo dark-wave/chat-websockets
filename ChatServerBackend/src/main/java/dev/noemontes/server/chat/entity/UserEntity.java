@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -47,6 +50,17 @@ public class UserEntity {
 	@OneToMany(mappedBy = "userSender")
 	private List<MessageEntity> messageList;
 	
+	@ManyToMany
+	@JoinTable(name = "users_contacts", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
+	private List<UserEntity> contacts;
+	
+	/*
+	 @ManyToMany
+	    @JoinTable(name = "user_contacts",
+	            joinColumns = @JoinColumn(name = "user_id"),
+	            inverseJoinColumns = @JoinColumn(name = "contact_id"))
+	    private List<User> contacts;
+	   */
 	
 	@PrePersist
 	private void prePersist() {

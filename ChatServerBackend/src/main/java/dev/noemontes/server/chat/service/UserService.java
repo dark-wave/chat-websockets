@@ -2,10 +2,10 @@ package dev.noemontes.server.chat.service;
 
 import java.util.List;
 
-import dev.noemontes.server.chat.dto.UserDto;
+import dev.noemontes.server.chat.dto.UserRegisterDto;
 
 public interface UserService {
-	public UserDto saveUser(UserDto userDto);
-	public List<UserDto> listUsers();
-	public UserDto getUserById(Long id);
+	public UserRegisterDto saveUser(UserRegisterDto userDto);
+	public List<UserRegisterDto> listUsers();
+	public UserRegisterDto getUserById(Long id);
 }
