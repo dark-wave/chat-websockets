@@ -5,11 +5,14 @@ import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/models/user_login_response.dart';
 
 class LoginProvider extends ChangeNotifier{
+  static UserLoginResponse? _userLoginResponse;
+
+  UserLoginResponse get userLoginResponse => _userLoginResponse!;
   
   Future<bool> login(String username, String password) async{  
     final client = http.Client();
-    UserLoginResponse userLoginResponse;
-
+    
+    
     final loginData = {
       'email': username,
       'password': password
@@ -25,11 +28,12 @@ class LoginProvider extends ChangeNotifier{
     );
 
     if(loginServiceResponse.statusCode == 200){
-      userLoginResponse = userLoginResponseFromJson(loginServiceResponse.body);
-
+      if(loginServiceResponse.body.isNotEmpty){
+        _userLoginResponse = userLoginResponseFromJson(loginServiceResponse.body);  
+      }
+      
       return true;
     }else{
-      
       //TODO: Tratamiento de mensaje de error.
       return false;
     }

@@ -8,4 +8,5 @@ public interface UserService {
 	public UserRegisterDto saveUser(UserRegisterDto userDto);
 	public List<UserRegisterDto> listUsers();
 	public UserRegisterDto getUserById(Long id);
+	public List<UserRegisterDto> getUserContacts(String useruuid);
 }

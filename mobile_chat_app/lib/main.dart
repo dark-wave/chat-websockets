@@ -19,7 +19,7 @@ class ChatApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (BuildContext context) => UserProvider(context)),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
         ChangeNotifierProvider(create: (_) => SocketProvider())
         //ChangeNotifierProvider(create: (_) => ConnectivityProvider())

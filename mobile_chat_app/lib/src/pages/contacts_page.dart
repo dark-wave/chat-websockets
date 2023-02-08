@@ -15,7 +15,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void initState() {
     super.initState();
 
-    Provider.of<UserProvider>(context, listen: false).getUserList();
+    Provider.of<UserProvider>(context, listen: false).getContacts();
   }
 
   @override

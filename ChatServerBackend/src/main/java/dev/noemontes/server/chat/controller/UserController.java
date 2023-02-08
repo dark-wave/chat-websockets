@@ -50,4 +50,15 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping("/contacts/{uuid}")
+	public ResponseEntity<?> getUserContacts(@PathVariable("uuid") String useruuid){
+		List<UserRegisterDto> listUserDb = userService.getUserContacts(useruuid);
+		
+		if(listUserDb.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}else {
+			return ResponseEntity.ok(listUserDb);
+		}
+	}
 }

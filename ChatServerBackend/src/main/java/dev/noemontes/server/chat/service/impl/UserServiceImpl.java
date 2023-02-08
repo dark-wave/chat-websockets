@@ -39,6 +39,13 @@ public class UserServiceImpl implements UserService{
 		
 		return userConverter.convertEntityListToDtoList(listDbUsers);
 	}
+	
+	@Override
+	public List<UserRegisterDto> getUserContacts(String useruuid) {
+		List<UserEntity> listDbUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		
+		return userConverter.convertEntityListToDtoList(listDbUsers);
+	}
 
 	@Override
 	public UserRegisterDto getUserById(Long id) {

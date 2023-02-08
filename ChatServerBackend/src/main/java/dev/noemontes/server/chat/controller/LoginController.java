@@ -23,7 +23,7 @@ public class LoginController {
 		UserLoginResponseDto logedUser = loginService.login(loginDto);
 		
 		if(logedUser!=null) {	
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(logedUser);
 		}else {
 			return ResponseEntity.notFound().build();
 		}
