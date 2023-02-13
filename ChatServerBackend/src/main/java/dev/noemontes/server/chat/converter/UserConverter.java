@@ -3,7 +3,6 @@ package dev.noemontes.server.chat.converter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.catalina.Contained;
 import org.springframework.stereotype.Component;
 
 import dev.noemontes.server.chat.dto.UserLoginResponseDto;

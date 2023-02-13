@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,11 +34,12 @@ public class ChatController {
 	
 	
 	@MessageMapping("/sendMessage/{useruuid}")
-	@SendTo("/topic/message")
-	public MessageDto receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageDto message) {
+	//@SendToUser("/queue/specific-user")
+	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageDto message) {
 		System.out.println("Usuario: " + useruuid);
+		System.out.println("Mensaje a enviar: " + message.getMessage());
 		
-		return message;
+		messagingTemplate.convertAndSendToUser(useruuid, "/queue/specific-user", message);
 	}
 	
 	@SendTo("/topic/broadcast")

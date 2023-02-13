@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import dev.noemontes.server.chat.converter.UserConverter;
 import dev.noemontes.server.chat.dto.LoginRequestDto;
 import dev.noemontes.server.chat.dto.UserLoginResponseDto;
-import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.repository.UserRepository;
 import dev.noemontes.server.chat.service.LoginService;
@@ -30,7 +29,6 @@ public class LoginServiceImpl implements LoginService{
 			UserEntity uniqueUserFromDb = userListFromDb.get(0);
 			return userConverter.convertUserEntityToUserLoginResponse(uniqueUserFromDb);
 		}else {
-			//TODO: Usuario no encontrado o usuario duplicado
 			return null;
 		}
 	}

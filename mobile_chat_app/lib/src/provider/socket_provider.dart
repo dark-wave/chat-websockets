@@ -37,8 +37,12 @@ class SocketProvider with ChangeNotifier{
   }
 
    void subscribeQueue(String userUuid){
+    //'username': '2dac2e0c-11e4-4de4-b024-7b0700c178a9'
     _stompClient.subscribe(
-      destination: 'topic/message/$userUuid', 
+      destination: '/queue/specific-user', 
+      headers: {
+        'ack': 'auto'
+      },
       callback: (frame){
         Message _message = Message.fromJson(json.decode(frame.body!));
 
@@ -51,7 +55,7 @@ class SocketProvider with ChangeNotifier{
 
   void sendMessage(Message message){
     _stompClient.send(
-      destination: '/app/sendMessage/${message.uidReceiver}',
+      destination: '/app/sendMessage/2dac2e0c-11e4-4de4-b024-7b0700c178a9',
       body: json.encode(message.toJson())
     );
   }

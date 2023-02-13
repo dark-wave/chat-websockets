@@ -12,7 +12,6 @@ class LoginProvider extends ChangeNotifier{
   Future<bool> login(String username, String password) async{  
     final client = http.Client();
     
-    
     final loginData = {
       'email': username,
       'password': password
