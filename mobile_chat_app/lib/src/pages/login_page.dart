@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
+import 'package:mobile_chat_app/src/widgets/network_status_widget.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const NetworkStatusWidget(),
                 Expanded(child: Image.asset('assets/images/logo_chat_app_transparente.png')),
                 CustomInput(
                   icon: Icons.email, 
