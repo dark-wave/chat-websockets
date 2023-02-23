@@ -70,8 +70,13 @@ class _LoginPageState extends State<LoginPage> {
                               en el hilo principal usamos Future.microtask*/
                             Future.microtask(() => Navigator.of(context).pushReplacementNamed('contacts'));
                           }else{
-                            //Login incorrecto
-                            print('Login incorrecto');
+                            Future.delayed(Duration.zero, () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Error al iniciar sesión'),
+                                ),
+                              );
+                            });
                           }
                         }, 
                         label: const Text('Login')
