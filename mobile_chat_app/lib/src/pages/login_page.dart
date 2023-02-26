@@ -72,8 +72,9 @@ class _LoginPageState extends State<LoginPage> {
                           }else{
                             Future.delayed(Duration.zero, () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Error al iniciar sesión'),
+                                SnackBar(
+                                  backgroundColor: Colors.red.withOpacity(0.9),
+                                  content: const Center(child: Text('Error al iniciar sesión')),
                                 ),
                               );
                             });
