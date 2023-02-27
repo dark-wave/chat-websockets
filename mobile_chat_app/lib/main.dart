@@ -52,6 +52,14 @@ class ChatApp extends StatelessWidget {
                 fontWeight: FontWeight.bold
               ),
             )
+          ),
+          snackBarTheme: const SnackBarThemeData(
+            backgroundColor: Colors.deepPurpleAccent,            
+            contentTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold
+            )
           )
         ),
         initialRoute: 'login',

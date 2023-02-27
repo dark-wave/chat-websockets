@@ -42,7 +42,6 @@ dependencies:
   encrypt: ^5.0.1
   stomp_dart_client: ^0.4.4
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
