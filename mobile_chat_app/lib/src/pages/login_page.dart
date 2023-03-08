@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                        builder: (context, serverStatusProvider, child){
                         return ElevatedButton.icon(
                           icon: const Icon(Icons.login),
-                          onPressed: serverStatusProvider.isServerOnline ? _loginMethod : null , 
+                          onPressed: serverStatusProvider.isServerOnline ? () async => _loginMethod(context) : null , 
                           label: const Text('Login')
                         );
                        }, 
@@ -94,8 +94,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-  Future<void> _loginMethod() async{
-    final loginProvider = Provider.of<LoginProvider>(context);
+  Future<void> _loginMethod(BuildContext context) async{
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
     
