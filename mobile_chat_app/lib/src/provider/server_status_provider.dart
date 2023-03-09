@@ -3,16 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_chat_app/src/provider/network_status_provider.dart';
 
 class ServerStatusProvider extends ChangeNotifier{
+  final NetworkStatusProvider networkStatusProvider;
   bool _isServerOnline = true;
   late Timer _timer;
 
   bool get isServerOnline => _isServerOnline;
 
-  ServerStatusProvider(){
+  ServerStatusProvider(this.networkStatusProvider){
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) { 
-      checkServerStatus();
+      if(networkStatusProvider.isConnected){
+        checkServerStatus();
+      }
     });
   }
 
