@@ -37,13 +37,15 @@ class SocketProvider with ChangeNotifier{
   }
 
    void subscribeQueue(String userUuid){
+    print('Subscribiendo a la cola del usuario: $userUuid');
+
     //'username': '2dac2e0c-11e4-4de4-b024-7b0700c178a9'
     _stompClient.subscribe(
-      destination: '/queue/specific-user', 
-      headers: {
-        'ack': 'auto'
-      },
-      callback: (frame){
+      destination: 'user/queue/messages', 
+      headers: {'user-id': '2dac2e0c-11e4-4de4-b024-7b0700c178a9'},
+      callback: (StompFrame frame){
+        print('Mensaje recibido: ${frame.body}');
+
         Message _message = Message.fromJson(json.decode(frame.body!));
 
         _messageList.add(_message);
