@@ -36,13 +36,11 @@ class SocketProvider with ChangeNotifier{
     _stompClient.activate();
   }
 
-   void subscribeQueue(String userUuid){
-    print('Subscribiendo a la cola del usuario: $userUuid');
+   void _onConnect(StompFrame connectFrame){
+    print('Subscribiendo a la cola del usuario');
 
-    //'username': '2dac2e0c-11e4-4de4-b024-7b0700c178a9'
     _stompClient.subscribe(
-      destination: 'user/queue/messages', 
-      headers: {'user-id': '2dac2e0c-11e4-4de4-b024-7b0700c178a9'},
+      destination: '/user/2dac2e0c-11e4-4de4-b024-7b0700c178a9/queue/messages',
       callback: (StompFrame frame){
         print('Mensaje recibido: ${frame.body}');
 
@@ -66,7 +64,4 @@ class SocketProvider with ChangeNotifier{
     _stompClient.deactivate();
   }
 
-  void _onConnect(StompFrame frame){
-    print('Nos hemos conectado');
-  }
 }

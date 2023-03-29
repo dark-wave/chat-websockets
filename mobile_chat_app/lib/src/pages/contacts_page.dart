@@ -65,7 +65,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   onTap: () { 
                     SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                    socket.subscribeQueue(userList[i].uuid);
+                    //socket.subscribeQueue(userList[i].uuid);
                     
                     Navigator.pushNamed(context, 'chat', arguments: userList[i]);
                   }

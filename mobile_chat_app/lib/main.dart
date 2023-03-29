@@ -23,7 +23,7 @@ class ChatApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (BuildContext context) => UserProvider(context)),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
-            ChangeNotifierProvider(create: (_) => SocketProvider()),
+        ChangeNotifierProvider(create: (_) => SocketProvider()),
         ChangeNotifierProvider(create: (_) => NetworkStatusProvider()),
         ChangeNotifierProvider(create: (context) => ServerStatusProvider(Provider.of<NetworkStatusProvider>(context, listen: false)))
       ],
