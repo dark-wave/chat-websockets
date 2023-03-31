@@ -34,13 +34,11 @@ public class ChatController {
 	
 	
 	@MessageMapping("/sendMessage/{useruuid}")
-	//@SendToUser("/queue/messages")
 	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageDto message) {
 		System.out.println("Usuario que recibe el mensaje: " + useruuid);
 		System.out.println("Mensaje a enviar: " + message.getMessage());
 		
 		messagingTemplate.convertAndSendToUser(useruuid, "/queue/messages", message);
-		//return message;
 	}
 	
 	@MessageMapping("/message")
