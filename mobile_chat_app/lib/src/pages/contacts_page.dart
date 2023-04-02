@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
+import 'package:mobile_chat_app/src/widgets/add_contact_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -84,6 +85,13 @@ class _ContactsPageState extends State<ContactsPage> {
               );
             }
           },
+        )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => const AddContactDialog()
         )
       )
     );
