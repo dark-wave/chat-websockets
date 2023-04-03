@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:mobile_chat_app/src/widgets/add_contact_dialog.dart';
@@ -40,9 +41,9 @@ class _ContactsPageState extends State<ContactsPage> {
         ],
       ),
       body: SafeArea(
-        child: Consumer<UserProvider>(
+        child: Consumer<LoginProvider>(
           builder: (context, data, child){
-            var userList = data.userList;
+            var userList = data.userLoginResponse.contacts;
 
             if(userList.isNotEmpty){
               return ListView.separated(

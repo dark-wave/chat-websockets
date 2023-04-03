@@ -1,4 +1,4 @@
-package dev.noemontes.server.chat;
+package dev.noemontes.server.chat.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

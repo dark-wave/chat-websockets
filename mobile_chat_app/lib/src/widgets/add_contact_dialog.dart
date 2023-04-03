@@ -13,6 +13,9 @@ class _AddContactDialogState extends State<AddContactDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
       child: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -33,7 +36,7 @@ class _AddContactDialogState extends State<AddContactDialog> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancelar'),
+                  child: const Text('Cancelar', style:TextStyle(color: Colors.red)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),

@@ -13,8 +13,10 @@ class LoginProvider extends ChangeNotifier{
     final client = http.Client();
     
     final loginData = {
-      'email': username,
-      'password': password
+      /*'email': username,
+      'password': password*/
+      'email': 'noe.montes@gmail.com',
+      'password': 'password1'
     };
 
     final loginServiceResponse = await client.post(
