@@ -1,5 +1,7 @@
 package dev.noemontes.server.chat.dto;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +13,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MessageDto {
+public class MessageResponseDto {
 	private String uidSender;
 	private String uidReceiver;
 	private String message;
+	private Date creationDate;
 }
