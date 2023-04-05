@@ -102,8 +102,6 @@ class _LoginPageState extends State<LoginPage> {
     bool loginResponse = await loginProvider.login(_userNameController.text, _passwordController.text);
       
     if(loginResponse){
-      socket.connectStomp();
-    
       /*Las modificaciones sobre la interfaz se deben realizar en el hilo principal
         no en llamadas asíncronas. Para ejecutar la navegación a la nueva página
         en el hilo principal usamos Future.microtask*/

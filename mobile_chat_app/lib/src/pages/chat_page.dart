@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mobile_chat_app/src/models/message.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,12 +20,14 @@ class _ChatPageState extends State<ChatPage> {
   final FocusNode _focusNode = FocusNode();
 
   late SocketProvider socketProvider;
+  late LoginProvider loginProvider;
 
   @override
   void initState() {
     super.initState();
     
     socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
   }
 
   @override
@@ -35,6 +38,15 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 1,
+        leading: GestureDetector(
+          onTap: (){
+            SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+            socket.disconnectStomp();
+            
+            Navigator.pushReplacementNamed(context, 'contacts');
+          },
+          child: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black87)
+        ),
         title: Column(      
           children: [
             CircleAvatar(
@@ -134,7 +146,7 @@ class _ChatPageState extends State<ChatPage> {
     if(messageStr.isEmpty) return;
 
     Message message = Message(
-      uidSender: 'UuidSender', 
+      uidSender: loginProvider.userLoginResponse.uuid, 
       uidReceiver: user.uuid, 
       message: messageStr
     );

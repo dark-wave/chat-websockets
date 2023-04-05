@@ -6,6 +6,7 @@ import 'package:mobile_chat_app/src/models/message.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
+import 'package:http/http.dart' as http;
 
 enum ServerStatus{
   online,
@@ -16,20 +17,42 @@ enum ServerStatus{
 class SocketProvider with ChangeNotifier{
   late StompClient  _stompClient;
   List<Message> _messageList = [];
+  late String _userUuid;
 
   StompClient get stompClient => _stompClient;
 
   List<Message> get messageList => _messageList;
 
-  void connectStomp(){
+  void loadLastMessages(String uuidSernder, String uuidReceiver) async{
+    final client = http.Client();
+
+    final messageServiceResponse = await client.get(
+      Uri.parse('${Environment.apiUrl} ${Environment.mesagesEndPoint}/$uuidSernder/$uuidReceiver'),
+      headers: { 
+        'Content-Type':'application/json',
+        'Accept': 'application/json'
+      }
+    );
+
+    if(messageServiceResponse.statusCode == 200){
+      if(messageServiceResponse.body.isNotEmpty){
+        final List<dynamic> messageList = json.decode(messageServiceResponse.body);
+
+        _messageList = messageList.map((message) => Message.fromJson(message)).toList();
+
+        notifyListeners();
+      }
+    }
+  }
+
+  void connectStomp(String userUuid){
+    this._userUuid = userUuid;
     _stompClient = StompClient(
       config: StompConfig.SockJS(
         url: Environment.socketUrl,
         onConnect: _onConnect,
-        onWebSocketError: (dynamic error) => print(error),
-        onStompError: (StompFrame frame){
-          print(frame.body);
-        }
+        onWebSocketError: (dynamic error) => print(error), //TODO: tratamiento de error
+        onStompError: (StompFrame frame) => print(frame.body)//TODO: tratamiento de error
       )
     );
 
@@ -37,10 +60,8 @@ class SocketProvider with ChangeNotifier{
   }
 
    void _onConnect(StompFrame connectFrame){
-    print('Subscribiendo a la cola del usuario');
-
     _stompClient.subscribe(
-      destination: '/user/2dac2e0c-11e4-4de4-b024-7b0700c178a9/queue/messages',
+      destination: '/user/$_userUuid/queue/messages',
       callback: (StompFrame frame){
         print('Mensaje recibido: ${frame.body}');
 
@@ -55,13 +76,16 @@ class SocketProvider with ChangeNotifier{
 
   void sendMessage(Message message){
     _stompClient.send(
-      destination: '/app/sendMessage/2dac2e0c-11e4-4de4-b024-7b0700c178a9',
+      destination: '/app/sendMessage/${message.uidReceiver}',
       body: json.encode(message.toJson())
     );
+  }
+
+  void clearMessageList(){
+    _messageList = [];
   }
 
   void disconnectStomp(){
     _stompClient.deactivate();
   }
-
 }

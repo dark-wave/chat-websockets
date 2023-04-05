@@ -33,4 +33,16 @@ public class MessageServiceImpl implements MessageService{
 		
 		return messageConverter.convertModelListToResponseDtoList(messageDbList);
 	}
+	
+	@Override
+	public List<MessageResponseDto> getLastMessages(String userUuidSender, String userUuidReceiver) {
+		List<MessageModel> messageList = messageRepository.findFirst10ByUserUuidSenderAndUserUuidReveiverOrderByCreationDateDesc(userUuidSender, userUuidReceiver);
+		
+		return messageConverter.convertModelListToResponseDtoList(messageList);
+	}
+
+	@Override
+	public void deleteAllMessages() {
+		messageRepository.deleteAll();
+	}
 }

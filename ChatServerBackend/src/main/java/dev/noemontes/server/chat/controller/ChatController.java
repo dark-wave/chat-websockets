@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.noemontes.server.chat.dto.MessageRequestDto;
+import dev.noemontes.server.chat.service.MessageService;
 
 @RestController
 public class ChatController {
@@ -25,6 +26,9 @@ public class ChatController {
 	
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
+	
+	@Autowired
+	private MessageService messageService;
 	
 	@PostMapping("/send")
 	public ResponseEntity<?> sendMessage(@RequestBody MessageRequestDto message){
@@ -35,8 +39,12 @@ public class ChatController {
 	
 	@MessageMapping("/sendMessage/{useruuid}")
 	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageRequestDto message) {
-		System.out.println("Usuario que recibe el mensaje: " + useruuid);
-		System.out.println("Mensaje a enviar: " + message.getMessage());
+		MessageRequestDto messageRequestDto = new MessageRequestDto();
+		messageRequestDto.setUidSender(message.getUidSender());
+		messageRequestDto.setUidReceiver(useruuid);
+		messageRequestDto.setMessage(message.getMessage());
+		
+		messageService.saveMessage(messageRequestDto);
 		
 		messagingTemplate.convertAndSendToUser(useruuid, "/queue/messages", message);
 	}
@@ -44,10 +52,5 @@ public class ChatController {
 	@MessageMapping("/message")
 	public void message(MessageRequestDto message) {
 		messagingTemplate.convertAndSendToUser(message.getUidReceiver(), "/msg", message.getMessage());
-	}
-	
-	@SendTo("/topic/broadcast")
-	public MessageRequestDto broadcastMessage(@Payload MessageRequestDto message) {
-		return message;
 	}
 }

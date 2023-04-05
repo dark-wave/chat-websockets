@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/models/user.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
@@ -31,9 +32,6 @@ class _ContactsPageState extends State<ContactsPage> {
             child: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async{
-                SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                socket.disconnectStomp();
-
                 Navigator.pushReplacementNamed(context, 'login');
               },
             ),
@@ -67,22 +65,30 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   onTap: () { 
                     SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                    //socket.subscribeQueue(userList[i].uuid);
+                    LoginProvider login = Provider.of<LoginProvider>(context, listen: false);
+
+                    User user = User(
+                      uuid: userList[i].uuid,
+                      name: userList[i].name,
+                      online: true
+                    );
+
+                    //Limpiamos los mensajes anteriores
+                    socket.clearMessageList();
+
+                    //Cargamos el historico de mensjes del usuario
+                    socket.loadLastMessages(login.userLoginResponse.uuid, user.uuid);
                     
-                    Navigator.pushNamed(context, 'chat', arguments: userList[i]);
+                    //Nos conectamos al stomp
+                    socket.connectStomp(user.uuid);
+                    
+                    Navigator.pushReplacementNamed(context, 'chat', arguments: user);
                   }
                 ),
               );              
             }else{
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 20),
-                    Text('Cargando usuarios!!')
-                  ],
-                ),
+              return const Center(
+                child: Text('No tienes contactos agregados')
               );
             }
           },
