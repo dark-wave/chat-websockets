@@ -44,7 +44,8 @@ class _LoginPageState extends State<LoginPage> {
                 CustomInput(
                   icon: Icons.email, 
                   hintText: 'Email', 
-                  textController: _userNameController
+                  textController: _userNameController,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 CustomInput(
                   icon: Icons.password, 

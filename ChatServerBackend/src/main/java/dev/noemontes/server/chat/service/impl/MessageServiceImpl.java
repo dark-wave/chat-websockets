@@ -1,5 +1,6 @@
 package dev.noemontes.server.chat.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class MessageServiceImpl implements MessageService{
 	
 	@Override
 	public List<MessageResponseDto> getLastMessages(String userUuidSender, String userUuidReceiver) {
-		List<MessageModel> messageList = messageRepository.findFirst10ByUserUuidSenderAndUserUuidReveiverOrderByCreationDateDesc(userUuidSender, userUuidReceiver);
+		List<MessageModel> messageList = messageRepository.findFirst10ByUserUuidSenderInOrUserUuidReveiverInOrderByCreationDateDesc(Arrays.asList(userUuidSender, userUuidReceiver), Arrays.asList(userUuidSender, userUuidReceiver));
 		
 		return messageConverter.convertModelListToResponseDtoList(messageList);
 	}

@@ -80,7 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     socket.loadLastMessages(login.userLoginResponse.uuid, user.uuid);
                     
                     //Nos conectamos al stomp
-                    socket.connectStomp(user.uuid);
+                    socket.connectStomp(login.userLoginResponse.uuid);
                     
                     Navigator.pushReplacementNamed(context, 'chat', arguments: user);
                   }
@@ -94,13 +94,13 @@ class _ContactsPageState extends State<ContactsPage> {
           },
         )
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => showDialog(
           context: context,
           builder: (context) => const AddContactDialog()
         )
-      )
+      )*/
     );
   }
 }

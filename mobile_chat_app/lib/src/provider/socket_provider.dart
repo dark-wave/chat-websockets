@@ -23,11 +23,11 @@ class SocketProvider with ChangeNotifier{
 
   List<Message> get messageList => _messageList;
 
-  void loadLastMessages(String uuidSernder, String uuidReceiver) async{
+  void loadLastMessages(String uuidSender, String uuidReceiver) async{
     final client = http.Client();
 
     final messageServiceResponse = await client.get(
-      Uri.parse('${Environment.apiUrl} ${Environment.mesagesEndPoint}/$uuidSernder/$uuidReceiver'),
+      Uri.parse('${Environment.apiUrl} ${Environment.mesagesEndPoint}/$uuidSender/$uuidReceiver'),
       headers: { 
         'Content-Type':'application/json',
         'Accept': 'application/json'
@@ -46,7 +46,7 @@ class SocketProvider with ChangeNotifier{
   }
 
   void connectStomp(String userUuid){
-    this._userUuid = userUuid;
+    _userUuid = userUuid;
     _stompClient = StompClient(
       config: StompConfig.SockJS(
         url: Environment.socketUrl,
@@ -60,14 +60,14 @@ class SocketProvider with ChangeNotifier{
   }
 
    void _onConnect(StompFrame connectFrame){
+    print('Nos suscribimos al usuario: $_userUuid');
+
     _stompClient.subscribe(
       destination: '/user/$_userUuid/queue/messages',
       callback: (StompFrame frame){
-        print('Mensaje recibido: ${frame.body}');
+        Message message = Message.fromJson(json.decode(frame.body!));
 
-        Message _message = Message.fromJson(json.decode(frame.body!));
-
-        _messageList.add(_message);
+        _messageList.add(message);
 
         notifyListeners();
       }
@@ -75,10 +75,14 @@ class SocketProvider with ChangeNotifier{
   }
 
   void sendMessage(Message message){
+    _messageList.add(message);
+
     _stompClient.send(
       destination: '/app/sendMessage/${message.uidReceiver}',
       body: json.encode(message.toJson())
     );
+
+    notifyListeners();
   }
 
   void clearMessageList(){

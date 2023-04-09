@@ -29,14 +29,7 @@ public class ChatController {
 	
 	@Autowired
 	private MessageService messageService;
-	
-	@PostMapping("/send")
-	public ResponseEntity<?> sendMessage(@RequestBody MessageRequestDto message){
-		messagingTemplate.convertAndSend("/topic/message", message);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	
+
 	@MessageMapping("/sendMessage/{useruuid}")
 	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageRequestDto message) {
 		MessageRequestDto messageRequestDto = new MessageRequestDto();
@@ -48,9 +41,10 @@ public class ChatController {
 		
 		messagingTemplate.convertAndSendToUser(useruuid, "/queue/messages", message);
 	}
-	
-	@MessageMapping("/message")
-	public void message(MessageRequestDto message) {
-		messagingTemplate.convertAndSendToUser(message.getUidReceiver(), "/msg", message.getMessage());
+
+	@PostMapping("/newMessage")
+	public ResponseEntity<?> sendMessage(@RequestBody MessageRequestDto message) {
+		messagingTemplate.convertAndSendToUser(message.getUidReceiver(), "/queue/messages", message);
+		return ResponseEntity.ok().build();
 	}
 }

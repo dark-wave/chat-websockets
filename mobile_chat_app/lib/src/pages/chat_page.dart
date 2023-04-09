@@ -4,6 +4,7 @@ import 'package:mobile_chat_app/src/models/message.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
+import 'package:mobile_chat_app/src/widgets/glove_message.dart';
 import 'package:provider/provider.dart';
 
 
@@ -40,22 +41,19 @@ class _ChatPageState extends State<ChatPage> {
         elevation: 1,
         leading: GestureDetector(
           onTap: (){
-            SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-            socket.disconnectStomp();
-            
             Navigator.pushReplacementNamed(context, 'contacts');
           },
-          child: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black87)
+          child: const Icon(Icons.arrow_back_ios, size: 25, color: Colors.white)
         ),
         title: Column(      
           children: [
             CircleAvatar(
               backgroundColor: Colors.blue[100],
               maxRadius: 14,
-              child: Text(user!.name.substring(0,2), style: const TextStyle(fontSize: 12)),
+              child: Text(user!.name.substring(0,2), style: const TextStyle(fontSize: 15)),
             ),
             const SizedBox(height: 3),
-            Text(user.name, style: const TextStyle(color: Colors.black87, fontSize: 12)),
+            Text(user.name, style: const TextStyle(color: Colors.white, fontSize: 15)),
           ],
         ),
       ),
@@ -81,21 +79,8 @@ class _ChatPageState extends State<ChatPage> {
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemCount: messageList.length,
-                        reverse: false,
                         itemBuilder: (context, index){
-                          return Container(
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.only(
-                              right: 5,
-                              bottom: 5,
-                              left: 50
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff4D9EF6),
-                              borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Text(messageList[index].message, style: const TextStyle(color: Colors.white))
-                          );
+                          return GloveMessage(message: messageList[index].message, isMe: messageList[index].uidSender == loginProvider.userLoginResponse.uuid);
                         },
                       ),
                     ),
@@ -161,6 +146,7 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _textController.dispose();
     _scrollController.dispose();
+    socketProvider.disconnectStomp();
 
     super.dispose();
   }
