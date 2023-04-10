@@ -60,8 +60,6 @@ class SocketProvider with ChangeNotifier{
   }
 
    void _onConnect(StompFrame connectFrame){
-    print('Nos suscribimos al usuario: $_userUuid');
-
     _stompClient.subscribe(
       destination: '/user/$_userUuid/queue/messages',
       callback: (StompFrame frame){

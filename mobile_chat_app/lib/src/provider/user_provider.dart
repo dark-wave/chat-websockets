@@ -82,4 +82,25 @@ class UserProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
+
+  Future contactRequest(String contactEmail) async{
+    final client = http.Client();
+    String? useruuid = loginProvider?.userLoginResponse.uuid;
+
+    final contactRequestData = {
+      'userUuid': useruuid,
+      'contactEmail': contactEmail
+    };
+
+    final clientRespose = await client.post(
+      Uri.parse('${Environment.apiUrl}${Environment.contactRequestEndPoint}'),
+      headers: { 
+        'Content-Type':'application/json',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(contactRequestData)
+    );
+
+    return clientRespose;
+  }
 }

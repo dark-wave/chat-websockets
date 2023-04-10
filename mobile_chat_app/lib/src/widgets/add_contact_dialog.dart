@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddContactDialog extends StatefulWidget {
   const AddContactDialog({super.key});
@@ -39,7 +41,7 @@ class _AddContactDialogState extends State<AddContactDialog> {
                   child: const Text('Cancelar', style:TextStyle(color: Colors.red)),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => callRequestContactService(context),
                   child: const Text('Agregar'),
                 ),
               ],
@@ -48,5 +50,14 @@ class _AddContactDialogState extends State<AddContactDialog> {
         ),
       )
     );
+  }
+  
+  void callRequestContactService(BuildContext context) {
+    final String email = _emailController.text;
+    if(email.isEmpty) return;
+
+    Provider.of<UserProvider>(context, listen: false).contactRequest(email);
+    
+    Navigator.pop(context, email);
   }
 }

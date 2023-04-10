@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/provider/event_listener_provider.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
@@ -19,6 +20,16 @@ class _ContactsPageState extends State<ContactsPage> {
     super.initState();
 
     Provider.of<UserProvider>(context, listen: false).getContacts();
+    Provider.of<EventListenerProvider>(context, listen: false).connectEventStomp(
+      Provider.of<LoginProvider>(context, listen: false).userLoginResponse.uuid
+    );
+  }
+
+  @override
+  void dispose() {
+    Provider.of<EventListenerProvider>(context, listen: false).disconnectEventStomp();
+    
+    super.dispose();
   }
 
   @override
@@ -94,13 +105,13 @@ class _ContactsPageState extends State<ContactsPage> {
           },
         )
       ),
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => showDialog(
           context: context,
           builder: (context) => const AddContactDialog()
         )
-      )*/
+      )
     );
   }
 }
