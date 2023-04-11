@@ -27,7 +27,7 @@ class EventListenerProvider with ChangeNotifier {
     _stompClient.subscribe(
       destination: '/user/$_userUuid/events/event',
       callback: (StompFrame frame) {
-        print(frame.body);
+        
       }
     );
   }

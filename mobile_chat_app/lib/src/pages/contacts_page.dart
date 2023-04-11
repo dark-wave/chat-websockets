@@ -96,7 +96,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     Navigator.pushReplacementNamed(context, 'chat', arguments: user);
                   }
                 ),
-              );              
+              );
             }else{
               return const Center(
                 child: Text('No tienes contactos agregados')
