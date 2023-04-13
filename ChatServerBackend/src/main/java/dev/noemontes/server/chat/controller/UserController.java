@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.noemontes.server.chat.dto.ContactRequestDto;
-import dev.noemontes.server.chat.dto.EventResponseDto;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.service.UserService;
-import dev.noemontes.server.chat.utils.EventType;
 
 @RestController
 @RequestMapping("/user")
@@ -76,18 +74,33 @@ public class UserController {
 
 	@PostMapping("/contacts/request")
 	public ResponseEntity<?> contactRequest(@RequestBody ContactRequestDto contactRequestDto) {
-		Optional<UserEntity> contactUser = userService.getUserByEmail(contactRequestDto.getContactEmail());
-		EventResponseDto requestContactEvent = new EventResponseDto();
-		
-		requestContactEvent.setCodEvent(EventType.contactRequest.codEvento);
-		requestContactEvent.setDescEvent(EventType.contactRequest.descEvento);
-		requestContactEvent.setMsgRequestEvent("El usuario: blabla quiere contactar contigo");
+		Optional<UserEntity> contactUser = userService.getUserByEmail(contactRequestDto.getRequestUserEmail());
 		
 		if(contactUser.isPresent()) {
-			messagingTemplate.convertAndSendToUser(contactRequestDto.getUserUuid(), "/events/event", requestContactEvent);
+			UserEntity dbContactUser = contactUser.get();
+			
+			contactRequestDto.setResponseUserUuid(dbContactUser.getUuid());
+			contactRequestDto.setResponseUserName(dbContactUser.getName());
+			contactRequestDto.setResponseUserEmail(dbContactUser.getEmail());
+			
+			messagingTemplate.convertAndSendToUser(contactRequestDto.getResponseUserUuid(), "/events/event", contactRequestDto);
+			
 			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@PostMapping("/contact/response")
+	public ResponseEntity<?> contactResponse(@RequestBody ContactRequestDto contactRequestDto){
+		// Comprobamos que el usuario que ha iniciado la petición no ha eliminado su cuenta entre la peticion y la respuesta
+		Optional<UserEntity> requestContactUser = userService.getUserByUuid(contactRequestDto.getRequestUserUuid());
+		
+		if(requestContactUser.isPresent()) {
+			UserEntity userRequestDb = requestContactUser.get();
+			
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 }

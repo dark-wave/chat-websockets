@@ -10,6 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ContactRequestDto {
-	private String userUuid;
-    private String contactEmail;
+	private String requestUserUuid;
+	private String requestUserName;
+	private String requestUserEmail;
+	private String responseUserUuid;
+	private String responseUserName;
+	private String responseUserEmail;
+	private Boolean contactAccepted;
 }

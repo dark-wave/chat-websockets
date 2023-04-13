@@ -12,4 +12,5 @@ public interface UserService {
 	public UserRegisterDto getUserById(Long id);
 	public List<UserRegisterDto> getUserContacts(String useruuid);
 	public Optional<UserEntity> getUserByEmail(String email);
+	public Optional<UserEntity> getUserByUuid(String uuid);
 }
