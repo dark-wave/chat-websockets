@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService{
 		
 		return userConverter.convertEntityToDto(userEntityDbResponse);
 	}
+	
+	@Override
+	public UserRegisterDto saveUser(UserEntity userEntity) {
+		UserEntity userEntityDbResponse = userRepository.save(userEntity);
+		return userConverter.convertEntityToDto(userEntityDbResponse);
+	}
 
 	@Override
 	public List<UserRegisterDto> listUsers() {

@@ -6,20 +6,28 @@ String contactRequestToJson(ContactRequest data) => json.encode(data.toJson());
 
 class ContactRequest {
     ContactRequest({
-        required this.userUuid,
-        required this.contactEmail,
+        required this.requestUserUuid,
+        required this.requestUserName,
+        required this.requestUserEmail,
+        required this.responseUserEmail,
     });
 
-    String userUuid;
-    String contactEmail;
+    String requestUserUuid;
+    String requestUserName;
+    String requestUserEmail;
+    String responseUserEmail;
 
     factory ContactRequest.fromJson(Map<String, dynamic> json) => ContactRequest(
-        userUuid: json["userUuid"],
-        contactEmail: json["contactEmail"],
+        requestUserUuid: json["requestUserUuid"],
+        requestUserName: json["requestUserName"],
+        requestUserEmail: json["requestUserEmail"],
+        responseUserEmail: json["responseUserEmail"],
     );
 
     Map<String, dynamic> toJson() => {
-        "userUuid": userUuid,
-        "contactEmail": contactEmail,
+        "requestUserUuid": requestUserUuid,
+        "requestUserName": requestUserName,
+        "requestUserEmail": requestUserEmail,
+        "responseUserEmail": responseUserEmail,
     };
 }

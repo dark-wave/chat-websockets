@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ContactRequestDto {
-	private String requestUserUuid;
-	private String requestUserName;
-	private String requestUserEmail;
-	private String responseUserEmail;
+public class ContactResponseDto {
+	private ContactRequestDto contactRequest;
+	
+	private String userUuidResponse;
+	private Boolean contactAccepted;
 }

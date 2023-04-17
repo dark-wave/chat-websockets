@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.noemontes.server.chat.dto.ContactRequestDto;
+import dev.noemontes.server.chat.dto.ContactResponseDto;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.service.UserService;
@@ -78,12 +79,9 @@ public class UserController {
 		
 		if(contactUser.isPresent()) {
 			UserEntity dbContactUser = contactUser.get();
-			
-			contactRequestDto.setResponseUserUuid(dbContactUser.getUuid());
-			contactRequestDto.setResponseUserName(dbContactUser.getName());
 			contactRequestDto.setResponseUserEmail(dbContactUser.getEmail());
 			
-			messagingTemplate.convertAndSendToUser(contactRequestDto.getResponseUserUuid(), "/events/event", contactRequestDto);
+			messagingTemplate.convertAndSendToUser(dbContactUser.getUuid(), "/events/event", contactRequestDto);
 			
 			return ResponseEntity.ok().build();
 		}else {
@@ -92,13 +90,27 @@ public class UserController {
 	}
 	
 	@PostMapping("/contact/response")
-	public ResponseEntity<?> contactResponse(@RequestBody ContactRequestDto contactRequestDto){
+	public ResponseEntity<?> contactResponse(@RequestBody ContactResponseDto contactResponseDto){
 		// Comprobamos que el usuario que ha iniciado la petición no ha eliminado su cuenta entre la peticion y la respuesta
-		Optional<UserEntity> requestContactUser = userService.getUserByUuid(contactRequestDto.getRequestUserUuid());
+		Optional<UserEntity> requestContactUser = userService.getUserByUuid(contactResponseDto.getContactRequest().getRequestUserUuid());
 		
 		if(requestContactUser.isPresent()) {
 			UserEntity userRequestDb = requestContactUser.get();
 			
+			if(contactResponseDto.getContactAccepted()) {
+				Optional<UserEntity> opContactUserDb = userService.getUserByUuid(contactResponseDto.getUserUuidResponse());
+				//Si el contacto acepta generamos la relacción
+				if(opContactUserDb.isPresent()) {
+					UserEntity contactUserDb = opContactUserDb.get();
+					
+					//Añadimos el contacto a la lista de contados del usuario que inició la petidicón y lo guardamos en base de datos
+					userRequestDb.getContacts().add(contactUserDb);
+					
+					UserRegisterDto userDtoServiceResponse = userService.saveUser(userRequestDb);
+					
+					return ResponseEntity.status(HttpStatus.OK).body(userDtoServiceResponse);
+				}
+			}
 		}
 		
 		return ResponseEntity.notFound().build();

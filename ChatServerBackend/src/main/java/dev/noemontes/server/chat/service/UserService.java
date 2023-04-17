@@ -8,6 +8,7 @@ import dev.noemontes.server.chat.entity.UserEntity;
 
 public interface UserService {
 	public UserRegisterDto saveUser(UserRegisterDto userDto);
+	public UserRegisterDto saveUser(UserEntity userEntity);
 	public List<UserRegisterDto> listUsers();
 	public UserRegisterDto getUserById(Long id);
 	public List<UserRegisterDto> getUserContacts(String useruuid);
