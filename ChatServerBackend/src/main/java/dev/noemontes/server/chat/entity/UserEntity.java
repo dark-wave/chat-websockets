@@ -47,20 +47,9 @@ public class UserEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	
-	@OneToMany(mappedBy = "userSender")
-	private List<MessageEntity> messageList;
-	
 	@ManyToMany
 	@JoinTable(name = "users_contacts", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "contact_id"))
 	private List<UserEntity> contacts;
-	
-	/*
-	 @ManyToMany
-	    @JoinTable(name = "user_contacts",
-	            joinColumns = @JoinColumn(name = "user_id"),
-	            inverseJoinColumns = @JoinColumn(name = "contact_id"))
-	    private List<User> contacts;
-	   */
 	
 	@PrePersist
 	private void prePersist() {

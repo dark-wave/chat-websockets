@@ -27,8 +27,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void dispose() {
-    Provider.of<EventListenerProvider>(context, listen: false).disconnectEventStomp();
-    
     super.dispose();
   }
 
