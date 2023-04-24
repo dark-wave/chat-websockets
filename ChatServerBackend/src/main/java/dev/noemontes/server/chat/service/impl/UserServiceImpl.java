@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import dev.noemontes.server.chat.converter.UserConverter;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
+import dev.noemontes.server.chat.model.UserModel;
+import dev.noemontes.server.chat.repository.UserMongoRepository;
 import dev.noemontes.server.chat.repository.UserRepository;
 import dev.noemontes.server.chat.service.UserService;
 
@@ -21,16 +23,19 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	@Autowired
+	private UserMongoRepository userMongoRepository;
+	
+	@Autowired
 	private UserConverter userConverter;
 
 	@Override
 	public UserRegisterDto saveUser(UserRegisterDto userDto) {
-		UserEntity userEntity;
-		userEntity = userConverter.convertDtoToEntity(userDto);
+		UserModel userModel;
+		userModel = userConverter.convertDtoToModel(userDto);
 		
-		UserEntity userEntityDbResponse = userRepository.save(userEntity);
+		UserModel userDbModel = userMongoRepository.save(userModel);
 		
-		return userConverter.convertEntityToDto(userEntityDbResponse);
+		return userConverter.convertModelToDto(userDbModel);
 	}
 	
 	@Override
@@ -41,9 +46,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserRegisterDto> listUsers() {
-		List<UserEntity> listDbUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		List<UserModel> listDbUsers = userMongoRepository.findAll();
 		
-		return userConverter.convertEntityListToDtoList(listDbUsers);
+		return userConverter.convertModelListToDtoList(listDbUsers);
 	}
 	
 	@Override
@@ -54,12 +59,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserRegisterDto getUserById(Long id) {
-		Optional<UserEntity> opUser = userRepository.findById(id);
+	public UserRegisterDto getUserById(String id) {
+		Optional<UserModel> opUser = userMongoRepository.findById(id);
 		UserRegisterDto userDto = null;
 		
 		if(opUser.isPresent()) {
-			userDto = userConverter.convertEntityToDto(opUser.get());
+			userDto = userConverter.convertModelToDto(opUser.get());
 			return userDto;
 		}else {
 			return null;
@@ -74,5 +79,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Optional<UserEntity> getUserByUuid(String uuid) {
 		return userRepository.findByUuid(uuid);
+	}
+	
+	@Override
+	public void deleteAllUsers() {
+		userMongoRepository.deleteAll();
 	}
 }

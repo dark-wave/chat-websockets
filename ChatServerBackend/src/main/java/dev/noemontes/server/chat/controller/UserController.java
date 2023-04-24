@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,13 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userDtoServiceResponse);
 	}
 	
+	@DeleteMapping
+	public ResponseEntity<?> deleteAllUsers(){
+		userService.deleteAllUsers();
+		
+		return ResponseEntity.noContent().build();
+	}
+	
 	@GetMapping("/list")
 	public ResponseEntity<?> listUsers(){
 		List<UserRegisterDto> listUserDb = userService.listUsers();
@@ -52,7 +60,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable Long id){
+	public ResponseEntity<?> getUserById(@PathVariable String id){
 		UserRegisterDto user = userService.getUserById(id);
 		
 		if(user!=null) {

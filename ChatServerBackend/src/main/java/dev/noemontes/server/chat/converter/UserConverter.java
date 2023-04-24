@@ -8,9 +8,60 @@ import org.springframework.stereotype.Component;
 import dev.noemontes.server.chat.dto.UserLoginResponseDto;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
+import dev.noemontes.server.chat.model.UserModel;
 
 @Component
 public class UserConverter {
+	
+	public UserModel convertDtoToModel(UserRegisterDto userDto) {
+		UserModel userModel = new UserModel();
+		
+		userModel.setUuid(userDto.getUuid());
+		userModel.setName(userDto.getEmail());
+		userModel.setLastName(userDto.getLastName());
+		userModel.setEmail(userDto.getEmail());
+		userModel.setPassword(userDto.getPassword());
+		userModel.setConnected(userDto.getConnected());
+		
+		return userModel;
+	}
+	
+	public UserRegisterDto convertModelToDto(UserModel userModel) {
+		UserRegisterDto userDto = new UserRegisterDto();
+		
+		userDto.setUuid(userModel.getUuid());
+		userDto.setName(userModel.getName());
+		userDto.setLastName(userModel.getLastName());
+		userDto.setEmail(userModel.getEmail());
+		userDto.setPassword(userModel.getPassword());
+		userDto.setConnected(userModel.getConnected());
+		userDto.setCreatedAt(userModel.getCreatedAt());
+		
+		return userDto;
+	}
+	
+	
+	public List<UserRegisterDto> convertModelListToDtoList(List<UserModel> userModelList){
+		List<UserRegisterDto> userDtoList = new ArrayList<UserRegisterDto>();
+		
+		for (UserModel userModel : userModelList) {
+			UserRegisterDto userDto = new UserRegisterDto();
+			userDto.setUuid(userModel.getUuid());
+			userDto.setName(userModel.getName());
+			userDto.setLastName(userModel.getLastName());
+			userDto.setEmail(userModel.getEmail());
+			userDto.setPassword(userModel.getPassword());
+			userDto.setConnected(userModel.getConnected());
+			
+			userDtoList.add(userDto);
+		}
+		
+		return userDtoList;
+	}
+	
+	
+	
+	
 	public UserRegisterDto convertEntityToDto(UserEntity userEntity) {
 		UserRegisterDto userDto = new UserRegisterDto();
 		
