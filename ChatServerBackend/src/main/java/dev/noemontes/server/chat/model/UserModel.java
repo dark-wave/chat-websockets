@@ -1,8 +1,8 @@
 package dev.noemontes.server.chat.model;
 
 import java.util.Date;
+import java.util.List;
 
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -25,6 +25,8 @@ public class UserModel {
     private String password;
     
     private Boolean connected;
+    
+    private List<UserModel> contacts;
 
     @CreatedDate
     private Date createdAt;

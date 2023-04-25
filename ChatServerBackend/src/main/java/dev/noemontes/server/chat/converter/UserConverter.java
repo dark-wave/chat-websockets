@@ -37,6 +37,16 @@ public class UserConverter {
 		userDto.setConnected(userModel.getConnected());
 		userDto.setCreatedAt(userModel.getCreatedAt());
 		
+		for(UserModel contactModel : userModel.getContacts()) {
+			UserRegisterDto contactDto = new UserRegisterDto();
+			contactDto.setName(contactModel.getName());
+			contactDto.setLastName(contactModel.getLastName());
+			contactDto.setEmail(contactModel.getEmail());
+			contactDto.setConnected(contactModel.getConnected());
+			
+			userDto.addContact(contactDto);
+		}
+		
 		return userDto;
 	}
 	
