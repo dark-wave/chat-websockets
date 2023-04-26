@@ -43,6 +43,25 @@ public class UserServiceImpl implements UserService{
 		UserEntity userEntityDbResponse = userRepository.save(userEntity);
 		return userConverter.convertEntityToDto(userEntityDbResponse);
 	}
+	
+	@Override
+	public UserRegisterDto addContactToUser(String userId, String contactId) {
+		//Comprobamos que existen ambos usuarios
+		Optional<UserModel> opUserModel = userMongoRepository.findByUuid(userId);
+		Optional<UserModel> opContactModel = userMongoRepository.findByUuid(contactId);
+		
+		if(!opUserModel.isPresent() || !opContactModel.isPresent()) { // Uno de los dos o lo dos no existen
+			return null;
+		}
+		
+		UserModel userModel = opUserModel.get();
+		UserModel contactModel = opContactModel.get();
+		
+		userModel.getContacts().add(contactModel);
+		userMongoRepository.save(userModel);
+		
+		return userConverter.convertModelToDto(userModel);
+	}
 
 	@Override
 	public List<UserRegisterDto> listUsers() {

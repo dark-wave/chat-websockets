@@ -20,7 +20,7 @@ public class UserModel {
     private String name;
     private String lastName;
 
-    @Indexed(unique = true)
+    @Indexed(unique = true, sparse = true)
     private String email;
     private String password;
     
