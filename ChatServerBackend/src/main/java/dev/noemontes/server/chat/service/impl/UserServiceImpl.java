@@ -50,14 +50,19 @@ public class UserServiceImpl implements UserService{
 		Optional<UserModel> opUserModel = userMongoRepository.findByUuid(userId);
 		Optional<UserModel> opContactModel = userMongoRepository.findByUuid(contactId);
 		
-		if(!opUserModel.isPresent() || !opContactModel.isPresent()) { // Uno de los dos o lo dos no existen
+		if(!opUserModel.isPresent() || !opContactModel.isPresent()) {
 			return null;
 		}
 		
 		UserModel userModel = opUserModel.get();
 		UserModel contactModel = opContactModel.get();
 		
-		userModel.getContacts().add(contactModel);
+		//Comprobamos si ya existe el usuario como contacto
+		if(userModel.existsContact(contactModel.getUuid())) {
+			return userConverter.convertModelToDto(userModel);
+		}
+		
+		userModel.addContact(contactModel);
 		userMongoRepository.save(userModel);
 		
 		return userConverter.convertModelToDto(userModel);

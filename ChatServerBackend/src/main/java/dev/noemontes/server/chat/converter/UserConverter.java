@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import dev.noemontes.server.chat.dto.ContactRequestDto;
 import dev.noemontes.server.chat.dto.UserLoginResponseDto;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
@@ -37,14 +38,17 @@ public class UserConverter {
 		userDto.setConnected(userModel.getConnected());
 		userDto.setCreatedAt(userModel.getCreatedAt());
 		
-		for(UserModel contactModel : userModel.getContacts()) {
-			UserRegisterDto contactDto = new UserRegisterDto();
-			contactDto.setName(contactModel.getName());
-			contactDto.setLastName(contactModel.getLastName());
-			contactDto.setEmail(contactModel.getEmail());
-			contactDto.setConnected(contactModel.getConnected());
-			
-			userDto.addContact(contactDto);
+		if(userModel.getContacts()!=null && userModel.getContacts().size() > 0) {
+			for(UserModel contactModel : userModel.getContacts()) {
+				UserRegisterDto contactDto = new UserRegisterDto();
+				contactDto.setUuid(contactModel.getUuid());
+				contactDto.setName(contactModel.getName());
+				contactDto.setLastName(contactModel.getLastName());
+				contactDto.setEmail(contactModel.getEmail());
+				contactDto.setConnected(contactModel.getConnected());
+				
+				userDto.addContact(contactDto);
+			}
 		}
 		
 		return userDto;
@@ -55,17 +59,8 @@ public class UserConverter {
 		List<UserRegisterDto> userDtoList = new ArrayList<UserRegisterDto>();
 		
 		for (UserModel userModel : userModelList) {
-			UserRegisterDto userDto = new UserRegisterDto();
-			userDto.setUuid(userModel.getUuid());
-			userDto.setName(userModel.getName());
-			userDto.setLastName(userModel.getLastName());
-			userDto.setEmail(userModel.getEmail());
-			userDto.setPassword(userModel.getPassword());
-			userDto.setConnected(userModel.getConnected());
-			
-			userDtoList.add(userDto);
+			userDtoList.add(convertModelToDto(userModel));
 		}
-		
 		return userDtoList;
 	}
 	
