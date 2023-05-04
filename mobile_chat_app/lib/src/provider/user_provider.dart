@@ -20,8 +20,6 @@ class UserProvider extends ChangeNotifier{
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
   }
 
-
-
   Future register(String name, String lastName, String email, String password) async{
     final client = http.Client();
 

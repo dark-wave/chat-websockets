@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/provider/server_status_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_appbar.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
@@ -35,8 +36,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
-
     return Scaffold(
       backgroundColor:  const Color(0xffF2F2F2),
       appBar: const CustomAppBar(titulo: 'Register'),
@@ -80,25 +79,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton.icon(
-                            icon: const Icon(Icons.save),
-                            onPressed: () async {
-                              final response = await userProvider.register(
-                                _nameController.text,
-                                _lastNameController.text, 
-                                _emailController.text, 
-                                _passwordController.text
+                          child: Consumer<ServerStatusProvider>(
+                            builder: (context, serverStatusProvider, child){
+                              return ElevatedButton.icon(
+                                icon: const Icon(Icons.save),
+                                onPressed: serverStatusProvider.isServerOnline ? () async => _registerMethod(context) : null ,
+                                label: const Text('Register')
                               );
-                          
-                              //Limpiamos los controladores
-                              setState(() {
-                                _nameController.clear();
-                                _lastNameController.clear();
-                                _emailController.clear();
-                                _passwordController.clear();
-                              });
                             },
-                            label: const Text('Register')
                           ),
                         ),
                       ],
@@ -127,5 +115,24 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _registerMethod(BuildContext context) async{
+    final userProvider = Provider.of<UserProvider>(context);
+
+    final response = await userProvider.register(
+      _nameController.text,
+      _lastNameController.text, 
+      _emailController.text, 
+      _passwordController.text
+    );
+
+    //Limpiamos los controladores
+    setState(() {
+      _nameController.clear();
+      _lastNameController.clear();
+      _emailController.clear();
+      _passwordController.clear();
+    });
   }
 }
