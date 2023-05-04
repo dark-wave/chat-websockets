@@ -87,7 +87,7 @@ public class UserController {
 	public ResponseEntity<?> getUserContacts(@PathVariable String useruuid) {
 		List<UserRegisterDto> listUserDb = userService.getUserContacts(useruuid);
 
-		if (listUserDb.isEmpty()) {
+		if (listUserDb == null || listUserDb.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.ok(listUserDb);

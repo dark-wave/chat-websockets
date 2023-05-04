@@ -77,9 +77,15 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public List<UserRegisterDto> getUserContacts(String useruuid) {
-		List<UserEntity> listDbUsers = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		Optional<UserModel> opUser = userMongoRepository.findByUuid(useruuid);
 		
-		return userConverter.convertEntityListToDtoList(listDbUsers);
+		if(opUser.isPresent() && opUser.get().getContacts() != null && opUser.get().getContacts().size() > 0) {
+			List<UserModel> listDbUsers = StreamSupport.stream(opUser.get().getContacts().spliterator(), false).collect(Collectors.toList());
+			
+			return userConverter.convertModelListToDtoList(listDbUsers);
+		}
+		
+		return null;
 	}
 
 	@Override
