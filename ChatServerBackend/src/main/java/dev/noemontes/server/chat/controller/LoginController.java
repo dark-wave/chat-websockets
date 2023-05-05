@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.noemontes.server.chat.dto.LoginRequestDto;
-import dev.noemontes.server.chat.dto.UserLoginResponseDto;
+import dev.noemontes.server.chat.dto.UserDto;
 import dev.noemontes.server.chat.service.LoginService;
 
 @RestController
@@ -20,12 +20,23 @@ public class LoginController {
 	
 	@PostMapping
 	public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginDto){
-		UserLoginResponseDto logedUser = loginService.login(loginDto);
+		UserDto logedUser = loginService.login(loginDto);
 		
 		if(logedUser!=null) {	
 			return ResponseEntity.ok(logedUser);
-		}else {
-			return ResponseEntity.notFound().build();
 		}
+		
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PostMapping(value = "/logout")
+	public ResponseEntity<?> logoutUser(@RequestBody LoginRequestDto loginDto){
+		UserDto logedUser = loginService.login(loginDto);
+		
+		if(logedUser!=null) {	
+			return ResponseEntity.ok(logedUser);
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 }

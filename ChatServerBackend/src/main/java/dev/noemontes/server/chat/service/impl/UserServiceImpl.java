@@ -8,7 +8,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.noemontes.server.chat.converter.UserConverter;
+import dev.noemontes.server.chat.converter.UserRegisterConverter;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.model.UserModel;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
 	private UserMongoRepository userMongoRepository;
 	
 	@Autowired
-	private UserConverter userConverter;
+	private UserRegisterConverter userConverter;
 
 	@Override
 	public UserRegisterDto saveUser(UserRegisterDto userDto) {

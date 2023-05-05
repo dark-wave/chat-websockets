@@ -63,6 +63,7 @@ public class UserController {
 	
 	@GetMapping("/list")
 	public ResponseEntity<?> listUsers(){
+		//TODO: Cambiar la forma de obtener los contactos para que se actualice el estado cuando se conecten
 		List<UserRegisterDto> listUserDb = userService.listUsers();
 		
 		if(listUserDb.isEmpty()) {
