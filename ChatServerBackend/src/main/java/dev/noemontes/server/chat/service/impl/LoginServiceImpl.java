@@ -2,6 +2,8 @@ package dev.noemontes.server.chat.service.impl;
 
 import java.util.Optional;
 
+import dev.noemontes.server.chat.dto.LogoutRequestDto;
+import dev.noemontes.server.chat.exceptions.LoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class LoginServiceImpl implements LoginService{
 	private UserConverter userConverter;
 	
 	@Override
-	public UserDto login(LoginRequestDto userDto) {
+	public UserDto login(LoginRequestDto userDto) throws LoginException {
 		Optional<UserModel> opUserDb = userRepository.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
 		
 		if(opUserDb.isPresent()) {
@@ -34,14 +36,13 @@ public class LoginServiceImpl implements LoginService{
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
-			//TODO: Cambiar el retorno de null a una excepcion controlada de que el usuario no existe
-			return null;
+			throw new LoginException("Error de inicio de sesion");
 		}
 	}
 
 	@Override
-	public UserDto logout(LoginRequestDto userDto) {
-		Optional<UserModel> opUserDb = userRepository.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
+	public UserDto logout(LogoutRequestDto logoutDto) {
+		Optional<UserModel> opUserDb = userRepository.findById(logoutDto.getUserUuid());
 		
 		if(opUserDb.isPresent()) {
 			UserModel userDb = opUserDb.get();
@@ -52,8 +53,7 @@ public class LoginServiceImpl implements LoginService{
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
-			//TODO: Cambiar el retorno de null a una excepcion controlada de que el usuario no existe
-			return null;
+			throw new LoginException("Error de cierre de sesion");
 		}
 	}
 }

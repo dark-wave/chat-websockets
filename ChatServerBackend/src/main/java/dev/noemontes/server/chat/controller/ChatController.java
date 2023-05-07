@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.noemontes.server.chat.dto.MessageRequestDto;
 import dev.noemontes.server.chat.service.MessageService;
 
+/**
+ * @author dark-wave
+ * @since 1.0.0
+ *
+ * Clase controladora de mensajes del chat
+ */
 @RestController
 public class ChatController {
 	

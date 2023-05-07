@@ -9,6 +9,7 @@ class LoginProvider extends ChangeNotifier{
 
   UserLoginResponse get userLoginResponse => _userLoginResponse!;
   
+  //Método que realiza la petición de login al servidor
   Future<bool> login(String username, String password) async{  
     final client = http.Client();
     
@@ -33,6 +34,26 @@ class LoginProvider extends ChangeNotifier{
         _userLoginResponse = userLoginResponseFromJson(loginServiceResponse.body);  
       }
       
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  Future<bool> logout(String userUuid) async{
+    final client = http.Client();
+
+    final logoutServiceResponse = await client.post(
+      Uri.parse(Environment.apiUrl + Environment.logoutEndPoint),
+      body: jsonEncode({'userUuid': userUuid}),
+      headers: { 
+        'Content-Type':'application/json',
+        'Accept': 'application/json'
+      }
+    );
+
+    if(logoutServiceResponse.statusCode == 200){
+      _userLoginResponse = null;
       return true;
     }else{
       return false;

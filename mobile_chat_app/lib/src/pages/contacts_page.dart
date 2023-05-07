@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/models/user_login_response.dart';
 import 'package:mobile_chat_app/src/provider/event_listener_provider.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
@@ -41,7 +42,12 @@ class _ContactsPageState extends State<ContactsPage> {
             child: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async{
-                Navigator.pushReplacementNamed(context, 'login');
+                UserLoginResponse logedUser = Provider.of<LoginProvider>(context, listen: false).userLoginResponse;
+                bool logoutResponse = await Provider.of<LoginProvider>(context, listen: false).logout(logedUser.uuid);
+
+                if(logoutResponse){
+                  Future.microtask(() => Navigator.pushReplacementNamed(context, 'login'));
+                }                
               },
             ),
           )

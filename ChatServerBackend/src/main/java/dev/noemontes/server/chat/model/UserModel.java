@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 @Document(collection = "users")
 @Data
