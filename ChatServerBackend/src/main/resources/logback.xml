@@ -26,7 +26,7 @@
         </rollingPolicy>
     </appender>
     
-    <logger name="dev.noemontes.chat" level="info" additivity="false">
+    <logger name="dev.noemontes.server.chat" level="info" additivity="false">
     	<appender-ref ref="InfoLog"/>
     </logger>
 </configuration>
