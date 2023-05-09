@@ -11,7 +11,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@EnableWebFlux
 @EnableMongoAuditing
 @EnableWebSocketMessageBroker
 public class ChatServerConfiguration implements WebSocketMessageBrokerConfigurer{	

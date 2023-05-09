@@ -10,6 +10,12 @@ import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.model.UserModel;
 
+/**
+ * @author dark-wave
+ * @since 1.0.0
+ *
+ * Clase encargada de la conversión de tipos de DTO a Model para el objeto usuario.
+ */
 @Component
 public class UserRegisterConverter {
 	
@@ -17,7 +23,7 @@ public class UserRegisterConverter {
 		UserModel userModel = new UserModel();
 		
 		userModel.setUuid(userDto.getUuid());
-		userModel.setName(userDto.getEmail());
+		userModel.setName(userDto.getName());
 		userModel.setLastName(userDto.getLastName());
 		userModel.setEmail(userDto.getEmail());
 		userModel.setPassword(userDto.getPassword());
@@ -62,10 +68,7 @@ public class UserRegisterConverter {
 		}
 		return userDtoList;
 	}
-	
-	
-	
-	
+
 	public UserRegisterDto convertEntityToDto(UserEntity userEntity) {
 		UserRegisterDto userDto = new UserRegisterDto();
 		
