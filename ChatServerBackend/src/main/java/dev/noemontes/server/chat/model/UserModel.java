@@ -9,9 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import dev.noemontes.server.chat.dto.UserRegisterDto;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 @Document(collection = "users")
 @Data
@@ -26,8 +24,6 @@ public class UserModel {
     @Indexed(unique = true, sparse = true)
     private String email;
     private String password;
-    
-    private Boolean connected;
     
     private List<UserModel> contacts;
 

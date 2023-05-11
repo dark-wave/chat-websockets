@@ -24,7 +24,6 @@ public class UserDto {
 	private String email;
 	@JsonInclude(Include.NON_NULL)
 	private String password;
-	private Boolean connected;
 	@JsonInclude(Include.NON_NULL)
 	private List<UserDto> contacts;
 	@JsonInclude(Include.NON_NULL)

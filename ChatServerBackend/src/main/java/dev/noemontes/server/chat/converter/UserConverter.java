@@ -18,7 +18,6 @@ public class UserConverter {
 		userModel.setLastName(userDto.getLastName());
 		userModel.setEmail(userDto.getEmail());
 		userModel.setPassword(userDto.getPassword());
-		userModel.setConnected(userDto.getConnected());
 		
 		return userModel;
 	}
@@ -31,7 +30,6 @@ public class UserConverter {
 		userDto.setLastName(userModel.getLastName());
 		userDto.setEmail(userModel.getEmail());
 		userDto.setPassword(userModel.getPassword());
-		userDto.setConnected(userModel.getConnected());
 		userDto.setCreatedAt(userModel.getCreatedAt());
 		
 		if(userModel.getContacts()!=null && userModel.getContacts().size() > 0) {
@@ -41,7 +39,6 @@ public class UserConverter {
 				contactDto.setName(contactModel.getName());
 				contactDto.setLastName(contactModel.getLastName());
 				contactDto.setEmail(contactModel.getEmail());
-				contactDto.setConnected(contactModel.getConnected());
 				
 				userDto.addContact(contactDto);
 			}
