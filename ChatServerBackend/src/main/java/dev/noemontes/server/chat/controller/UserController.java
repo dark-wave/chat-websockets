@@ -136,6 +136,23 @@ public class UserController {
 	}
 
 	/**
+	 * Método para agregar un usuario a otro como contacto
+	 *
+	 * @param useruuid Identificador unico del usuario que solicita la peticion de contacto
+	 * @param contactuuid Identificador unico del usuario que recibe la peticion de contacto
+	 */
+	@PutMapping("/contacts/{useruuid}/{contactuuid}")
+	public ResponseEntity<?> addContact(@PathVariable String useruuid, @PathVariable String contactuuid) {
+		UserRegisterDto userDto = userService.addContactToUser(useruuid, contactuuid);
+
+		if (userDto == null) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(userDto);
+	}
+
+	/**
 	 * Método para solicitar a un contacto que se añada a la lista de contactos. Se envía un mensaje usando
 	 * websockets para que al usuario destino le apareza una notificación de que tiene una petición de contacto.
 	 * @param contactRequestDto Objeto que contiene los datos del usuario que realiza la petición y el email

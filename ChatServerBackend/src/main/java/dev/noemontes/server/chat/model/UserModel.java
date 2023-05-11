@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -24,7 +25,9 @@ public class UserModel {
     @Indexed(unique = true, sparse = true)
     private String email;
     private String password;
-    
+	private Boolean connected;
+
+	@DBRef
     private List<UserModel> contacts;
 
     @CreatedDate
