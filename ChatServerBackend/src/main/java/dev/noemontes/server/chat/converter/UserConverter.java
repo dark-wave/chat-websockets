@@ -41,6 +41,7 @@ public class UserConverter {
 				contactDto.setName(contactModel.getName());
 				contactDto.setLastName(contactModel.getLastName());
 				contactDto.setEmail(contactModel.getEmail());
+				contactDto.setConnected(contactModel.getConnected());
 				
 				userDto.addContact(contactDto);
 			}

@@ -40,6 +40,7 @@ public class UserRegisterConverter {
 		userDto.setEmail(userModel.getEmail());
 		userDto.setPassword(userModel.getPassword());
 		userDto.setCreatedAt(userModel.getCreatedAt());
+		userDto.setConnected(userModel.getConnected());
 		
 		if(userModel.getContacts()!=null && userModel.getContacts().size() > 0) {
 			for(UserModel contactModel : userModel.getContacts()) {
@@ -48,6 +49,7 @@ public class UserRegisterConverter {
 				contactDto.setName(contactModel.getName());
 				contactDto.setLastName(contactModel.getLastName());
 				contactDto.setEmail(contactModel.getEmail());
+				contactDto.setConnected(contactModel.getConnected());
 				
 				userDto.addContact(contactDto);
 			}

@@ -25,7 +25,7 @@ public class UserModel {
     @Indexed(unique = true, sparse = true)
     private String email;
     private String password;
-	private Boolean connected;
+	private Boolean connected = false;
 
 	@DBRef
     private List<UserModel> contacts;

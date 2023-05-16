@@ -26,6 +26,7 @@ public class UserRegisterDto {
 	private String password;
 	@JsonInclude(Include.NON_NULL)
 	private List<UserRegisterDto> contacts;
+	private Boolean connected;
 	@JsonInclude(Include.NON_NULL)
 	private Date createdAt;
 	

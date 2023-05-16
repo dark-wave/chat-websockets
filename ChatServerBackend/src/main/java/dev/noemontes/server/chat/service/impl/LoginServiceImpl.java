@@ -30,10 +30,9 @@ public class LoginServiceImpl implements LoginService{
 		if(opUserDb.isPresent()) {
 			UserModel userDb = opUserDb.get();
 			
-			//TODO: Actualizar la tabla de estados para inidicar que el usuario está conectado
 			//Actualizamos el estado del contacto a conectado en base de datos
-			/*userDb.setConnected(true);
-			userRepository.save(userDb);*/
+			userDb.setConnected(true);
+			userRepository.save(userDb);
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
@@ -48,10 +47,9 @@ public class LoginServiceImpl implements LoginService{
 		if(opUserDb.isPresent()) {
 			UserModel userDb = opUserDb.get();
 			
-			//TODO: Actualizar la tabla de estados para inidicar que el usuario está desconectado
 			//Actualizamos el estado del contacto a conectado en base de datos
-			/*userDb.setConnected(false);
-			userRepository.save(userDb);*/
+			userDb.setConnected(false);
+			userRepository.save(userDb);
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
