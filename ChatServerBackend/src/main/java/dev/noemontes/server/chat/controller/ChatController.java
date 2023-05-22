@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -41,7 +42,7 @@ public class ChatController {
 		messageRequestDto.setMessage(message.getMessage());
 		
 		messageService.saveMessage(messageRequestDto);
-		
+
 		messagingTemplate.convertAndSendToUser(useruuid, "/queue/messages", message);
 	}
 

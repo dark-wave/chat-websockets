@@ -3,6 +3,7 @@ package dev.noemontes.server.chat.controller;
 import java.util.List;
 import java.util.Optional;
 
+import dev.noemontes.server.chat.component.WebsocketUserConnected;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,15 @@ public class UserController {
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
 
+	@Autowired
+	WebsocketUserConnected websocketUserConnected;
+
+	@GetMapping("/connected")
+	public ResponseEntity<?> getConnectedUsers(){
+		List<String> connectedUsers = websocketUserConnected.getConnectedUsers();
+
+		return ResponseEntity.ok(connectedUsers);
+	}
 	/**
 	 * Metodo para crear un usuario en el sistema
 	 * @param userDto
