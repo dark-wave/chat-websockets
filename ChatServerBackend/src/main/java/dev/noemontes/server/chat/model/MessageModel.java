@@ -17,4 +17,5 @@ public class MessageModel {
 	private String userUuidReveiver;
 	private String message;
 	private Date creationDate = new Date();
+	private Date readingDate;
 }

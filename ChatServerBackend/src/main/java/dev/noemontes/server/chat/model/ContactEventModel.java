@@ -29,10 +29,10 @@ public class ContactEventModel {
 	private UserModel contact;
 	
 	private Boolean contactNotified = false;
+	private Date contactNotifiedDate;
 	private Boolean contactAccepted = false;
+	private Date acceptedRejectDate;
 	
 	@CreatedDate
 	private Date createdAt;
-	
-	private Date acceptedRejectDate;
 }

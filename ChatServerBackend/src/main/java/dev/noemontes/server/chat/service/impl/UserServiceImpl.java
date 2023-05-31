@@ -10,17 +10,12 @@ import org.springframework.stereotype.Service;
 
 import dev.noemontes.server.chat.converter.UserRegisterConverter;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
-import dev.noemontes.server.chat.entity.UserEntity;
 import dev.noemontes.server.chat.model.UserModel;
 import dev.noemontes.server.chat.repository.UserMongoRepository;
-import dev.noemontes.server.chat.repository.UserRepository;
 import dev.noemontes.server.chat.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
-	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
 	private UserMongoRepository userMongoRepository;
@@ -36,12 +31,6 @@ public class UserServiceImpl implements UserService{
 		UserModel userDbModel = userMongoRepository.save(userModel);
 		
 		return userConverter.convertModelToDto(userDbModel);
-	}
-	
-	@Override
-	public UserRegisterDto saveUser(UserEntity userEntity) {
-		UserEntity userEntityDbResponse = userRepository.save(userEntity);
-		return userConverter.convertEntityToDto(userEntityDbResponse);
 	}
 	
 	@Override
@@ -99,16 +88,6 @@ public class UserServiceImpl implements UserService{
 		}else {
 			return null;
 		}
-	}
-
-	@Override
-	public Optional<UserEntity> getUserByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
-
-	@Override
-	public Optional<UserEntity> getUserByUuid(String uuid) {
-		return userRepository.findByUuid(uuid);
 	}
 	
 	@Override
