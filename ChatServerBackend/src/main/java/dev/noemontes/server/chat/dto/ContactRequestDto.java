@@ -13,5 +13,6 @@ public class ContactRequestDto {
 	private String requestUserUuid;
 	private String requestUserName;
 	private String requestUserEmail;
+	private String responseUserUuid;
 	private String responseUserEmail;
 }
