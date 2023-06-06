@@ -14,8 +14,8 @@ public class MessageConverter {
 	public MessageModel convertDtoToModel(MessageRequestDto messageDto) {
 		MessageModel messageModel = new MessageModel();
 
-		messageModel.setUserUuidSender(messageDto.getUidSender());
-		messageModel.setUserUuidReveiver(messageDto.getUidReceiver());
+		messageModel.setUserUuidSender(messageDto.getUuidSender());
+		messageModel.setUserUuidReveiver(messageDto.getUuidReceiver());
 		messageModel.setMessage(messageDto.getMessage());
 		
 		return messageModel;

@@ -20,7 +20,6 @@ public class UserRegisterConverter {
 	public UserModel convertDtoToModel(UserRegisterDto userDto) {
 		UserModel userModel = new UserModel();
 		
-		userModel.setUuid(userDto.getUuid());
 		userModel.setName(userDto.getName());
 		userModel.setLastName(userDto.getLastName());
 		userModel.setEmail(userDto.getEmail());
@@ -32,26 +31,10 @@ public class UserRegisterConverter {
 	public UserRegisterDto convertModelToDto(UserModel userModel) {
 		UserRegisterDto userDto = new UserRegisterDto();
 		
-		userDto.setUuid(userModel.getUuid());
 		userDto.setName(userModel.getName());
 		userDto.setLastName(userModel.getLastName());
 		userDto.setEmail(userModel.getEmail());
 		userDto.setPassword(userModel.getPassword());
-		userDto.setCreatedAt(userModel.getCreatedAt());
-		userDto.setConnected(userModel.getConnected());
-		
-		if(userModel.getContacts()!=null && userModel.getContacts().size() > 0) {
-			for(UserModel contactModel : userModel.getContacts()) {
-				UserRegisterDto contactDto = new UserRegisterDto();
-				contactDto.setUuid(contactModel.getUuid());
-				contactDto.setName(contactModel.getName());
-				contactDto.setLastName(contactModel.getLastName());
-				contactDto.setEmail(contactModel.getEmail());
-				contactDto.setConnected(contactModel.getConnected());
-				
-				userDto.addContact(contactDto);
-			}
-		}
 		
 		return userDto;
 	}

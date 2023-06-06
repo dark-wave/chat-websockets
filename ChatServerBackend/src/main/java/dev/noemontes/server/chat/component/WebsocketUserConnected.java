@@ -22,13 +22,26 @@ public class WebsocketUserConnected {
 	@Autowired
 	private SimpUserRegistry userRegistry;
 
-
+	
+	/**
+	 * Método que comprueba si un usuario está conectado al servidor de websockets
+	 * @author dark-wave
+	 * @since 1.0.0
+	 * @param userUuid Identificador del usuario que queremos comprobar si está conectado.
+	 * @return Boolean si se encuentra o no conectado
+	 */
 	public boolean isUserConnecteToWebsocket(String userUuid) {
 		SimpUser user = userRegistry.getUser(userUuid);
 		
 		return user!=null ? true : false;
 	}
-
+	
+	/**
+	 * Método que retorna una lista de clientes que están conectados al servidor de websockets
+	 * @author dark-wave
+	 * @since 1.0.0
+	 * @return List<String> Listado de los usuarios conectados al socket
+	 */
 	public List<String> getConnectedUsers(){
 		List<String> connectedUsers = new ArrayList<>();
 		for (SimpUser user : userRegistry.getUsers()) {

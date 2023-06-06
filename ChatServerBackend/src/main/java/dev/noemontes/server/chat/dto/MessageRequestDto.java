@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MessageRequestDto {
-	private String uidSender;
-	private String uidReceiver;
+	private String uuidSender;
+	private String uuidReceiver;
 	private String message;
 }

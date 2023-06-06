@@ -48,8 +48,8 @@ public class ChatController {
 	@MessageMapping("/sendMessage/{useruuid}")
 	public void receiveMessage(@Header("simpSessionId") String sessionId, @DestinationVariable("useruuid") String useruuid, @Payload MessageRequestDto message) {
 		MessageRequestDto messageRequestDto = new MessageRequestDto();
-		messageRequestDto.setUidSender(message.getUidSender());
-		messageRequestDto.setUidReceiver(useruuid);
+		messageRequestDto.setUuidSender(message.getUuidSender());
+		messageRequestDto.setUuidReceiver(useruuid);
 		messageRequestDto.setMessage(message.getMessage());
 		
 		messageService.saveMessage(messageRequestDto);
