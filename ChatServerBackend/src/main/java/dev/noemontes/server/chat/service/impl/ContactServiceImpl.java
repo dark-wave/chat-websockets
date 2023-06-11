@@ -42,9 +42,9 @@ public class ContactServiceImpl implements ContactService{
 				/*Comprobamos si el usuario destino está conectado al servidor de websockets. Si no está conectado almacenamos la solicitud de contacto
 				  en la base de datos para notificarle cuando se conecte*/
 				if(websocketUserConnected.isUserConnecteToWebsocket(contactModel.getUuid())) {//Está conectado
-					
+					System.out.println("El usuario con el email: " + contactModel.getEmail() + ", está conectado al servidor de websockets");
 				}else { // No está conectado
-					
+					System.out.println("El usuario con el email: " + contactModel.getEmail() + ", no está conectado al servidor de websockets");
 				}
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");

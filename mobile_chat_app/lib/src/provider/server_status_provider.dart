@@ -13,6 +13,10 @@ class ServerStatusProvider extends ChangeNotifier{
   bool get isServerOnline => _isServerOnline;
 
   ServerStatusProvider(this.networkStatusProvider){
+    //Chequeamos al inicio para no esperar los 10 segundos
+    checkServerStatus();
+
+    //Chequeamos cada 10 segundos el estado del servidor
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) { 
       if(networkStatusProvider.isConnected){
         checkServerStatus();

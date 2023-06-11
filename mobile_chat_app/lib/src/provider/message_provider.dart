@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_chat_app/src/models/message.dart';
+import 'package:mobile_chat_app/src/dto/message.dart';
 
 class MessageProvider extends ChangeNotifier{
   static List<Message> _messageList = [];

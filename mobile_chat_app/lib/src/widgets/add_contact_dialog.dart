@@ -23,7 +23,18 @@ class _AddContactDialogState extends State<AddContactDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Agregar contacto'),
+            const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/logo_chat_app_transparente.png'),
+              radius: 30.0,
+            ),
+            const SizedBox(height: 16.0),
+            const Text(
+              'Agregar contacto',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              )
+            ),
             const SizedBox(height: 20),
             TextField(
               controller: _emailController,
@@ -38,11 +49,19 @@ class _AddContactDialogState extends State<AddContactDialog> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancelar', style:TextStyle(color: Colors.red)),
+                  child: const Text('Cancelar', 
+                    style:TextStyle(
+                      color: Colors.red,
+                      fontSize: 17.0
+                    )
+                  ),
                 ),
                 TextButton(
                   onPressed: () => callRequestContactService(context),
-                  child: const Text('Agregar'),
+                  child: const Text('Agregar',
+                    style:TextStyle(
+                      fontSize: 17.0
+                    )),
                 ),
               ],
             )

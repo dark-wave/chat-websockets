@@ -12,6 +12,9 @@ class ContactRequestDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),  
       ),
       backgroundColor: Colors.white,
+      title: const CircleAvatar(
+        backgroundImage: AssetImage('assets/images/logo_chat_app_transparente.png'),
+      ),
       content: SizedBox(
         height: 200.0,
         child: Column(

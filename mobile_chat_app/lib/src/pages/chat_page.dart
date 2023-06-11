@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mobile_chat_app/src/models/message.dart';
-import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/dto/message.dart';
+import 'package:mobile_chat_app/src/dto/user.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/glove_message.dart';

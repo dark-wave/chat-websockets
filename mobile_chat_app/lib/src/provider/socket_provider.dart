@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
-import 'package:mobile_chat_app/src/models/message.dart';
+import 'package:mobile_chat_app/src/dto/message.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';

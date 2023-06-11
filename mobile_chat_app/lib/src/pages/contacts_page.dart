@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_chat_app/src/models/user.dart';
-import 'package:mobile_chat_app/src/models/user_login_response.dart';
+import 'package:mobile_chat_app/src/dto/user.dart';
+import 'package:mobile_chat_app/src/dto/user_login_response.dart';
 import 'package:mobile_chat_app/src/provider/event_listener_provider.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
-import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:mobile_chat_app/src/widgets/add_contact_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +19,6 @@ class _ContactsPageState extends State<ContactsPage> {
   void initState() {
     super.initState();
 
-    Provider.of<UserProvider>(context, listen: false).getContacts();
     Provider.of<EventListenerProvider>(context, listen: false).connectEventStomp(
       Provider.of<LoginProvider>(context, listen: false).userLoginResponse.uuid
     );

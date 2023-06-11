@@ -16,7 +16,7 @@ class Environment{
   static const String logoutEndPoint          = '/login/logout';
   static const String userContactsEndpoint    = '/user/contacts';
   static const String mesagesEndPoint         = '/message';
-  static const String contactRequestEndPoint  = '/user/contacts/request';
+  static const String contactRequestEndPoint  = '/contact/request';
 
   static const String sendMessageEndPoint = '/message';
 }

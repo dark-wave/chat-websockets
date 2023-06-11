@@ -1,5 +1,10 @@
 package dev.noemontes.server.chat.controller;
 
+import dev.noemontes.server.chat.exceptions.ContactExistsException;
+import dev.noemontes.server.chat.exceptions.UserNotFoundException;
+import dev.noemontes.server.chat.service.ContactService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,25 +22,31 @@ import dev.noemontes.server.chat.dto.ContactRequestDto;
 @RestController
 @RequestMapping("/contact")
 public class ContactController {
+	@Autowired
+	private ContactService contactService;
+
 	/**
 	 * Método para solicitar a un contacto que se añada a la lista de contactos. Se envía un mensaje usando
 	 * websockets para que al usuario destino le apareza una notificación de que tiene una petición de contacto.
-	 * @param contactRequestDto Objeto que contiene los datos del usuario que realiza la petición y el email
-	 * del usuario que recibe la petición.
-	 * @return ResponseEntity. Estado de la respuesta del servidor. Se controla si el usuario destino
-	 * está en la base de datos. Si no está se devuelve un HttpStatus.notFound. Si existe se devuelve un HttpStatus.ok
-	 * y se envia un mensaje usando websockets al usuario destino.
+	 * @param contactRequestDto
+	 * @return ResponseEntity
 	 */
 	@PostMapping("/request")
 	public ResponseEntity<?> contactRequest(@RequestBody ContactRequestDto contactRequestDto) {
-		//TODO: Implementar la lógica de solicitud de contacto contra la base de datos MongoDb
-		return ResponseEntity.notFound().build();
+		try{
+			contactService.contactRequest(contactRequestDto);
+			return ResponseEntity.ok().build();
+		} catch (UserNotFoundException ex) { //El usuario no existe
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
+		} catch (ContactExistsException ex){//El usuario ya es contacto
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+		}
 	}
 
 	/**
 	 * Servicio que recibe la respuesta del usuario a una solicitud de contacto
-	 * @param contactResponseDto Objeto que contiene la respuesta de la petición
-	 * @return ResponseEntity Estado de la respuesta del servidor.
+	 * @param contactResponseDto
+	 * @return ResponseEntity
 	 */
 	@PostMapping("/response")
 	public ResponseEntity<?> contactResponse(@RequestBody ContactRequestDto contactResponseDto){

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:mobile_chat_app/src/models/contact_request.dart';
+import 'package:mobile_chat_app/src/dto/contact_request.dart';
 
 ContactResponse contactResponseFromJson(String str) => ContactResponse.fromJson(json.decode(str));
 

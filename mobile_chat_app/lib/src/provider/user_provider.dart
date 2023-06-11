@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_chat_app/src/dto/contact_request.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
-import 'package:mobile_chat_app/src/models/user.dart';
+import 'package:mobile_chat_app/src/dto/user.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -61,34 +62,14 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future getContacts() async{
+  Future<void> contactRequest(contactEmail) async{
     final client = http.Client();
     String? useruuid = loginProvider?.userLoginResponse.uuid;
 
-    final clientRespose = await client.get(
-      Uri.parse('${Environment.apiUrl}${Environment.userContactsEndpoint}/$useruuid'),
-      headers: { 
-        'Content-Type':'application/json',
-        'Accept': 'application/json'
-      }
+    final ContactRequest contactRequestDto = ContactRequest(
+      requestUserUuid: useruuid!, 
+      userEmail: contactEmail
     );
-
-    if (clientRespose.statusCode == 200){
-      List<dynamic> jsonReponse = json.decode(utf8.decode(clientRespose.bodyBytes));
-      _userList = jsonReponse.map((user) => User.fromJson(user)).toList();
-
-      notifyListeners();
-    }
-  }
-
-  Future contactRequest(String contactEmail) async{
-    final client = http.Client();
-    String? useruuid = loginProvider?.userLoginResponse.uuid;
-
-    final contactRequestData = {
-      'userUuid': useruuid,
-      'contactEmail': contactEmail
-    };
 
     final clientRespose = await client.post(
       Uri.parse('${Environment.apiUrl}${Environment.contactRequestEndPoint}'),
@@ -96,9 +77,13 @@ class UserProvider extends ChangeNotifier{
         'Content-Type':'application/json',
         'Accept': 'application/json'
       },
-      body: jsonEncode(contactRequestData)
+      body: jsonEncode(contactRequestDto)
     );
 
-    return clientRespose;
+    if (clientRespose.statusCode == 200){ //Solicitud correcta
+      print('Solicitud enviada');
+    }else{ // Solicitud errónea
+      print('Error al enviar solicitud');
+    }
   }
 }

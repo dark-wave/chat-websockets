@@ -19,6 +19,11 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _userNameController.dispose();
     _passwordController.dispose();
@@ -28,8 +33,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -74,15 +77,19 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Aún no tienes cuenta? Regístrate '),
-                    InkWell(
-                      child: const Text(
-                        'aquí',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline
-                        )  
-                      ),
-                      onTap: () => Navigator.pushReplacementNamed(context, 'register'),
+                    Consumer<ServerStatusProvider>(
+                      builder: (BuildContext context, serverStatusProvider, Widget? child) { 
+                        return InkWell(
+                          onTap: serverStatusProvider.isServerOnline ? () async => Navigator.pushReplacementNamed(context, 'register') : null,
+                          child: const Text(
+                            'aquí',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline
+                          )  
+                          ),
+                        );
+                      },
                     )
                   ],
                 )
