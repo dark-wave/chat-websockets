@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    _userNameController.text = 'noe.montes@gmail.com';
+    _passwordController.text = 'password1';
     super.initState();
   }
 
@@ -113,6 +115,8 @@ class _LoginPageState extends State<LoginPage> {
       /*Las modificaciones sobre la interfaz se deben realizar en el hilo principal
         no en llamadas asíncronas. Para ejecutar la navegación a la nueva página
         en el hilo principal usamos Future.microtask*/
+      //Si el login es correcto, conectamos el socket
+      socket.connectStomp(loginProvider.userLoginResponse.uuid);
       Future.microtask(() => Navigator.of(context).pushReplacementNamed('contacts'));
     }else{
       Future.delayed(Duration.zero, () {

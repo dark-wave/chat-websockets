@@ -26,6 +26,8 @@ public class UserModel {
     private String email;
     private String password;
 	private Boolean connected = false;
+	
+	private String sessionId;
 
 	@DBRef
     private List<UserModel> contacts;

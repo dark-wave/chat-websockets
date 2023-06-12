@@ -23,6 +23,7 @@ class SocketProvider with ChangeNotifier{
 
   List<Message> get messageList => _messageList;
 
+  // Método que devuelve los ultimos mensajes enviados
   void loadLastMessages(String uuidSender, String uuidReceiver) async{
     final client = http.Client();
 
@@ -45,21 +46,34 @@ class SocketProvider with ChangeNotifier{
     }
   }
 
+  //Método de conexión al socket
   void connectStomp(String userUuid){
     _userUuid = userUuid;
     _stompClient = StompClient(
       config: StompConfig.SockJS(
         url: Environment.socketUrl,
         onConnect: _onConnect,
-        onWebSocketError: (dynamic error) => print(error), //TODO: tratamiento de error
-        onStompError: (StompFrame frame) => print(frame.body)//TODO: tratamiento de error
+        onWebSocketError: (dynamic error) => print(error),      //TODO: tratamiento de error
+        onStompError: (StompFrame frame) => print(frame.body),  //TODO: tratamiento de error
+        onDisconnect: _onDisconnect
       )
     );
 
     _stompClient.activate();
   }
 
-   void _onConnect(StompFrame connectFrame){
+  //Método de desconexión del socket
+  void disconnectStomp(){  
+    _stompClient.deactivate();
+  }
+
+  void _onConnect(StompFrame connectFrame){
+    _stompClient.activate();
+
+    //TODO: Enviamos un primer mensaje para indicar el uuid de usuario que está asociado a la conexión
+
+
+    //Nos suscribimos a la cola de mensajes del usuario
     _stompClient.subscribe(
       destination: '/user/$_userUuid/queue/messages',
       callback: (StompFrame frame){
@@ -70,8 +84,15 @@ class SocketProvider with ChangeNotifier{
         notifyListeners();
       }
     );
+    
+    //TODO: Nos subscribimos a la cola de solicitud de contactos
   }
 
+  void _onDisconnect(StompFrame connectFrame){
+    notifyListeners();
+  } 
+
+  //Método para enviar un mensaje al servidor de socket
   void sendMessage(Message message){
     _messageList.add(message);
 
@@ -83,11 +104,16 @@ class SocketProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void clearMessageList(){
-    _messageList = [];
+  //Método para enviar un mensaje al servidor para asociar el usuario al socket
+  void sendUserUuid(String userUuid){
+    _stompClient.send(
+      destination: '/app/connect',
+      body: userUuid
+    );
   }
 
-  void disconnectStomp(){
-    _stompClient.deactivate();
+  //Método para limpiar la lista de mensajes
+  void clearMessageList(){
+    _messageList = [];
   }
 }

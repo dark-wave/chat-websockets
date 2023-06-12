@@ -52,6 +52,7 @@ class LoginProvider extends ChangeNotifier{
 
     if(logoutServiceResponse.statusCode == 200){
       _userLoginResponse = null;
+
       return true;
     }else{
       return false;

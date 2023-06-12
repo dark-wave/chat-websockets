@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/dto/user.dart';
 import 'package:mobile_chat_app/src/dto/user_login_response.dart';
-import 'package:mobile_chat_app/src/provider/event_listener_provider.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/add_contact_dialog.dart';
@@ -18,10 +17,6 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     super.initState();
-
-    Provider.of<EventListenerProvider>(context, listen: false).connectEventStomp(
-      Provider.of<LoginProvider>(context, listen: false).userLoginResponse.uuid
-    );
   }
 
   @override
@@ -42,8 +37,9 @@ class _ContactsPageState extends State<ContactsPage> {
               onPressed: () async{
                 UserLoginResponse logedUser = Provider.of<LoginProvider>(context, listen: false).userLoginResponse;
                 bool logoutResponse = await Provider.of<LoginProvider>(context, listen: false).logout(logedUser.uuid);
-
-                if(logoutResponse){
+            
+                if(logoutResponse){  
+                  Future.microtask(() => Provider.of<SocketProvider>(context, listen: false).disconnectStomp());
                   Future.microtask(() => Navigator.pushReplacementNamed(context, 'login'));
                 }                
               },
@@ -91,9 +87,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
                     //Cargamos el historico de mensjes del usuario
                     socket.loadLastMessages(login.userLoginResponse.uuid, user.uuid);
-                    
-                    //Nos conectamos al stomp
-                    socket.connectStomp(login.userLoginResponse.uuid);
                     
                     Navigator.pushReplacementNamed(context, 'chat', arguments: user);
                   }
