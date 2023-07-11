@@ -4,13 +4,14 @@ import java.util.Optional;
 
 import dev.noemontes.server.chat.dto.LogoutRequestDto;
 import dev.noemontes.server.chat.exceptions.LoginException;
+import dev.noemontes.server.chat.model.UserModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.noemontes.server.chat.converter.UserConverter;
 import dev.noemontes.server.chat.dto.LoginRequestDto;
 import dev.noemontes.server.chat.dto.UserDto;
-import dev.noemontes.server.chat.model.UserModel;
 import dev.noemontes.server.chat.repository.UserMongoRepository;
 import dev.noemontes.server.chat.service.LoginService;
 

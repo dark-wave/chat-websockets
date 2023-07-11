@@ -6,14 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.noemontes.server.chat.component.WebsocketUserConnected;
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.service.UserService;
 
@@ -32,17 +30,6 @@ public class MaintenanceController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	WebsocketUserConnected websocketUserConnected;
-	
-	
-	@GetMapping("/user/connected")
-	public ResponseEntity<?> getConnectedUsers(){
-		List<String> connectedUsers = websocketUserConnected.getConnectedUsers();
-
-		return ResponseEntity.ok(connectedUsers);
-	}
 	
 	/**
 	 * Método para añadir un contacto a un usuario
@@ -112,17 +99,6 @@ public class MaintenanceController {
 		}
 	}
 	
-	/**
-	 * Metodo para eliminar todos los usuarios del sistema. No tiene funcionalidad relacionada con el chat.
-	 * Se utiliza para facilitar las pruebas
-	 * @return ResponseEntity. Estado de la respuesta del servidor
-	 */
-	@DeleteMapping("/user")
-	public ResponseEntity<?> deleteAllUsers(){
-		userService.deleteAllUsers();
-		
-		return ResponseEntity.noContent().build();
-	}
 	
 	/**
 	 * Método para agregar un usuario a otro como contacto

@@ -89,9 +89,29 @@ public class UserServiceImpl implements UserService{
 			return null;
 		}
 	}
-	
+
 	@Override
-	public void deleteAllUsers() {
-		userMongoRepository.deleteAll();
+	public void updateUserSessionId(String userUuid, String sessionId) {
+		Optional<UserModel> opUser = userMongoRepository.findByUuid(userUuid);
+		
+		if(opUser.isPresent()) {
+			UserModel userModel = opUser.get();
+			userModel.setSessionId(sessionId);
+			
+			userMongoRepository.save(userModel);
+		}
+	}
+
+	@Override
+	public void removeUserSessionId(String sessionId) {
+		Optional<UserModel> opUser = userMongoRepository.findBySessionId(sessionId);
+		
+		if(opUser.isPresent()) {
+			UserModel userModel = opUser.get();
+			userModel.setSessionId(null);
+			userModel.setConnected(false);
+			
+			userMongoRepository.save(userModel);
+		}
 	}
 }

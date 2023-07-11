@@ -14,4 +14,6 @@ public interface UserMongoRepository extends MongoRepository<UserModel, String>{
 	public Optional<UserModel> findByEmailAndPassword(String emal, String password);
 	
 	public Optional<UserModel> findByUuid(String uuid);
+	
+	public Optional<UserModel> findBySessionId(String sessionId);
 }

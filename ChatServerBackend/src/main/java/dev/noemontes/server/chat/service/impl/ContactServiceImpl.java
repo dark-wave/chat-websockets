@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.noemontes.server.chat.component.WebsocketUserConnected;
 import dev.noemontes.server.chat.dto.ContactRequestDto;
 import dev.noemontes.server.chat.exceptions.ContactExistsException;
 import dev.noemontes.server.chat.exceptions.UserNotFoundException;
@@ -19,9 +18,6 @@ public class ContactServiceImpl implements ContactService{
 	@Autowired
 	private UserMongoRepository userMongoRepository;
 	
-	@Autowired
-	private WebsocketUserConnected websocketUserConnected; 
-
 	@Override
 	public void contactRequest(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException{
 		Optional<UserModel> opUserModel = userMongoRepository.findByUuid(contactRequestDto.getRequestUserUuid());
@@ -35,17 +31,12 @@ public class ContactServiceImpl implements ContactService{
 				UserModel contactModel = opContactModel.get();
 				
 				//Comprobamos que no sean ya contactos
-				if(userModel.getContacts().contains(contactModel)) {
+				if(userModel.getContacts() != null && userModel.getContacts().contains(contactModel)) {
 					throw new ContactExistsException("El usuario con el email: " + contactModel.getEmail() + ", ya es contacto del usuario: " + userModel.getEmail());
 				}
 				
 				/*Comprobamos si el usuario destino está conectado al servidor de websockets. Si no está conectado almacenamos la solicitud de contacto
 				  en la base de datos para notificarle cuando se conecte*/
-				if(websocketUserConnected.isUserConnecteToWebsocket(contactModel.getUuid())) {//Está conectado
-					System.out.println("El usuario con el email: " + contactModel.getEmail() + ", está conectado al servidor de websockets");
-				}else { // No está conectado
-					System.out.println("El usuario con el email: " + contactModel.getEmail() + ", no está conectado al servidor de websockets");
-				}
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");
 			}

@@ -1,10 +1,13 @@
 package dev.noemontes.server.chat.component;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import dev.noemontes.server.chat.service.UserService;
 
 /**
  * @author dark-wave
@@ -15,6 +18,9 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
  */
 @Component
 public class WebSocketEventListener {
+	
+	@Autowired
+	private UserService userService;
 	
 	@EventListener
     public void handleWebSocketConnectListener(SessionConnectEvent event) {
@@ -29,6 +35,8 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
+        
+        userService.removeUserSessionId(sessionId);
         
         // Acciones cuando un cliente se desconecta
         System.out.println("Cliente desconectado. ID de sesión: " + sessionId);

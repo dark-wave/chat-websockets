@@ -6,6 +6,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.service.UserService;
 
 /**
@@ -21,6 +22,6 @@ public class SocketController {
 	
 	@MessageMapping("/connect")
 	public void connectUserToSession(@Header("simpSessionId") String sessionId,  @Payload String userUuid) {
-		
+		userService.updateUserSessionId(userUuid, sessionId);
 	}	
 }

@@ -47,7 +47,7 @@ class SocketProvider with ChangeNotifier{
   }
 
   //Método de conexión al socket
-  void connectStomp(String userUuid){
+  void connectStomp(String userUuid) async{
     _userUuid = userUuid;
     _stompClient = StompClient(
       config: StompConfig.SockJS(
@@ -58,8 +58,17 @@ class SocketProvider with ChangeNotifier{
         onDisconnect: _onDisconnect
       )
     );
-
+    
     _stompClient.activate();
+
+    //Esperamos un tiempo a que se establezca la conexión con el socket
+    await Future.delayed(const Duration(seconds: 1));
+
+    //Enviamos un mensaje con nuestro user uuid para que el servidor nos asocie al socket
+    _stompClient.send(
+      destination: '/app/connect',
+      body: userUuid
+    );
   }
 
   //Método de desconexión del socket
@@ -69,9 +78,6 @@ class SocketProvider with ChangeNotifier{
 
   void _onConnect(StompFrame connectFrame){
     _stompClient.activate();
-
-    //TODO: Enviamos un primer mensaje para indicar el uuid de usuario que está asociado a la conexión
-
 
     //Nos suscribimos a la cola de mensajes del usuario
     _stompClient.subscribe(

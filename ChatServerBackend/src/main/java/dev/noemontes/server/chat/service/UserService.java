@@ -10,5 +10,22 @@ public interface UserService {
 	public UserRegisterDto addContactToUser(String userId, String contactId);
 	public UserRegisterDto getUserById(String id);
 	public List<UserRegisterDto> getUserContacts(String useruuid);
-	public void deleteAllUsers();
+	
+	/**
+	 * @author dark-wave
+	 * Método que actualiza el sessionID generado en la conexion con websocket a un usuario+
+	 * mediante su useruuid
+	 * 
+	 * @param user
+	 * @param sessionId
+	 */
+	public void updateUserSessionId(String userUuid, String sessionId);
+	
+	
+	/**
+	 * @author dark-wave
+	 * Método que elimina el sessionId de un usuario
+	 * @param sessionId
+	 */
+	public void removeUserSessionId(String sessionId);
 }

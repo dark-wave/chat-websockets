@@ -118,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _registerMethod(BuildContext context) async{
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     final response = await userProvider.register(
       _nameController.text,
