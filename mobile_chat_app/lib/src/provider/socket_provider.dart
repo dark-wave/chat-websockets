@@ -91,7 +91,13 @@ class SocketProvider with ChangeNotifier{
       }
     );
     
-    //TODO: Nos subscribimos a la cola de solicitud de contactos
+    _stompClient.subscribe(
+      destination: '/user/$_userUuid/contacts', 
+      callback: (StompFrame frame){
+        print('Solicitud de contacto');
+        print(frame.body);
+      }
+    );
   }
 
   void _onDisconnect(StompFrame connectFrame){

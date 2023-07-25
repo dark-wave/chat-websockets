@@ -3,6 +3,7 @@ package dev.noemontes.server.chat.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import dev.noemontes.server.chat.dto.ContactRequestDto;
@@ -17,6 +18,9 @@ public class ContactServiceImpl implements ContactService{
 	
 	@Autowired
 	private UserMongoRepository userMongoRepository;
+	
+	@Autowired
+	SimpMessagingTemplate messagingTemplate;
 	
 	@Override
 	public void contactRequest(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException{
@@ -37,14 +41,14 @@ public class ContactServiceImpl implements ContactService{
 				
 				/*Comprobamos si el usuario destino está conectado al servidor de websockets. Si no está conectado almacenamos la solicitud de contacto
 				  en la base de datos para notificarle cuando se conecte*/
-				
+				if(contactModel.getConnected()) {
+					messagingTemplate.convertAndSendToUser(contactModel.getUuid(), "/contacts", "Hola esto es una solicitud de contacto");
+				}
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");
 			}
 		}else {
 			throw new UserNotFoundException("El usuario con el uuid: " + contactRequestDto.getRequestUserUuid() + ", no está registrado en el sistema");
 		}
-		
-		
 	}
 }

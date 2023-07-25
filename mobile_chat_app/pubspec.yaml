@@ -41,6 +41,7 @@ dependencies:
   http: ^0.13.5
   encrypt: ^5.0.1
   stomp_dart_client: ^0.4.4
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:
