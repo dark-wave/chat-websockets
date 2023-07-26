@@ -42,7 +42,7 @@ public class ContactServiceImpl implements ContactService{
 				/*Comprobamos si el usuario destino está conectado al servidor de websockets. Si no está conectado almacenamos la solicitud de contacto
 				  en la base de datos para notificarle cuando se conecte*/
 				if(contactModel.getConnected()) {
-					messagingTemplate.convertAndSendToUser(contactModel.getUuid(), "/contacts", "Hola esto es una solicitud de contacto");
+					messagingTemplate.convertAndSendToUser(contactModel.getUuid(), "/contacts", "El usuario: " + userModel.getEmail() + " quiere ser tu amigo. Le aceptas?");
 				}
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");
