@@ -9,9 +9,16 @@ import 'package:mobile_chat_app/src/provider/network_status_provider.dart';
 import 'package:mobile_chat_app/src/provider/server_status_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
+import 'package:mobile_chat_app/src/service/notification_service.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(const ChatApp());
+void main() async{
+  //Inicizalizamos la configuración de las notificaciones
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().setupLocalNotifications();
+
+  runApp(const ChatApp());
+} 
 
 class ChatApp extends StatelessWidget {
   const ChatApp({super.key});

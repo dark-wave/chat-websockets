@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/dto/message.dart';
+import 'package:mobile_chat_app/src/service/notification_service.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -96,6 +97,9 @@ class SocketProvider with ChangeNotifier{
       callback: (StompFrame frame){
         print('Solicitud de contacto');
         print(frame.body);
+
+        //Lanzamos una notificación local
+        NotificationService().showLocalNotification('Solicitud de contacto', frame.body!);
       }
     );
   }
