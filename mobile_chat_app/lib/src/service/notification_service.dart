@@ -13,6 +13,7 @@ class NotificationService{
   Future<void> setupLocalNotifications() async{
     const androidInitializationSetting = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInitializationSetting = DarwinInitializationSettings();
+    
     const initializationSettings = InitializationSettings(android: androidInitializationSetting, iOS: iosInitializationSetting);
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -28,18 +29,17 @@ class NotificationService{
       priority: Priority.high,
       showWhen: true, //Mostramos la hora
       autoCancel: false,// No se cierra automáticamente
-      actions: <AndroidNotificationAction>[
+      /*actions: <AndroidNotificationAction>[
         AndroidNotificationAction(
-          'id_1',
-          'Aceptar',
-          contextual: true,
+          'action_accept',
+          'Aceptar'
         ),
         AndroidNotificationAction(
-          'id_2',
+          'action_cancel',
           'Rechazar',
           titleColor: Color.fromARGB(255, 255, 0, 0),
         ),
-      ]
+      ]*/
     );
 
     const iosNotificatonDetail = DarwinNotificationDetails();
@@ -50,5 +50,14 @@ class NotificationService{
     );
 
     _flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails);
+  }
+  
+  //Metodo lanzado al pulsar sobre los botones de la notificación
+  Future<void> onNotificationAction(String? action) async {
+    if (action == 'action_accept') {
+      print('Hola has pulsado aceptar');
+    } else if (action == 'action_cancel') {
+      print('Has pulsado cancelar');
+    }
   }
 }
