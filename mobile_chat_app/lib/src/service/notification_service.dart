@@ -29,7 +29,7 @@ class NotificationService{
       priority: Priority.high,
       showWhen: true, //Mostramos la hora
       autoCancel: false,// No se cierra automáticamente
-      /*actions: <AndroidNotificationAction>[
+      actions: <AndroidNotificationAction>[
         AndroidNotificationAction(
           'action_accept',
           'Aceptar'
@@ -39,10 +39,16 @@ class NotificationService{
           'Rechazar',
           titleColor: Color.fromARGB(255, 255, 0, 0),
         ),
-      ]*/
+      ]
     );
 
-    const iosNotificatonDetail = DarwinNotificationDetails();
+    const iosNotificatonDetail = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      subtitle: 'Notificación de chat',
+      threadIdentifier: 'chat_app_notification'
+    );
 
     const notificationDetails = NotificationDetails(
       iOS: iosNotificatonDetail,
