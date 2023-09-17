@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 //Clase que contiene la lógica de negocio de las notificaciones
@@ -28,25 +27,14 @@ class NotificationService{
       importance: Importance.max,
       priority: Priority.high,
       showWhen: true, //Mostramos la hora
-      autoCancel: false,// No se cierra automáticamente
-      actions: <AndroidNotificationAction>[
-        AndroidNotificationAction(
-          'action_accept',
-          'Aceptar'
-        ),
-        AndroidNotificationAction(
-          'action_cancel',
-          'Rechazar',
-          titleColor: Color.fromARGB(255, 255, 0, 0),
-        ),
-      ]
+      autoCancel: false// No se cierra automáticamente
     );
 
     const iosNotificatonDetail = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
-      subtitle: 'Notificación de chat',
+      presentList: true,
       threadIdentifier: 'chat_app_notification'
     );
 

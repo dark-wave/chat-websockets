@@ -95,9 +95,6 @@ class SocketProvider with ChangeNotifier{
     _stompClient.subscribe(
       destination: '/user/$_userUuid/contacts', 
       callback: (StompFrame frame){
-        //Lanzamos una notificación local
-        print('Hemos recibido una solicitud de contacto');
-        
         NotificationService().showLocalNotification('Solicitud de contacto', frame.body!);
       }
     );
