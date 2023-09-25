@@ -23,7 +23,7 @@ public class ContactServiceImpl implements ContactService{
 	SimpMessagingTemplate messagingTemplate;
 	
 	@Override
-	public void contactRequest(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException{
+	public void addContact(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException{
 		Optional<UserModel> opUserModel = userMongoRepository.findByUuid(contactRequestDto.getRequestUserUuid());
 		
 		if(opUserModel.isPresent()) {
@@ -39,11 +39,9 @@ public class ContactServiceImpl implements ContactService{
 					throw new ContactExistsException("El usuario con el email: " + contactModel.getEmail() + ", ya es contacto del usuario: " + userModel.getEmail());
 				}
 				
-				/*Comprobamos si el usuario destino está conectado al servidor de websockets. Si no está conectado almacenamos la solicitud de contacto
-				  en la base de datos para notificarle cuando se conecte*/
-				if(contactModel.getConnected()) {
-					messagingTemplate.convertAndSendToUser(contactModel.getUuid(), "/contacts", "El usuario: " + userModel.getEmail() + " te ha agregado como contacto");
-				}
+				//Se agrega como contacto
+				userModel.getContacts().add(contactModel);
+				userMongoRepository.save(userModel);
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");
 			}
