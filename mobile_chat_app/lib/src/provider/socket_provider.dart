@@ -93,7 +93,7 @@ class SocketProvider with ChangeNotifier{
     );
     
     _stompClient.subscribe(
-      destination: '/user/$_userUuid/contacts', 
+      destination: '/user/$_userUuid/queue/contact', 
       callback: (StompFrame frame){
         NotificationService().showLocalNotification('Solicitud de contacto', frame.body!);
       }

@@ -114,4 +114,20 @@ public class UserServiceImpl implements UserService{
 			userMongoRepository.save(userModel);
 		}
 	}
+
+	@Override
+	public void removeContact(String userUuid, String contactUuid) {
+		Optional <UserModel> opUser = userMongoRepository.findByUuid(userUuid);
+		Optional <UserModel> opContact = userMongoRepository.findByUuid(contactUuid);
+
+		if(opUser.isPresent() &&  opContact.isPresent()){
+			UserModel userModel = opUser.get();
+			UserModel contactModel = opContact.get();
+			userModel.removeContact(contactModel);
+			contactModel.removeContact(userModel);
+
+			userMongoRepository.save(userModel);
+			userMongoRepository.save(contactModel);
+		}
+	}
 }

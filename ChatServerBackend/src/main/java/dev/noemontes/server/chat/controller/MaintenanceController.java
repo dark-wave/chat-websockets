@@ -6,11 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev.noemontes.server.chat.dto.UserRegisterDto;
 import dev.noemontes.server.chat.service.UserService;
@@ -115,5 +111,18 @@ public class MaintenanceController {
 		}
 
 		return ResponseEntity.ok(userDto);
+	}
+
+	/**
+	 * Método para eliminar un contacto de un usuario y actualiza la base de datos.
+	 * @param userUuid Identificador unico del usuario sobre el que se borrara el contacto
+	 * @param contactUuid Identificador unico del contacto que se va desasociar
+	 * @return HttpStatus. Estado de la respuesta del servidor.
+	 */
+	@DeleteMapping("/user/contacts/{useruuid}/{contactuuid}")
+	public ResponseEntity<?> deleteContact(@PathVariable("useruuid") String userUuid, @PathVariable("contactuuid") String contactUuid){
+		userService.removeContact(userUuid, contactUuid);
+
+		return ResponseEntity.notFound().build();
 	}
 }

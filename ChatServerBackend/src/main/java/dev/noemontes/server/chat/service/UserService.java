@@ -28,4 +28,12 @@ public interface UserService {
 	 * @param sessionId
 	 */
 	public void removeUserSessionId(String sessionId);
+
+	/**
+	 * @autor dark-wave
+	 * Método que elimina un contacto de un usuario.
+	 * @param userUuid
+	 * @param contactUuid
+	 */
+	public void removeContact(String userUuid, String contactUuid);
 }

@@ -2,6 +2,7 @@ package dev.noemontes.server.chat.service.impl;
 
 import java.util.Optional;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ContactServiceImpl implements ContactService{
 	
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
-	
+
 	@Override
 	public void addContact(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException{
 		Optional<UserModel> opUserModel = userMongoRepository.findByUuid(contactRequestDto.getRequestUserUuid());
@@ -39,9 +40,14 @@ public class ContactServiceImpl implements ContactService{
 					throw new ContactExistsException("El usuario con el email: " + contactModel.getEmail() + ", ya es contacto del usuario: " + userModel.getEmail());
 				}
 				
-				//Se agrega como contacto
-				userModel.getContacts().add(contactModel);
+				//Se agrega como contacto en ambos sentidos
+				userModel.addContact(contactModel);
+				contactModel.addContact(userModel);
+
 				userMongoRepository.save(userModel);
+				userMongoRepository.save(contactModel);
+
+				messagingTemplate.convertAndSendToUser(contactModel.getUuid(), "/queue/contact", "El usuario " + userModel.getEmail() + " te ha agregado como contacto");
 			}else {
 				throw new UserNotFoundException("El usuario con el email: " + contactRequestDto.getUserEmail() + ", no está registrado en el sistema");
 			}

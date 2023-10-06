@@ -48,56 +48,59 @@ class _ContactsPageState extends State<ContactsPage> {
         ],
       ),
       body: SafeArea(
-        child: Consumer<LoginProvider>(
-          builder: (context, data, child){
-            var userList = data.userLoginResponse.contacts;
-
-            if(userList.isNotEmpty){
-              return ListView.separated(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: userList.length,
-                separatorBuilder: (context, i) => const Divider(), 
-                itemBuilder: (context, i) =>  ListTile(
-                  title: Text(userList[i].name),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue[100],
-                    child: Text(userList[i].name.substring(0,2)),
-                  ),
-                  trailing: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.red
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Consumer<LoginProvider>(
+            builder: (context, data, child){
+              var userList = data.userLoginResponse.contacts;
+        
+              if(userList.isNotEmpty){
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: userList.length,
+                  separatorBuilder: (context, i) => const Divider(), 
+                  itemBuilder: (context, i) =>  ListTile(
+                    title: Text(userList[i].name),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue[100],
+                      child: Text(userList[i].name.substring(0,2)),
                     ),
+                    trailing: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.red
+                      ),
+                    ),
+                    onTap: () { 
+                      SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
+                      LoginProvider login = Provider.of<LoginProvider>(context, listen: false);
+        
+                      User user = User(
+                        uuid: userList[i].uuid,
+                        name: userList[i].name,
+                        online: true
+                      );
+        
+                      //Limpiamos los mensajes anteriores
+                      socket.clearMessageList();
+        
+                      //Cargamos el historico de mensjes del usuario
+                      socket.loadLastMessages(login.userLoginResponse.uuid, user.uuid);
+                      
+                      Navigator.pushReplacementNamed(context, 'chat', arguments: user);
+                    }
                   ),
-                  onTap: () { 
-                    SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
-                    LoginProvider login = Provider.of<LoginProvider>(context, listen: false);
-
-                    User user = User(
-                      uuid: userList[i].uuid,
-                      name: userList[i].name,
-                      online: true
-                    );
-
-                    //Limpiamos los mensajes anteriores
-                    socket.clearMessageList();
-
-                    //Cargamos el historico de mensjes del usuario
-                    socket.loadLastMessages(login.userLoginResponse.uuid, user.uuid);
-                    
-                    Navigator.pushReplacementNamed(context, 'chat', arguments: user);
-                  }
-                ),
-              );
-            }else{
-              return const Center(
-                child: Text('No tienes contactos agregados')
-              );
-            }
-          },
+                );
+              }else{
+                return const Center(
+                  child: Text('No tienes contactos agregados')
+                );
+              }
+            },
+          ),
         )
       ),
       floatingActionButton: FloatingActionButton(

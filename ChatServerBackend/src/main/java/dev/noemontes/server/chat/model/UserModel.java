@@ -3,6 +3,8 @@ package dev.noemontes.server.chat.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -29,18 +31,23 @@ public class UserModel {
 	private String sessionId;
 
 	@DBRef
-    private List<UserModel> contacts;
+    private List<UserModel> contacts = new ArrayList<UserModel>();
 
     @CreatedDate
     private Date createdAt;
-    
-    
+
     public void addContact(UserModel contact) {
 		if(contacts == null) {
 			contacts = new ArrayList<UserModel>();
 		}
 		
 		contacts.add(contact);
+	}
+
+	public void removeContact(UserModel contact) {
+		if(contacts != null) {
+			contacts.remove(contact);
+		}
 	}
     
     public Boolean existsContact(String contactUuid) {
@@ -54,4 +61,28 @@ public class UserModel {
     	
     	return false;
     }
+
+	@Override
+	public String toString() {
+		return "UserModel{" +
+				"uuid='" + uuid + '\'' +
+				", name='" + name + '\'' +
+				", lastName='" + lastName + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", connected=" + connected +
+				", sessionId='" + sessionId + '\'' +
+				", createdAt=" + createdAt +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof UserModel) {
+			UserModel userModel = (UserModel) obj;
+			return userModel.getUuid().equals(this.uuid);
+		}
+
+		return false;
+	}
 }
