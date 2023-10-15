@@ -50,21 +50,21 @@ class _ContactsPageState extends State<ContactsPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Consumer<LoginProvider>(
+          child: Consumer<SocketProvider>(
             builder: (context, data, child){
-              var userList = data.userLoginResponse.contacts;
+              var contactList = data.contactList;
         
-              if(userList.isNotEmpty){
+              if(contactList.isNotEmpty){
                 return ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: userList.length,
+                  itemCount: contactList.length,
                   separatorBuilder: (context, i) => const Divider(), 
                   itemBuilder: (context, i) =>  ListTile(
-                    title: Text(userList[i].name),
+                    title: Text(contactList[i].name),
                     leading: CircleAvatar(
                       backgroundColor: Colors.blue[100],
-                      child: Text(userList[i].name.substring(0,2)),
+                      child: Text(contactList[i].name.substring(0,2)),
                     ),
                     trailing: Container(
                       width: 10,
@@ -79,8 +79,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       LoginProvider login = Provider.of<LoginProvider>(context, listen: false);
         
                       User user = User(
-                        uuid: userList[i].uuid,
-                        name: userList[i].name,
+                        uuid: contactList[i].uuid,
+                        name: contactList[i].name,
                         online: true
                       );
         

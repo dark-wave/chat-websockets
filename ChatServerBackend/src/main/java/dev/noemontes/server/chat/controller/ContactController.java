@@ -22,11 +22,11 @@ public class ContactController {
 	@Autowired
 	private ContactService contactService;
 
-	/**
-	 * Método para solicitar a un contacto que se añada a la lista de contactos. Se envía un mensaje usando
-	 * websockets para que al usuario destino le apareza una notificación de que tiene una petición de contacto.
-	 * @param contactRequestDto
-	 * @return ResponseEntity
+	 /**
+	  * Método para solicitar a un contacto que se añada a la lista de contactos. Se envía un mensaje usando
+	  * websockets para que al usuario destino le apareza una notificación de que tiene una petición de contacto.
+	  * @param contactRequestDto
+	  * @return ResponseEntity
 	 */
 	@PostMapping("/request")
 	public ResponseEntity<?> contactRequest(@RequestBody ContactRequestDto contactRequestDto) {

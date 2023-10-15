@@ -6,4 +6,6 @@ import dev.noemontes.server.chat.exceptions.UserNotFoundException;
 
 public interface ContactService {
 	public void addContact(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException;
+
+	public void notifyContacts(String userUuid);
 }

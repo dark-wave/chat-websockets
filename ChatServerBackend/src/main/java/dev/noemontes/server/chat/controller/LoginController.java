@@ -36,7 +36,7 @@ public class LoginController {
 	public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginDto) {
 		UserDto logedUser = loginService.login(loginDto);
 		
-		if(logedUser!=null) {	
+		if(logedUser!=null){
 			return ResponseEntity.ok(logedUser);
 		}
 		

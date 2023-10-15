@@ -42,6 +42,4 @@ public class WebSocketEventListener {
         // Acciones cuando un cliente se desconecta
         System.out.println("Cliente desconectado. ID de sesión: " + sessionId);
     }
-    
-    
 }

@@ -3,6 +3,7 @@ package dev.noemontes.server.chat.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.noemontes.server.chat.dto.ContactDto;
 import org.springframework.stereotype.Component;
 
 import dev.noemontes.server.chat.dto.UserDto;
@@ -58,5 +59,29 @@ public class UserConverter {
 			userDtoList.add(convertModelToDto(userModel));
 		}
 		return userDtoList;
+	}
+
+	public ContactDto convertUserModelToContactDto(UserModel userModel){
+		ContactDto contactDto = new ContactDto();
+		contactDto.setUuid(userModel.getUuid());
+		contactDto.setName(userModel.getName());
+		contactDto.setConnected(userModel.getConnected());
+
+		return contactDto;
+	}
+
+	public List<ContactDto> convertUserModelContactsToContactDtoList(UserModel userModel){
+		List<ContactDto> contactDtoList = new ArrayList<ContactDto>();
+
+		for(UserModel contactModel : userModel.getContacts()) {
+			ContactDto contactDto = new ContactDto();
+			contactDto.setUuid(contactModel.getUuid());
+			contactDto.setName(contactModel.getName());
+			contactDto.setConnected(contactModel.getConnected());
+
+			contactDtoList.add(contactDto);
+		}
+
+		return contactDtoList;
 	}
 }

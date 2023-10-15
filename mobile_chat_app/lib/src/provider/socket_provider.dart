@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/dto/user.dart';
 import 'package:mobile_chat_app/src/environment/environment.dart';
 import 'package:mobile_chat_app/src/dto/message.dart';
 import 'package:mobile_chat_app/src/service/notification_service.dart';
@@ -18,11 +19,13 @@ enum ServerStatus{
 class SocketProvider with ChangeNotifier{
   late StompClient  _stompClient;
   List<Message> _messageList = [];
+  List<User> _contactList = [];
   late String _userUuid;
 
   StompClient get stompClient => _stompClient;
 
   List<Message> get messageList => _messageList;
+  List<User> get contactList => _contactList;
 
   // Método que devuelve los ultimos mensajes enviados
   void loadLastMessages(String uuidSender, String uuidReceiver) async{
@@ -92,12 +95,39 @@ class SocketProvider with ChangeNotifier{
       }
     );
     
+    //Nos suscribimos a la cola de solicitudes de contacto del usuario
     _stompClient.subscribe(
-      destination: '/user/$_userUuid/queue/contact', 
+      destination: '/user/$_userUuid/queue/requestcontact', 
       callback: (StompFrame frame){
         NotificationService().showLocalNotification('Solicitud de contacto', frame.body!);
       }
     );
+
+    //Nos subscribimos a la cola de contactos (conectados y desconectados)
+    _stompClient.subscribe(
+      destination: '/user/$_userUuid/queue/contacts', 
+      callback: (StompFrame frame){
+        print('Contacto: ${frame.body}');
+
+        User user = User.fromJson(json.decode(frame.body!));
+        
+        _addContact(user);
+      }
+    );
+  }
+
+  void _addContact(User user){
+    int index = _contactList.indexWhere((element) => element.uuid == user.uuid);
+
+    if(index != -1){
+      _contactList[index] = user;
+    }else{
+      _contactList.add(user);
+    }
+
+    _contactList.sort((a, b) => a.name.compareTo(b.name));
+
+    notifyListeners();
   }
 
   void _onDisconnect(StompFrame connectFrame){

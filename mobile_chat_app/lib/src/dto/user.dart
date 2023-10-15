@@ -4,7 +4,7 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
 
-class User {
+class User implements Comparable<User>{
     User({
       required this.name,
       required this.uuid,
@@ -26,4 +26,9 @@ class User {
       "uuid": uuid,
       "online": online,
     };
+
+    @override
+    int compareTo(User other) {
+      return name.compareTo(other.name);
+    }
 }
