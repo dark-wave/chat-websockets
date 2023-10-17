@@ -78,4 +78,19 @@ public class ContactServiceImpl implements ContactService{
 			}
 		}
 	}
+
+	@Override
+	public void loadContacts(String userUuid) {
+		Optional<UserModel> opUser = userMongoRepository.findByUuid(userUuid);
+
+		if(opUser.isPresent()){
+			UserModel user = opUser.get();
+
+			List<UserModel> contacts = user.getContacts();
+			for(UserModel contact : contacts) {
+				ContactDto contactDto = userConverter.convertUserModelToContactDto(contact);
+				messagingTemplate.convertAndSendToUser(user.getUuid(), "/queue/contacts", contactDto);
+			}
+		}
+	}
 }

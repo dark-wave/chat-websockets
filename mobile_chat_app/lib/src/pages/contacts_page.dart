@@ -71,7 +71,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       height: 10,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        color: Colors.red
+                        color: contactList[i].online ? Colors.green : Colors.red
                       ),
                     ),
                     onTap: () { 

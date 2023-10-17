@@ -8,4 +8,6 @@ public interface ContactService {
 	public void addContact(ContactRequestDto contactRequestDto) throws UserNotFoundException, ContactExistsException;
 
 	public void notifyContacts(String userUuid);
+
+	public void loadContacts(String userUuid);
 }

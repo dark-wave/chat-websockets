@@ -6,6 +6,7 @@ import dev.noemontes.server.chat.dto.LogoutRequestDto;
 import dev.noemontes.server.chat.exceptions.LoginException;
 import dev.noemontes.server.chat.model.UserModel;
 
+import dev.noemontes.server.chat.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class LoginServiceImpl implements LoginService{
 	
 	@Autowired
 	private UserConverter userConverter;
+
+	@Autowired
+	private ContactService contactService;
 	
 	@Override
 	public UserDto login(LoginRequestDto userDto) throws LoginException {
@@ -34,6 +38,12 @@ public class LoginServiceImpl implements LoginService{
 			//Actualizamos el estado del contacto a conectado en base de datos
 			userDb.setConnected(true);
 			userRepository.save(userDb);
+
+			//Cargamos la lista inicial de nuestros contactos
+			contactService.loadContacts(userDb.getUuid());
+
+			//Notificamos a los contactos que se ha conectado
+			contactService.notifyContacts(userDb.getUuid());
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
@@ -51,6 +61,9 @@ public class LoginServiceImpl implements LoginService{
 			//Actualizamos el estado del contacto a conectado en base de datos
 			userDb.setConnected(false);
 			userRepository.save(userDb);
+
+			//notificamos a los contatos que se ha desconectado
+			contactService.notifyContacts(logoutDto.getUserUuid());
 			
 			return userConverter.convertModelToDto(userDb);
 		}else {
