@@ -1,11 +1,14 @@
 package dev.noemontes.server.chat.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import dev.noemontes.server.chat.exceptions.ContactExistsException;
 import dev.noemontes.server.chat.exceptions.UserNotFoundException;
 import dev.noemontes.server.chat.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
 import dev.noemontes.server.chat.dto.ContactRequestDto;

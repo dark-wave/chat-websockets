@@ -107,8 +107,6 @@ class SocketProvider with ChangeNotifier{
     _stompClient.subscribe(
       destination: '/user/$_userUuid/queue/contacts', 
       callback: (StompFrame frame){
-        print('Contacto: ${frame.body}');
-
         User user = User.fromJson(json.decode(frame.body!));
         
         _addContact(user);

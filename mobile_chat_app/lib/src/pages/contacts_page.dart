@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_chat_app/src/dto/user.dart';
 import 'package:mobile_chat_app/src/dto/user_login_response.dart';
+import 'package:mobile_chat_app/src/provider/contacts_provider.dart';
 import 'package:mobile_chat_app/src/provider/login_provider.dart';
 import 'package:mobile_chat_app/src/provider/socket_provider.dart';
 import 'package:mobile_chat_app/src/widgets/add_contact_dialog.dart';
@@ -39,6 +40,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 bool logoutResponse = await Provider.of<LoginProvider>(context, listen: false).logout(logedUser.uuid);
             
                 if(logoutResponse){  
+                  Future.microtask(() => Provider.of<ContactsProvider>(context, listen: false).clearContacts());
                   Future.microtask(() => Provider.of<SocketProvider>(context, listen: false).disconnectStomp());
                   Future.microtask(() => Navigator.pushReplacementNamed(context, 'login'));
                 }                
@@ -71,7 +73,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       height: 10,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        color: contactList[i].online ? Colors.green : Colors.red
+                        color: contactList[i].connected ? Colors.green : Colors.red
                       ),
                     ),
                     onTap: () { 
@@ -81,7 +83,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       User user = User(
                         uuid: contactList[i].uuid,
                         name: contactList[i].name,
-                        online: true
+                        connected: true
                       );
         
                       //Limpiamos los mensajes anteriores

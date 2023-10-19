@@ -8,23 +8,23 @@ class User implements Comparable<User>{
     User({
       required this.name,
       required this.uuid,
-      required this.online,
+      required this.connected,
     });
 
     String name;
     String uuid;
-    bool online;
+    bool connected;
 
     factory User.fromJson(Map<String, dynamic> json) => User(
       name: json["name"],
       uuid: json["uuid"],
-      online: json["online"] ?? false,
+      connected: json["connected"] ?? false,
     );
 
     Map<String, dynamic> toJson() => {
       "name": name,
       "uuid": uuid,
-      "online": online,
+      "connected": connected,
     };
 
     @override

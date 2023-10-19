@@ -25,4 +25,10 @@ class ContactsProvider with ChangeNotifier{
 
     notifyListeners();
   }
+
+  void clearContacts(){
+    _contactList.clear();
+
+    notifyListeners();
+  }
 }
