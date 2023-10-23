@@ -39,9 +39,6 @@ public class LoginServiceImpl implements LoginService{
 			userDb.setConnected(true);
 			userRepository.save(userDb);
 
-			//Cargamos la lista inicial de nuestros contactos
-			contactService.loadContacts(userDb.getUuid());
-
 			//Notificamos a los contactos que se ha conectado
 			contactService.notifyContacts(userDb.getUuid());
 			

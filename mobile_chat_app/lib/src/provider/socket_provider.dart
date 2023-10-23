@@ -110,6 +110,7 @@ class SocketProvider with ChangeNotifier{
         User user = User.fromJson(json.decode(frame.body!));
         
         _addContact(user);
+        notifyListeners();
       }
     );
   }

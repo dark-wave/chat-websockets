@@ -74,7 +74,9 @@ public class ContactServiceImpl implements ContactService{
 			List<UserModel> contacts = user.getContacts();
 			for(UserModel contact : contacts) {
 				ContactDto contactDto = userConverter.convertUserModelToContactDto(contact);
-				messagingTemplate.convertAndSendToUser(user.getUuid(), "/queue/contacts", contactDto);
+				if(contact.getConnected()) {
+					messagingTemplate.convertAndSendToUser(contactDto.getUuid(), "/queue/contacts", user);
+				}
 			}
 		}
 	}

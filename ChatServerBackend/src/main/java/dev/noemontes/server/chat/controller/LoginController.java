@@ -2,6 +2,7 @@ package dev.noemontes.server.chat.controller;
 
 import dev.noemontes.server.chat.dto.LogoutRequestDto;
 import dev.noemontes.server.chat.exceptions.LoginException;
+import dev.noemontes.server.chat.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class LoginController {
 		
 	@Autowired
 	private LoginService loginService;
+
+	@Autowired
+	private ContactService contactService;
 
 	/**
 	 * Servicio de login de la aplicacion
@@ -52,7 +56,8 @@ public class LoginController {
 	public ResponseEntity<?> logoutUser(@RequestBody LogoutRequestDto logoutRequestDto){
 		UserDto logedUser = loginService.logout(logoutRequestDto);
 		
-		if(logedUser!=null) {	
+		if(logedUser!=null) {
+			contactService.notifyContacts(logedUser.getUuid());
 			return ResponseEntity.ok(logedUser);
 		}
 		
