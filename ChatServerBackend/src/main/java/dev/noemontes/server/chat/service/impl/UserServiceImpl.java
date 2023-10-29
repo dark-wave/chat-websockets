@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import dev.noemontes.server.chat.exceptions.UserExistsException;
+import dev.noemontes.server.chat.exceptions.UserNotCreateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,22 @@ public class UserServiceImpl implements UserService{
 	private UserRegisterConverter userConverter;
 
 	@Override
-	public UserRegisterDto saveUser(UserRegisterDto userDto) {
+	public UserRegisterDto saveUser(UserRegisterDto userDto) throws UserNotCreateException, UserExistsException {
 		UserModel userModel;
 		userModel = userConverter.convertDtoToModel(userDto);
-		
-		UserModel userDbModel = userMongoRepository.save(userModel);
-		
-		return userConverter.convertModelToDto(userDbModel);
+
+		try{
+			Optional<UserModel> userDbTempModel = userMongoRepository.findByEmail(userModel.getEmail());
+			if (userDbTempModel.isPresent()) {
+				throw new UserExistsException("El usuario ya se encuentra registrado");
+			}
+
+			UserModel userDbModel = userMongoRepository.save(userModel);
+
+			return userConverter.convertModelToDto(userDbModel);
+		}catch (Exception e) {
+			throw new UserNotCreateException("Error al crear el usuario");
+		}
 	}
 	
 	@Override

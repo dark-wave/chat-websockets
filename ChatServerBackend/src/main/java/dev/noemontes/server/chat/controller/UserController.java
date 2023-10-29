@@ -1,5 +1,7 @@
 package dev.noemontes.server.chat.controller;
 
+import dev.noemontes.server.chat.exceptions.UserExistsException;
+import dev.noemontes.server.chat.exceptions.UserNotCreateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,16 @@ public class UserController {
 	 */
 	@PostMapping("/create")
 	public ResponseEntity<?> saveUser(@RequestBody UserRegisterDto userDto){
-		UserRegisterDto userDtoServiceResponse = userService.saveUser(userDto);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(userDtoServiceResponse);
+
+		try{
+			UserRegisterDto userDtoServiceResponse = userService.saveUser(userDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(userDtoServiceResponse);
+		}catch (UserNotCreateException ex){
+			LOG.error("Error al crear el usuario: " + ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+		}catch (UserExistsException ex){
+			LOG.error("Error al crear el usuario: " + ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+		}
 	}
 }

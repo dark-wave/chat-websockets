@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_chat_app/src/enum/snackbar_type.dart';
 import 'package:mobile_chat_app/src/provider/server_status_provider.dart';
 import 'package:mobile_chat_app/src/provider/user_provider.dart';
 import 'package:mobile_chat_app/src/widgets/custom_appbar.dart';
 import 'package:mobile_chat_app/src/widgets/custom_input.dart';
+import 'package:mobile_chat_app/src/widgets/snackbar_info_widget.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -126,6 +128,21 @@ class _RegisterPageState extends State<RegisterPage> {
       _emailController.text, 
       _passwordController.text
     );
+
+    //Si el status code es 201 mostramos un mensaje de registro exitoso
+    if(response.statusCode == 201){
+      Future.delayed(Duration.zero, () {
+        SnackbarInfoWidget.showSnackbar(context, SnackbarType.info, 'Usuario registrado con éxito');
+      });
+    }else if (response.statusCode == 400){
+      Future.delayed(Duration.zero, () {
+        SnackbarInfoWidget.showSnackbar(context, SnackbarType.warning, 'Usuario ya registrado');
+      });
+    }else if(response.statusCode == 500){
+      Future.delayed(Duration.zero, () {
+        SnackbarInfoWidget.showSnackbar(context, SnackbarType.error, 'Error al registrar el usuario');
+      });
+    }
 
     //Limpiamos los controladores
     setState(() {
