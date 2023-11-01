@@ -6,24 +6,24 @@ String messageToJson(Message data) => json.encode(data.toJson());
 
 class Message {
     Message({
-      required this.uidSender,
-      required this.uidReceiver,
+      required this.uuidSender,
+      required this.uuidReceiver,
       required this.message
     });
 
-    String uidSender;
-    String uidReceiver;
+    String uuidSender;
+    String uuidReceiver;
     String message;
 
     factory Message.fromJson(Map<String, dynamic> json) => Message(
-      uidSender: json["uidSender"],
-      uidReceiver: json["uidReceiver"],
-      message: json["message"]
+      uuidSender: json["uuidSender"] ?? '',
+      uuidReceiver: json["uuidReceiver"] ?? '',
+      message: json["message"] ?? ''
     );
 
     Map<String, dynamic> toJson() => {
-      "uidSender": uidSender,
-      "uidReceiver": uidReceiver,
+      "uuidSender": uuidSender,
+      "uuidReceiver": uuidReceiver,
       "message": message
     };
 }

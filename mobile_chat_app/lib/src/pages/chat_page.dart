@@ -62,7 +62,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: Consumer<SocketProvider>(
               builder: (context, data, child){
-                var messageList = data.messageList;
+                var messageList = data.messageList.where((message) => (message.uuidSender == loginProvider.userLoginResponse.uuid && message.uuidReceiver == user.uuid) || (message.uuidSender == user.uuid && message.uuidReceiver == loginProvider.userLoginResponse.uuid)).toList();
 
                 if(messageList.isNotEmpty){
                   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -80,7 +80,7 @@ class _ChatPageState extends State<ChatPage> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: messageList.length,
                         itemBuilder: (context, index){
-                          return GloveMessage(message: messageList[index].message, isMe: messageList[index].uidSender == loginProvider.userLoginResponse.uuid);
+                          return GloveMessage(message: messageList[index].message, isMe: messageList[index].uuidSender == loginProvider.userLoginResponse.uuid);
                         },
                       ),
                     ),
@@ -131,8 +131,8 @@ class _ChatPageState extends State<ChatPage> {
     if(messageStr.isEmpty) return;
 
     Message message = Message(
-      uidSender: loginProvider.userLoginResponse.uuid, 
-      uidReceiver: user.uuid, 
+      uuidSender: loginProvider.userLoginResponse.uuid, 
+      uuidReceiver: user.uuid, 
       message: messageStr
     );
 
@@ -146,7 +146,6 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _textController.dispose();
     _scrollController.dispose();
-    socketProvider.disconnectStomp();
 
     super.dispose();
   }

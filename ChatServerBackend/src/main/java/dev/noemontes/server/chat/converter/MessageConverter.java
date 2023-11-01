@@ -25,8 +25,8 @@ public class MessageConverter {
 		MessageResponseDto messageResponseDto = new MessageResponseDto();
 		
 		if(messageModel != null) {
-			messageResponseDto.setUidSender(messageModel.getUserUuidSender());
-			messageResponseDto.setUidReceiver(messageModel.getUserUuidReveiver());
+			messageResponseDto.setUuidSender(messageModel.getUserUuidSender());
+			messageResponseDto.setUuidReceiver(messageModel.getUserUuidReveiver());
 			messageResponseDto.setMessage(messageModel.getMessage());
 			messageResponseDto.setCreationDate(messageModel.getCreationDate());
 		}
@@ -40,8 +40,8 @@ public class MessageConverter {
 		
 		for(MessageModel messageModel : messageModelList) {
 			messageResponseDto = new MessageResponseDto();
-			messageResponseDto.setUidSender(messageModel.getUserUuidSender());
-			messageResponseDto.setUidReceiver(messageModel.getUserUuidReveiver());
+			messageResponseDto.setUuidSender(messageModel.getUserUuidSender());
+			messageResponseDto.setUuidReceiver(messageModel.getUserUuidReveiver());
 			messageResponseDto.setMessage(messageModel.getMessage());
 			messageResponseDto.setCreationDate(messageModel.getCreationDate());
 			

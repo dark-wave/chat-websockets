@@ -1,6 +1,7 @@
 package dev.noemontes.server.chat.component;
 
 
+import dev.noemontes.server.chat.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
@@ -20,11 +21,15 @@ import dev.noemontes.server.chat.model.UserModel;
 public class ContactsChangeStreamListener extends AbstractMongoEventListener<UserModel> {
 	@Autowired
 	SimpMessagingTemplate messagingTemplate;
-	
+
+    @Autowired
+    ContactService contactService;
+
     @Override
     public void onAfterSave(AfterSaveEvent<UserModel> event) {
         System.out.println("onAfterSave({}, {})" + event.getSource() + event.getDocument());
         
         //TODO: Publicamos la lista de contactos al websocket del usuario específico a fin de notificar cambios en sus contactos
+        contactService.notifyContacts(event.getSource().getUuid());
     }
 }

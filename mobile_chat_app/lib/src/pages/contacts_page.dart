@@ -69,8 +69,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: Text(contactList[i].name.substring(0,2)),
                     ),
                     trailing: Container(
-                      width: 10,
-                      height: 10,
+                      width: 15,
+                      height: 15,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: contactList[i].connected ? Colors.green : Colors.red

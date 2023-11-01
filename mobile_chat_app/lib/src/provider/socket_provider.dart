@@ -88,8 +88,7 @@ class SocketProvider with ChangeNotifier{
       destination: '/user/$_userUuid/queue/messages',
       callback: (StompFrame frame){
         Message message = Message.fromJson(json.decode(frame.body!));
-
-        _messageList.add(message);
+        _messageList.add(message);        
 
         notifyListeners();
       }
@@ -130,6 +129,8 @@ class SocketProvider with ChangeNotifier{
   }
 
   void _onDisconnect(StompFrame connectFrame){
+    _contactList = [];
+
     notifyListeners();
   } 
 
@@ -138,7 +139,7 @@ class SocketProvider with ChangeNotifier{
     _messageList.add(message);
 
     _stompClient.send(
-      destination: '/app/sendMessage/${message.uidReceiver}',
+      destination: '/app/sendMessage/${message.uuidReceiver}',
       body: json.encode(message.toJson())
     );
 

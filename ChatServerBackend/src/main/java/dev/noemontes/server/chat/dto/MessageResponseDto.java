@@ -14,8 +14,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MessageResponseDto {
-	private String uidSender;
-	private String uidReceiver;
+	private String uuidSender;
+	private String uuidReceiver;
 	private String message;
 	private Date creationDate;
 }

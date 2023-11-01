@@ -57,7 +57,7 @@ public class ChatController {
 		messagingTemplate.convertAndSendToUser(useruuid, "/queue/messages", message);
 	}
 	
-	@GetMapping("/{uuidSender}/{uuidReceiver}")
+	@GetMapping("/message/{uuidSender}/{uuidReceiver}")
 	public ResponseEntity<?> getLastMessages(@PathVariable String uuidSender, @PathVariable String uuidReceiver){
 		List<MessageResponseDto> messageList = messageService.getLastMessages(uuidSender, uuidReceiver);
 		
