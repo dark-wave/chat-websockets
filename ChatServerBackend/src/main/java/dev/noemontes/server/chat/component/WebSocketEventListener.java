@@ -27,9 +27,6 @@ public class WebSocketEventListener {
     public void handleWebSocketConnectListener(SessionConnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = accessor.getSessionId();
-               
-        // Acciones cuando un cliente se conecta
-        System.out.println("Cliente conectado. ID de sesión: " + sessionId);
     }
 
     @EventListener
@@ -38,8 +35,5 @@ public class WebSocketEventListener {
         String sessionId = accessor.getSessionId();
         
         userService.removeUserSessionId(sessionId);
-        
-        // Acciones cuando un cliente se desconecta
-        System.out.println("Cliente desconectado. ID de sesión: " + sessionId);
     }
 }

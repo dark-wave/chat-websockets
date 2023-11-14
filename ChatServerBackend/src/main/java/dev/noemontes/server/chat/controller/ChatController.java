@@ -3,6 +3,7 @@ package dev.noemontes.server.chat.controller;
 import java.util.Date;
 import java.util.List;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -27,9 +27,6 @@ public class ContactsChangeStreamListener extends AbstractMongoEventListener<Use
 
     @Override
     public void onAfterSave(AfterSaveEvent<UserModel> event) {
-        System.out.println("onAfterSave({}, {})" + event.getSource() + event.getDocument());
-        
-        //TODO: Publicamos la lista de contactos al websocket del usuario específico a fin de notificar cambios en sus contactos
         contactService.notifyContacts(event.getSource().getUuid());
     }
 }
